@@ -22,6 +22,8 @@ import { useParams } from "react-router-dom";
 import Model from "./Model";
 // import { eventList } from "../pages/Home";
 import { PlusIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { nanoid } from 'nanoid'
+
 
 const getEventsOfSelectedDay = (events: CalendarEventsResult, day: Date) => {
   if (!events || !events.events.length) return [];
@@ -55,7 +57,19 @@ export default function MonthCalendar({
   userEvents?: CalendarEventsResult;
 }) {
   const { BSYear, BSMonth } = useParams();
+  console.log(BSYear,BSMonth,"year");
+
+ 
+
+  
   const [modelOpen, setModelOpen] = useState(false);
+  console.log(modelOpen,"hello");
+
+ if (BSMonth === undefined || BSYear === undefined) {
+    window.location.reload();
+}
+
+  
   const [eventList, setEventList] = useState<
     {
       event: string;
@@ -63,6 +77,7 @@ export default function MonthCalendar({
       year: string | undefined;
       month: string | undefined;
       date: string | undefined;
+      id:string;
     }[]
   >([]);
 
@@ -94,6 +109,7 @@ export default function MonthCalendar({
     month: BSMonth,
     date: selectedDay.getDate(),
   });
+  console.log(formData,"hello")
   const onSubmitHandler = (e: any) => {
     e.preventDefault();
     try {
@@ -105,6 +121,7 @@ export default function MonthCalendar({
         {
           ...formData,
           date: formattedDate,
+          id:nanoid()
         },
       ]);
 
@@ -122,12 +139,25 @@ export default function MonthCalendar({
       console.log(error);
     }
   };
-  console.log(eventList);
-  console.log(BSMonth);
+  // console.log(eventList);
+  // console.log(BSMonth);
 
-  console.log(selectedDay.getBS().year);
-  console.log(selectedDay.getBS().month + 1);
-  console.log(selectedDay.getBS().date);
+  // console.log(selectedDay.getBS().year);
+  // console.log(selectedDay.getBS().month + 1);
+  // console.log(selectedDay.getBS().date);
+
+  const eventDeleteHandler = (id:string)=>{
+    const updatedList = eventList.filter((item)=>item.id !== id)
+    setEventList(updatedList)
+    return updatedList
+    
+  }
+  useEffect(()=>{
+
+    // window.location.reload()
+  },[selectedDay])
+
+
 
   return (
     <>
@@ -214,18 +244,18 @@ export default function MonthCalendar({
           </div>
         </Model>
       )}
-      <div className=" flex  ">
-        <div>
-          <div className="mt-6   grid grid-cols-7 text-xs leading-10 text-gray-500 ">
-            <div>{t("homepage.S")}</div>
-            <div>{t("homepage.M")}</div>
-            <div>{t("homepage.T")}</div>
-            <div>{t("homepage.W")}</div>
-            <div>{t("homepage.Th")}</div>
-            <div>{t("homepage.F")}</div>
-            <div>{t("homepage.Sa")}</div>
+      <div className=" flex gap-3   ">
+        <div className="">
+          <div className="mt-3    grid grid-cols-7 text-xs leading-10 text-gray-500 ">
+            <div className="text-xl text-center">{t("homepage.S")}</div>
+            <div className="text-xl text-center">{t("homepage.M")}</div>
+            <div className="text-xl text-center">{t("homepage.T")}</div>
+            <div className="text-xl text-center">{t("homepage.W")}</div>
+            <div className="text-xl text-center">{t("homepage.Th")}</div>
+            <div className="text-xl text-center">{t("homepage.F")}</div>
+            <div className="text-xl text-center">{t("homepage.Sa")}</div>
           </div>
-          <div className="isolate mx-1 mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200 h-[78vh] w-[75vw] ">
+          <div className="isolate  mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200 h-[78vh] w-[72.6vw] ">
             {monthData.map((day, dayIdx) => {
               const { bs_year, bs_month, bs_day } = day.AD_date;
               const dayInNepaliDate = new NepaliDate(
@@ -282,13 +312,13 @@ export default function MonthCalendar({
                   <time
                     dateTime={day.AD_date.ad}
                     className={classNames(
-                      "mx-auto mt-0 flex items-center justify-center rounded-full pt-0 text-xl"
+                      "mx-auto mt-0 flex items-center justify-center rounded-full pt-0 text-3xl"
                     )}
                   >
                     {nepaliNumber(day.day)}
                   </time>
-                  <span className="mx-auto my-0 mt-0 py-0 text-[9px] font-extralight">
-                    {dayInNepaliDate.getAD().date}
+                  <span className="mx-auto my-0 mt-0 py-0 text-md font-extralight">
+                    {dayInNepaliDate.getAD().date} 
                   </span>
                 </button>
               );
@@ -348,7 +378,7 @@ export default function MonthCalendar({
       </div> */}
 
           <div>
-            <div className="w-[40vh] ">
+            <div className="w-[38vh] ">
               <button
                 type="button"
                 className=" w-full rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none  items-center text-center "
@@ -357,7 +387,7 @@ export default function MonthCalendar({
                 {" Events"}
               </button>
             </div>
-            {eventList.map((event, index) => {
+            {eventList.map((event) => {
               if (
                 event.year === JSON.stringify(selectedDay.getBS().year) &&
                 event.month === (JSON.stringify(selectedDay.getBS().month + 1))&&
@@ -365,9 +395,11 @@ export default function MonthCalendar({
               ) {
                 return (
                   <div
-                    className="mx-2 mt-1 flex rounded-md border  bg-white p-4 shadow-lg "
-                    key={index}
+                    className="mx-2 mt-1 flex gap-2 flex-col rounded-md border  bg-white p-4 shadow-lg "
+                    key={event.id}
                   >
+                    <div className="flex">
+
                     <div className="flex-col">
                       <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold ">
                         <h1>
@@ -422,6 +454,13 @@ export default function MonthCalendar({
                           isNepaliLanguage
                         )}
                       </h1>
+                    </div>
+                    </div>
+                    <div className="flex items-center  justify-around my-1">
+                      <button className="bg-indigo-600 text-white px-6 py-2 rounded-md ">Edit </button>
+                      <button className="bg-red-600 text-white px-6 py-2 rounded-md " onClick={()=>{
+                        eventDeleteHandler(event.id)
+                      }} >delete </button>
                     </div>
                   </div>
                 );

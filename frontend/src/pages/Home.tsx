@@ -32,7 +32,7 @@ function Home() {
     useState<NepaliDate>(validYearAndMonth);
 
   useEffect(() => {
-    const fixedPageType = pageType === "upcoming" ? "upcoming" : "calendar";
+    const fixedPageType =  "calendar";
     // set params in url withour reloading
     history.replaceState(
       null,
@@ -67,8 +67,8 @@ function Home() {
   return (
     <>
    
-      <div className=" mt-5  grid grid-cols-4     ">
-        <div className=" col-span-3  ">
+      <div className=" grid grid-cols-4 px-5   ">
+        <div className=" col-span-3  bg-gray-300 rounded-md   ">
           <YearMonthPicker
             currentNepaliDate={currentNepaliDate}
             setCurrentNepaliDate={setCurrentNepaliDate}

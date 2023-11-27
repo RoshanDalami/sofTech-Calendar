@@ -10,8 +10,9 @@ import { classNames } from "../helper/utils";
 export default function Navbar() {
   // find current route
   const navigation = [
-    { name: "navbar.Home", href: "/" },
-    // { name: "navbar.Events", href: "/upcoming" },
+    { name: "Home", href: "/" },
+    { name: "Calendar", href: "/:pageType?/:BSYear?/:BSMonth?" },
+    { name: "Events", href: "/events" },
     // { name: "navbar.Date_Converter", href: "/converter" },
     // { name: "navbar.About", href: "/about" },
   ];

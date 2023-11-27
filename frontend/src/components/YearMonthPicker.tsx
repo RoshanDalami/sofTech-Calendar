@@ -33,7 +33,7 @@ const YearMonthPicker = ({
     }
   };
   return (
-    <div className="flex items-center text-gray-900">
+    <div className="flex items-center bg-slate-400 py-2 rounded-md  text-gray-900">
       <button
         type="button"
         disabled={currentMonth === 0 && currentYear === availableYears[0].en}
@@ -73,7 +73,7 @@ const YearMonthPicker = ({
           }))}
         />
       </div>
-      <p className="text-sm text-gray-700 ">{nepaliMonths[currentMonth].ad}</p>
+      <p className="text-sm text-white ">{nepaliMonths[currentMonth].ad}</p>
 
       <button
         type="button"
