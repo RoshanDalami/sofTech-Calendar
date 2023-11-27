@@ -1,0 +1,29 @@
+{
+  "homepage": {
+    "View_all_events": "View all events",
+    "S": "S",
+    "M": "M",
+    "T": "T",
+    "W": "W",
+    "Th": "Th",
+    "F": "F",
+    "Sa": "S",
+    "Delete": "Delete"
+  },
+  "navbar": {
+    "Home": "Home",
+    "Events": "Events",
+    "Date_Converter": "Date Converter",
+    "About": "About",
+    "Login": "Login",
+    "offline": "offline",
+    "Sign_out": "Sign Out"
+  },
+  "dc": {
+    "Date_Converter": "Date Converter",
+    "Anno_Domini": "Anno Domini",
+    "A.D": "A.D",
+    "Bikram_Sambat": "Bikram Sambat",
+    "B.S": "B.S"
+  }
+}
