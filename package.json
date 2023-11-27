@@ -18,12 +18,12 @@
     "PWA",
     "Nepal"
   ],
-  "author": "@ParajuliBkrm, @POSKOfficial",
-  "license": "MIT",
+  "author": "",
+  "license": "",
   "bugs": {
-    "url": "https://github.com/poskOfficial/Nepali-calendar-web/issues"
+    "url": "https://github.com/roshandalami"
   },
-  "homepage": "https://github.com/poskOfficial/Nepali-calendar-web#readme",
+  "homepage": "https://github.com/roshandalami",
   "devDependencies": {
     "concurrently": "^8.2.0"
   }
