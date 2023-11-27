@@ -5,12 +5,10 @@
 //   getChandramaEnglish,
 //   relativeTimeFromDates,
 // } from "../helper/dates";
-import {
-  relativeTimeFromDates,
-} from "../helper/dates";
+import { relativeTimeFromDates } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
 // import AddEventModal from "./AddEventModal";
-import { Link } from "react-router-dom";
+
 import useLanguage from "../helper/useLanguage";
 import { DayData } from "../types/calendar.types";
 import { useEffect, useMemo, useState } from "react";
@@ -85,12 +83,10 @@ export default function MonthCalendar({
     return monthData[selectedDayIndex];
   }, [selectedDay]);
 
-  console.log(selectedDay.getBS().date);
-
   useEffect(() => {
     setSelectedDay(isSameMonth(today, firstDay) ? today : firstDay);
   }, [monthData]);
-  
+
   const [formData, setFormData] = useState({
     event: "",
     description: "",
@@ -127,6 +123,11 @@ export default function MonthCalendar({
     }
   };
   console.log(eventList);
+  console.log(BSMonth);
+
+  console.log(selectedDay.getBS().year);
+  console.log(selectedDay.getBS().month + 1);
+  console.log(selectedDay.getBS().date);
 
   return (
     <>
@@ -348,19 +349,18 @@ export default function MonthCalendar({
 
           <div>
             <div className="w-[40vh] ">
-              <Link
+              <button
                 type="button"
-                to={`/upcoming`}
-                className=" w-full rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 items-center text-center "
+                className=" w-full rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none  items-center text-center "
               >
                 {/* {t("homepage.View_all_events")}  */}
                 {" Events"}
-              </Link>
+              </button>
             </div>
             {eventList.map((event, index) => {
               if (
-                event.year === BSYear &&
-                event.month === BSMonth &&
+                event.year === JSON.stringify(selectedDay.getBS().year) &&
+                event.month === (JSON.stringify(selectedDay.getBS().month + 1))&&
                 event.date === JSON.stringify(selectedDay.getDate())
               ) {
                 return (
@@ -440,8 +440,6 @@ export default function MonthCalendar({
             }}
           />
         </div>
-
-       
       </div>
     </>
   );

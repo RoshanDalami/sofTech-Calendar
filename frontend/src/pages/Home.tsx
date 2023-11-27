@@ -64,46 +64,10 @@ function Home() {
   //   networkMode: "offlineFirst",
   // });
 
-  //for date
-  const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
-    return (
-      date1.getBS().year === date2.getBS().year &&
-      date1.getBS().month === date2.getBS().month
-    );
-  };
-  const today = useMemo(() => new NepaliDate(), []);
-  // // replace all dots with slash
-
-  const firstDay = useMemo(() => {
-    const firstDayData = monthData[0];
-    if (firstDayData && firstDayData.AD_date) {
-      const { bs_year, bs_month, bs_day } = firstDayData.AD_date;
-      return new NepaliDate(`${bs_year}-${bs_month}-${bs_day}`);
-    }
-    // Handle the case where AD_date is not present.
-    return new NepaliDate();
-  }, []);
-  
-  const [selectedDay, setSelectedDay] = useState<NepaliDate>(
-    isSameMonth(today, firstDay) ? today : firstDay
-  );
-  const selectedDayData = useMemo(() => {
-    const selectedDayIndex = selectedDay.getBS().date - 1;
-    return monthData[selectedDayIndex];
-  }, [selectedDay]);
-  // console.log('selected Date',  selectedDay)
-  // console.log(  selectedDay.getDate())
-  useEffect(() => {
-    setSelectedDay(isSameMonth(today, firstDay) ? today : firstDay);
-  }, []);
-
-
-
-
   return (
     <>
    
-      <div className=" mt-1  grid grid-cols-4    ">
+      <div className=" mt-5  grid grid-cols-4     ">
         <div className=" col-span-3  ">
           <YearMonthPicker
             currentNepaliDate={currentNepaliDate}

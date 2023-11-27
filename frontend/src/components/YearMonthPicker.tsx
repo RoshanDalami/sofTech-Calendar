@@ -82,7 +82,7 @@ const YearMonthPicker = ({
           "mx-3 flex flex-none items-center justify-center rounded-md  bg-blue-600 p-1.5 text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-white disabled:opacity-20 disabled:hover:cursor-not-allowed disabled:hover:bg-blue-600 "
         )}
         onClick={handleNextMonth}>
-        <span className="sr-only">Next month</span>
+        <span className=" sr-only">Next month</span>
         <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
       </button>
     </div>
