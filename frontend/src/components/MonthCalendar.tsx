@@ -1,8 +1,11 @@
+// import {
+//   getTithiNepali,
+//   getChandramaNepali,
+//   getTithiEnglish,
+//   getChandramaEnglish,
+//   relativeTimeFromDates,
+// } from "../helper/dates";
 import {
-  getTithiNepali,
-  getChandramaNepali,
-  getTithiEnglish,
-  getChandramaEnglish,
   relativeTimeFromDates,
 } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
@@ -83,13 +86,11 @@ export default function MonthCalendar({
   }, [selectedDay]);
 
   console.log(selectedDay.getBS().date);
-  // console.log(selectedDay.getDate())
-  // const selectedDate = selectedDay.getDate()
-  // console.log(selectedDate)
+
   useEffect(() => {
     setSelectedDay(isSameMonth(today, firstDay) ? today : firstDay);
   }, [monthData]);
-  // console.log(selectedDay)
+  
   const [formData, setFormData] = useState({
     event: "",
     description: "",
@@ -222,13 +223,6 @@ export default function MonthCalendar({
             <div>{t("homepage.Th")}</div>
             <div>{t("homepage.F")}</div>
             <div>{t("homepage.Sa")}</div>
-            {/* <div>{'S'}</div>
-        <div>{'M'}</div>
-        <div>{'T'}</div>
-        <div>{'W'}</div>
-        <div>{'Th'}</div>
-        <div>{'F'}</div>
-        <div>{'S'}</div> */}
           </div>
           <div className="isolate mx-1 mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200 h-[78vh] w-[75vw] ">
             {monthData.map((day, dayIdx) => {
