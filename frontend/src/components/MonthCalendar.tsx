@@ -78,10 +78,10 @@ export default function MonthCalendar({
   const [selectedDay, setSelectedDay] = useState<NepaliDate>(
     isSameMonth(today, firstDay) ? today : firstDay
   );
-  const selectedDayData = useMemo(() => {
-    const selectedDayIndex = selectedDay.getBS().date - 1;
-    return monthData[selectedDayIndex];
-  }, [selectedDay]);
+  // const selectedDayData = useMemo(() => {
+  //   const selectedDayIndex = selectedDay.getBS().date - 1;
+  //   return monthData[selectedDayIndex];
+  // }, [selectedDay]);
 
   useEffect(() => {
     setSelectedDay(isSameMonth(today, firstDay) ? today : firstDay);
