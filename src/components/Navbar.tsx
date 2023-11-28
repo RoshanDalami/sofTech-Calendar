@@ -21,7 +21,8 @@ export default function Navbar() {
 
   // const { data, status } = useUser();
   return (
-    <Disclosure as="nav" className="border-b bg-blue-400 ">
+    <Disclosure as="nav" className="flex justify-between border-b-2 border-black shadow-xl px-2 border-r-2 border-l-2 bg-blue-500 border-transparent items-center  shadow-current ">
+      
       {({ open }) => (
         <div className="">
           <div className="px-2  sm:px-6 lg:px-8 ">
