@@ -11,7 +11,7 @@ import nepaliNumber from "../helper/nepaliNumber";
 
 import useLanguage from "../helper/useLanguage";
 import { DayData } from "../types/calendar.types";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState  } from "react";
 import NepaliDate from "nepali-date-converter";
 // import useUser from "../helper/useUser";
 import { CalendarEventsResult } from "../types/events.types";
@@ -23,6 +23,7 @@ import Model from "./Model";
 // import { eventList } from "../pages/Home";
 import { PlusIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { nanoid } from 'nanoid'
+
 
 
 const getEventsOfSelectedDay = (events: CalendarEventsResult, day: Date) => {
@@ -49,6 +50,10 @@ const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
     date1.getBS().month === date2.getBS().month
   );
 };
+
+
+
+
 export default function MonthCalendar({
   monthData,
   userEvents,
@@ -57,9 +62,9 @@ export default function MonthCalendar({
   userEvents?: CalendarEventsResult;
 }) {
   const { BSYear, BSMonth } = useParams();
-  console.log(BSYear,BSMonth,"year");
+  
 
- 
+
 
   
   const [modelOpen, setModelOpen] = useState(false);
@@ -152,11 +157,7 @@ export default function MonthCalendar({
     return updatedList
     
   }
-  useEffect(()=>{
-
-    // window.location.reload()
-  },[selectedDay])
-
+  
 
 
   return (
