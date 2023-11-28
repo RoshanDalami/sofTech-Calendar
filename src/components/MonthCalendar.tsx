@@ -136,8 +136,7 @@ console.log(selectedDay.getDay())
       //   },
       // ]);
       addEvent({...formData, date:formattedDate,id:nanoid()})
-
-     
+      setModelOpen(false)
       setFormData({
         event: "",
         description: "",
@@ -370,7 +369,7 @@ console.log(selectedDay.getDay())
       </div> 
       </div> */}
 
-          <div>
+          <div className="absolute top-[90px] z-50" >
             <div className="w-[38vh] ">
               <button
                 type="button"
@@ -398,9 +397,7 @@ console.log(selectedDay.getDay())
                     <div className="flex-col">
                       <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold ">
                         <h1>
-                          {/* {isNepaliLanguage
-                          ? nepaliNumber(`${selectedDay.getBS().date}`)
-                          : selectedDay.getBS().date}  */}
+                          
                           {event.date}
                         </h1>
                       </div>
@@ -414,13 +411,12 @@ console.log(selectedDay.getDay())
                               weekday: "long",
                             }
                           )}
-                          {/* {event.day} */}
                       </p>
                     </div>
 
                     <div className="ml-4 grow text-left">
                       {/* international  */}
-                      <h2 className="font-semibold">
+                      {/* <text >
                         {new Intl.DateTimeFormat(
                           isNepaliLanguage ? "ne-NP" : "en-US",
                           {
@@ -430,19 +426,9 @@ console.log(selectedDay.getDay())
                           }
                         ).format(selectedDay.toJsDate())}
 
-                      </h2>
-                      <p className="mt-2 text-sm text-gray-500">
-                        {/* {isNepaliLanguage
-                        ? `${getTithiNepali(selectedDayData.AD_date.tithi)},
-                ${getChandramaNepali(selectedDayData.AD_date.chandrama)} •
-                ${selectedDayData?.events
-                  .map((event) => event?.jds?.ne)
-                  .join(" | ")}`
-                        : `${getTithiEnglish(selectedDayData?.AD_date?.tithi)},
-                ${getChandramaEnglish(selectedDayData?.AD_date?.chandrama)} •
-                ${selectedDayData?.events
-                  .map((event) => event?.jds?.en)
-                  .join(" | ")}`}  */}
+                      </text> */}
+                      <p className="mt-2 text-sm font-semibold ">
+                        
                         {event.event}
                       </p>
                     </div>
