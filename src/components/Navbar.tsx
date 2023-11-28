@@ -21,7 +21,9 @@ export default function Navbar() {
 
   // const { data, status } = useUser();
   return (
-    <Disclosure as="nav" className="flex justify-between border-b-2 border-black shadow-xl px-2 border-r-2 border-l-2 bg-blue-500 border-transparent items-center  shadow-current ">
+    <div className=" " >
+
+    <Disclosure as="nav" className="flex justify-between border-b-2 border-black shadow-lg px-2 border-r-2 border-l-2 bg-blue-500 border-transparent items-center  shadow-current  ">
       
       {({ open }) => (
         <div className="">
@@ -39,18 +41,17 @@ export default function Navbar() {
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                {/* <div className="flex flex-shrink-0 items-center">
-                  <img className="block h-8 w-auto lg:hidden" src="/icons/icon-512x512.png" alt="Miti" />
-                  <img className="hidden h-8 w-auto lg:block" src="/icons/icon-512x512.png" alt="Miti" />
-                </div> */}
+                
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex items-center space-x-4">
-                    {navigation.map((item) => (
+                    {navigation.map((item) => 
+                    (
+                      
                       <Link
                         key={item.name}
                         to={item.href}
                         className={classNames(
-                          item.href === location.pathname
+                          (item.href === location.pathname )
                             ? "bg-gray-300 "
                             : "text-gray-900",
                           "rounded-md px-3 py-2 text-sm font-medium"
@@ -59,23 +60,9 @@ export default function Navbar() {
                         {t(item.name)}
                       </Link>
                     ))}
-                    {/* <InstallPWA>
-                      <button className="rounded-md px-3 py-2 text-sm font-medium dark:text-white">
-                        Install
-                      </button>
-                    </InstallPWA> */}
+                   
                   </div>
                 </div>
-              </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {/* Profile dropdown */}
-                {/* {status === "LOGGED_IN" ? (
-                  <UserSettings status={status} photoUrl={data.user.photos[0].value} />
-                ) : status === "NOT_LOGGED_IN" ? (
-                  <UserSettings status={status} />
-                ) : (
-                  <UserSettings status={status} />
-                )} */}
               </div>
             </div>
           </div>
@@ -91,15 +78,12 @@ export default function Navbar() {
                 </Disclosure.Button>
               ))}
               {/* <LanguageChangeDropDown /> */}
-              {/* <InstallPWA>
-                <Disclosure.Button className="block rounded-md px-3 py-2 text-base font-medium">
-                  Install
-                </Disclosure.Button>
-              </InstallPWA> */}
+              
             </div>
           </Disclosure.Panel>
         </div>
       )}
     </Disclosure>
+    </div>
   );
 }

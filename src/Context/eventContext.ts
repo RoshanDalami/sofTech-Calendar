@@ -6,6 +6,7 @@ import React from "react";
     month:string | undefined
     date:string | undefined
     id:string
+    
 }
 
  export interface EventContextProps {

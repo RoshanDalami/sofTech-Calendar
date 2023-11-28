@@ -14,7 +14,7 @@ const Body = () => {
 
   return (
     <div className={" flex min-h-screen flex-col"}>
-      <div className="pb-1" >
+      <div className=" sticky top-0 z-10" >
 
       <Navbar />
       </div>

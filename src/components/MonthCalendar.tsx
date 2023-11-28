@@ -5,7 +5,7 @@
 //   getChandramaEnglish,
 //   relativeTimeFromDates,
 // } from "../helper/dates";
-// import { relativeTimeFromDates } from "../helper/dates";
+import { relativeTimeFromDates } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
 // import AddEventModal from "./AddEventModal";
 
@@ -114,27 +114,13 @@ export default function MonthCalendar({
     description: "",
     year: BSYear,
     month: BSMonth,
-    internationalDate: new Intl.DateTimeFormat(
-      isNepaliLanguage ? "ne-NP" : "en-US",
-      {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      }
-    ).format(selectedDay.toJsDate()),
-    day:selectedDay
-    .toJsDate()
-    .toLocaleDateString(
-      isNepaliLanguage ? "ne-NP" : "en-US",
-      {
-        weekday: "long",
-      }
-    ),
+    
     date: selectedDay.getDate(),
   });
   // console.log(formData,"hello")
 
-
+console.log( typeof selectedDay.toJsDate().toLocaleDateString())
+console.log(selectedDay.getDay())
   const onSubmitHandler = (e: any) => {
     e.preventDefault();
     try {
@@ -149,52 +135,21 @@ export default function MonthCalendar({
       //     id:nanoid()
       //   },
       // ]);
-      addEvent({...formData, date:formattedDate,id:nanoid(),})
+      addEvent({...formData, date:formattedDate,id:nanoid()})
 
-      console.log(eventList);
-      console.log("submitted");
-
+     
       setFormData({
         event: "",
         description: "",
         year: BSYear,
         month: BSMonth,
-        internationalDate:  new Intl.DateTimeFormat(
-          isNepaliLanguage ? "ne-NP" : "en-US",
-          {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          }
-        ).format(selectedDay.toJsDate()),
-        day:selectedDay
-        .toJsDate()
-        .toLocaleDateString(
-          isNepaliLanguage ? "ne-NP" : "en-US",
-          {
-            weekday: "long",
-          }
-        ),
         date: 0,
       });
     } catch (error) {
       console.log(error);
     }
   };
-  // console.log(eventList);
-  // console.log(BSMonth);
-
-  // console.log(selectedDay.getBS().year);
-  // console.log(selectedDay.getBS().month + 1);
-  // console.log(selectedDay.getBS().date);
-
-  // const eventDeleteHandler = (id:string)=>{
-  //   const updatedList = eventList.filter((item)=>item.id !== id)
-  //   setEventList(updatedList)
-  //   return updatedList
-    
-  // }
-  
+ 
 
 
   return (
@@ -451,30 +406,30 @@ export default function MonthCalendar({
                       </div>
                       <p className="mt-2 text-sm text-gray-500 ">
                         {/* day  */}
-                        {/* {selectedDay
+                        {selectedDay
                           .toJsDate()
                           .toLocaleDateString(
                             isNepaliLanguage ? "ne-NP" : "en-US",
                             {
                               weekday: "long",
                             }
-                          )} */}
-                          {event.day}
+                          )}
+                          {/* {event.day} */}
                       </p>
                     </div>
 
                     <div className="ml-4 grow text-left">
                       {/* international  */}
                       <h2 className="font-semibold">
-                        {/* {new Intl.DateTimeFormat(
+                        {new Intl.DateTimeFormat(
                           isNepaliLanguage ? "ne-NP" : "en-US",
                           {
                             month: "long",
                             day: "numeric",
                             year: "numeric",
                           }
-                        ).format(selectedDay.toJsDate())} */}
-                        {event.internationalDate}
+                        ).format(selectedDay.toJsDate())}
+
                       </h2>
                       <p className="mt-2 text-sm text-gray-500">
                         {/* {isNepaliLanguage
@@ -491,14 +446,14 @@ export default function MonthCalendar({
                         {event.event}
                       </p>
                     </div>
-                    {/* <div className="ml-10 flex-col text-end">
+                    <div className="ml-10 flex-col text-end">
                       <h1 className="mt-2 text-sm text-gray-500 ">
                         {relativeTimeFromDates(
                           selectedDay.toJsDate(),
                           isNepaliLanguage
                         )}
                       </h1>
-                    </div> */}
+                    </div>
                     </div>
                     {/* <div className="flex items-center  justify-around my-1">
                       <button className="bg-indigo-600 text-white px-6 py-2 rounded-md ">Edit </button>

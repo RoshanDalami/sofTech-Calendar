@@ -1,19 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import MonthCalendar from "../components/MonthCalendar";
 import { fetchYearlyData } from "../helper/api";
-// import { fetchUserEvents, fetchYearlyData } from "../helper/api";
+
 import YearMonthPicker from "../components/YearMonthPicker";
 import { useParams } from "react-router-dom";
 import NepaliDate from "nepali-date-converter";
 import { useQuery } from "@tanstack/react-query";
 import Spinner from "../components/Spinner";
 import { CalendarData, Months } from "../types/calendar.types";
-// import { CalendarEventsResult } from "../types/events.types";
-// import UpcomingEvents from "./UpcomingEvents";
 
 
 
-export const eventList: { event: string; description: string; year: string|number | undefined; month:string|number|undefined;  date: string|number | undefined; }[] = []
+
 
 function Home() {
   const { BSYear, BSMonth, pageType = "calendar" } = useParams();
@@ -56,18 +54,11 @@ function Home() {
     return calendarData[currentMonthInHumanForm];
   }, [calendarData, currentMonthInHumanForm]);
   
-  ///
-  // const { data: userEvents } = useQuery<CalendarEventsResult>({
-  //   queryKey: ["events", currentNepaliDate.getYear(), currentNepaliDate.getMonth()],
-  //   queryFn: () => fetchUserEvents(monthData[0].AD_date.ad, monthData[monthData.length - 1].AD_date.ad),
-  //   enabled: !!calendarData && !!monthData.length,
-  //   networkMode: "offlineFirst",
-  // });
 
   return (
     <>
    
-      <div className=" grid grid-cols-4 px-5   ">
+      <div className=" grid grid-cols-4 px-5 mt-5  ">
         <div className=" col-span-3  bg-gray-300 rounded-md   ">
           <YearMonthPicker
             currentNepaliDate={currentNepaliDate}
