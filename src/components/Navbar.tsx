@@ -21,7 +21,7 @@ export default function Navbar() {
 
   // const { data, status } = useUser();
   return (
-    <Disclosure as="nav" className="border-b bg-white ">
+    <Disclosure as="nav" className="border-b bg-blue-400 ">
       {({ open }) => (
         <div className="">
           <div className="px-2  sm:px-6 lg:px-8 ">
@@ -80,17 +80,11 @@ export default function Navbar() {
           </div>
 
           <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2 dark:bg-gray-800 dark:text-white">
+            <div className=" px-2 pb-3 pt-2 ">
               {navigation.map((item) => (
                 <Disclosure.Button
                   key={item.name}
                   as="div"
-                  className={classNames(
-                    item.href === location.pathname
-                      ? "bg-gray-300 dark:bg-gray-600 dark:text-gray-900"
-                      : "text-gray-900 dark:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium"
-                  )}
                   aria-current={item.href === location.pathname ? "page" : undefined}>
                   <Link to={item.href}>{t(item.name)}</Link>
                 </Disclosure.Button>

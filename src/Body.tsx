@@ -1,19 +1,20 @@
 
-import { DarkModeContext } from "./components/DarkModeProvider.tsx";
+
 import Home from "./pages/Home.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar.tsx";
-import { useContext } from "react";
+
 
 import Landing from "./pages/Landing.tsx";
 import Events from "./pages/Events.tsx";
 
+
 const Body = () => {
-  const { darkMode } = useContext(DarkModeContext);
 
   return (
-    <div className={(darkMode ? "dark" : "") + " flex min-h-screen flex-col"}>
+    <div className={" flex min-h-screen flex-col"}>
+
       <Navbar />
       <div className="flex-grow">
         <Routes>
@@ -26,6 +27,7 @@ const Body = () => {
           {/* <Route path="/google-api-disclosure" element={<GoogleApiDisclosure />} /> */}
         </Routes>
       </div>
+
       {/* <Footer /> */}
     </div>
   );
