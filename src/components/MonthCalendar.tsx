@@ -82,7 +82,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
   const [formData, setFormData] = useState({
     event: "",
     description: "",
-    time:'',
+    time: "",
     year: BSYear,
     month: BSMonth,
 
@@ -106,14 +106,14 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
       //     id:nanoid()
       //   },
       // ]);
-      // ,month:formattedMonth, year:formattedYear 
+      // ,month:formattedMonth, year:formattedYear
       addEvent({ ...formData, date: formattedDate, id: nanoid() });
-      console.log(formData,'data')
+      console.log(formData, "data");
       setModelOpen(false);
       setFormData({
         event: "",
         description: "",
-        time:'',
+        time: "",
         year: BSYear,
         month: BSMonth,
         date: 0,
@@ -123,26 +123,24 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
     }
   };
 
-  function convertTo12HourFormat(time24:string) {
+  function convertTo12HourFormat(time24: string) {
     // Split the time string into hours and minutes
-    const [hours, minutes] = time24.split(':');
-  
+    const [hours, minutes] = time24?.split(":");
+
     // Convert hours to a number
     let hoursIn12Format = parseInt(hours, 10);
-  
+
     // Determine the period (AM or PM)
-    const period = hoursIn12Format >= 12 ? 'PM' : 'AM';
-  
+    const period = hoursIn12Format >= 12 ? "PM" : "AM";
+
     // Adjust hours for 12-hour format
     hoursIn12Format = hoursIn12Format % 12 || 12;
-  
+
     // Construct the 12-hour time string
     const time12 = `${hoursIn12Format}:${minutes} ${period}`;
-  
+
     return time12;
   }
-
-
 
   return (
     <>
@@ -276,7 +274,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                     dayIdx === 0 ? { gridColumnStart: day.week_day + 1 } : {}
                   }
                   className={classNames(
-                    "p-1 font-mukta leading-3  focus:z-10 relative",
+                    "p-1 font-mukta leading-3  focus:z-10 relative rounded-md ",
                     (isSelectedDay || isToday) && "font-semibold",
                     isToday && "bg-blue-600   font-semibold text-indigo-600",
                     !isSelectedDay && "bg-white ",
@@ -296,16 +294,14 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                     ) {
                       return (
                         <>
-
-                        <div
-                          key={event.id}
-                          className=" bg-red-600 h-2 w-2 rounded-full absolute top-3 right-3  "
-                        >
-            
-                        </div>
-                        <h1 className="bg-gray-300/40 px-2 py-1 rounded-lg absolute top-2 right-6 text-[8px]" >{event.event}</h1>
+                          <div
+                            key={event.id}
+                            className=" bg-red-600 h-2 w-2 rounded-full absolute top-3 right-3  "
+                          ></div>
+                          <h1 className="bg-gray-300/40 px-2 py-1 rounded-lg absolute top-2 right-6 text-[8px] hidden sm:block ">
+                            {event.event}
+                          </h1>
                         </>
-                        
                       );
                     }
                   })}
@@ -335,7 +331,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                 className=" w-full rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none  items-center text-center "
               >
                 {/* {t("homepage.View_all_events")}  */}
-                {" Events of " + selectedDay.getDate() }
+                {" Events of " + selectedDay.getDate()}
               </button>
 
               {/* events card  */}
@@ -394,9 +390,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                           )}
                         </h1>
                         <h1 className="mt-2 text-sm text-gray-500 ">
-                          {
-                            convertTo12HourFormat(event.time)
-                          }
+                          {convertTo12HourFormat(event.time)}
                         </h1>
                       </div>
                     </div>

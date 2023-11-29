@@ -37,8 +37,6 @@ export default function Navbar() {
   ];
   const location = useLocation();
 
-  // const isCalendarPage = location.pathname.split("/")[1] === "calendar";
-  // console.log(isCalendarPage,"variable");
 
   const { t } = useTranslation();
   const [time, setTime] = useState(new Date());
