@@ -11,6 +11,21 @@ import { useEffect, useState } from "react";
 import NepaliDate from "nepali-date-converter";
 
 
+function englishToNepaliDigitConverter(englishText:string) {
+  const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  const nepaliDigits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+
+  // Replace each English digit with its Nepali equivalent
+  for (let i = 0; i < englishDigits.length; i++) {
+    const regex = new RegExp(englishDigits[i], 'g');
+    englishText = englishText.replace(regex, nepaliDigits[i]);
+  }
+
+  return englishText;
+}
+
+
+
 export default function Navbar() {
   // find current route
   const navigation = [
@@ -34,8 +49,8 @@ export default function Navbar() {
     setDate(new NepaliDate())
   }, []);
 
-  // const nepaliDays = ['आइतबार','सोमबार','मंगलबार','बुधवार','विहीवार','शुक्रबार','शनिवार']
-  const englishDays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+  const nepaliDays = ['आइतबार','सोमबार','मंगलबार','बुधवार','विहीवार','शुक्रबार','शनिवार']
+  // const englishDays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
 
   // const { data, status } = useUser();
   return (
@@ -93,11 +108,11 @@ export default function Navbar() {
             <div className="text-lg  absolute right-4 top-3">
               <p>
 
-              Time: {time.toLocaleTimeString()}
+              Time: { englishToNepaliDigitConverter( time.toLocaleTimeString())}
               </p>
               <div>
 
-              Date: {`${date.getBS().year}-${date.getBS().month}-${date.getBS().date}`} {englishDays[date.getBS().day!]}
+              Date: {`${ englishToNepaliDigitConverter( JSON.stringify( date.getBS().year))}/${ englishToNepaliDigitConverter(JSON.stringify(date.getBS().month)) }/${ englishToNepaliDigitConverter(JSON.stringify(date.getBS().date)) }`} {nepaliDays[date.getBS().day!]}
               </div>
             </div>
             

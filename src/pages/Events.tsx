@@ -31,6 +31,24 @@ export default function Events() {
     console.log(formData)
   };
 
+    function convertTo12HourFormat(time24:string) {
+    // Split the time string into hours and minutes
+    const [hours, minutes] = time24.split(':');
+  
+    // Convert hours to a number
+    let hoursIn12Format = parseInt(hours, 10);
+  
+    // Determine the period (AM or PM)
+    const period = hoursIn12Format >= 12 ? 'PM' : 'AM';
+  
+    // Adjust hours for 12-hour format
+    hoursIn12Format = hoursIn12Format % 12 || 12;
+  
+    // Construct the 12-hour time string
+    const time12 = `${hoursIn12Format}:${minutes} ${period}`;
+  
+    return time12;
+  }
  
   return (
     <div className="  min-h-screen   ">
@@ -149,6 +167,9 @@ export default function Events() {
                   Description
                 </th>
                 <th scope="col" className="px-6 py-3">
+                  Time
+                </th>
+                <th scope="col" className="px-6 py-3">
                   Actions
                 </th>
               </tr>
@@ -168,11 +189,12 @@ export default function Events() {
                       {index + 1}
                     </th>
                     <td className="px-6 py-4">
-                      {`${event.year}-${event.month}-${event.date}`}
+                      {`${event.year}/${event.month}/${event.date}`}
                     </td>
 
                     <td className="px-6 py-4">{event.event}</td>
                     <td className="px-6 py-4">{event.description}</td>
+                    <td className="px-6 py-4">{ convertTo12HourFormat( event.time)}</td>
                     <td className="px-6 py-4">
                       <div className="justify-left flex gap-3  ">
                         <button

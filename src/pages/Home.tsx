@@ -15,6 +15,7 @@ import { CalendarData, Months } from "../types/calendar.types";
 
 function Home() {
   const { BSYear, BSMonth, pageType = "calendar" } = useParams();
+
  
   const validYearAndMonth = useMemo(() => {
     if (!BSYear || !BSMonth) return new NepaliDate();
@@ -29,16 +30,27 @@ function Home() {
   const [currentNepaliDate, setCurrentNepaliDate] =
     useState<NepaliDate>(validYearAndMonth);
 
+
+    // previous code for without reloading 
   useEffect(() => {
     const fixedPageType =  "calendar";
     // set params in url withour reloading
-    history.replaceState(
+    history.pushState(
       null,
       "",
       `/${fixedPageType}/${currentNepaliDate.getYear()}/${currentNepaliDate.getMonth() + 1
       }`
-    );
+    );    
   }, [currentNepaliDate, pageType]);
+
+  //new code for reload problem
+ 
+  
+  
+  
+
+
+
   const { data: calendarData, isLoading } = useQuery<CalendarData>({
     queryKey: ["calendar", currentNepaliDate.getYear()],
     queryFn: () => fetchYearlyData(currentNepaliDate.getYear()),

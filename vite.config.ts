@@ -139,7 +139,7 @@ export default defineConfig({
         ],
       },
       devOptions: {
-        enabled: true,
+        enabled: false,
       },
       // workbox: {
       //   navigateFallbackDenylist: [/^\/api/],

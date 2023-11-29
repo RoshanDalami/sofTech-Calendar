@@ -22,7 +22,7 @@ const App = () => {
   useEffect(()=>{
     const events =  JSON.parse(localStorage.getItem('Events')!)
     if(events && events.length){
-      setEventList(events)
+      setEventList(  events)
     }
   },[])
 

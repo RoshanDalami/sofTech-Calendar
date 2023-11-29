@@ -5,6 +5,7 @@ import { classNames } from "../helper/utils";
 import DropDown from "./DropDown";
 import NepaliDate from "nepali-date-converter";
 import { nepaliMonths } from "../constants/mahina";
+// import { useState, useEffect } from "react";
 
 const YearMonthPicker = ({
   currentNepaliDate,
@@ -16,6 +17,12 @@ const YearMonthPicker = ({
   const { isNepaliLanguage } = useLanguage();
   const currentYear = currentNepaliDate.getBS().year;
   const currentMonth = currentNepaliDate.getMonth();
+
+
+
+
+
+
 
   const handleNextMonth = () => {
     if (currentMonth == 11) {
@@ -84,6 +91,7 @@ const YearMonthPicker = ({
         onClick={handleNextMonth}>
         <span className=" sr-only">Next month</span>
         <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+        
       </button>
     </div>
   );

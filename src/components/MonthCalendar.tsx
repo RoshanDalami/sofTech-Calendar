@@ -11,7 +11,7 @@ import nepaliNumber from "../helper/nepaliNumber";
 
 import useLanguage from "../helper/useLanguage";
 import { DayData } from "../types/calendar.types";
-import { useEffect, useMemo, useState  } from "react";
+import { useEffect, useMemo, useState } from "react";
 import NepaliDate from "nepali-date-converter";
 // import useUser from "../helper/useUser";
 
@@ -21,10 +21,9 @@ import { useParams } from "react-router-dom";
 import Model from "./Model";
 // import { eventList } from "../pages/Home";
 import { PlusIcon, XCircleIcon } from "@heroicons/react/24/outline";
-import { nanoid } from 'nanoid'
+import { nanoid } from "nanoid";
 
 import { useEvent } from "../Context";
-
 
 const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
   return (
@@ -33,29 +32,19 @@ const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
   );
 };
 
+console.log(new NepaliDate());
 
-console.log(new NepaliDate())
-
-export default function MonthCalendar({
-  monthData,
-
-}: {
-  monthData: DayData[];
-}) {
+export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
   const { BSYear, BSMonth } = useParams();
-  
 
+  console.log(BSYear, BSMonth, "test");
 
-
-  
   const [modelOpen, setModelOpen] = useState(false);
 
-
- if (BSMonth === undefined || BSYear === undefined) {
+  if (BSMonth === undefined || BSYear === undefined) {
     window.location.reload();
-}
+  }
 
-  
   // const [eventList, setEventList] = useState<
   //   {
   //     event: string;
@@ -67,7 +56,7 @@ export default function MonthCalendar({
   //   }[]
   // >([]);
 
-  const { addEvent,eventList } = useEvent();
+  const { addEvent, eventList } = useEvent();
 
   const { t, isNepaliLanguage } = useLanguage();
   // const { status } = useUser();
@@ -93,9 +82,10 @@ export default function MonthCalendar({
   const [formData, setFormData] = useState({
     event: "",
     description: "",
+    time:'',
     year: BSYear,
     month: BSMonth,
-    
+
     date: selectedDay.getDate(),
   });
   // console.log(formData,"hello")
@@ -104,6 +94,8 @@ export default function MonthCalendar({
     e.preventDefault();
     try {
       const formattedDate = selectedDay.format("DD");
+      // const formattedMonth = selectedDay.format("MM");
+      // const formattedYear = selectedDay.format("YYY");
 
       // Update eventList using setEventList
       // setEventList((prevEventList) => [
@@ -114,11 +106,14 @@ export default function MonthCalendar({
       //     id:nanoid()
       //   },
       // ]);
-      addEvent({...formData, date:formattedDate,id:nanoid()})
-      setModelOpen(false)
+      // ,month:formattedMonth, year:formattedYear 
+      addEvent({ ...formData, date: formattedDate, id: nanoid() });
+      console.log(formData,'data')
+      setModelOpen(false);
       setFormData({
         event: "",
         description: "",
+        time:'',
         year: BSYear,
         month: BSMonth,
         date: 0,
@@ -127,7 +122,26 @@ export default function MonthCalendar({
       console.log(error);
     }
   };
- 
+
+  function convertTo12HourFormat(time24:string) {
+    // Split the time string into hours and minutes
+    const [hours, minutes] = time24.split(':');
+  
+    // Convert hours to a number
+    let hoursIn12Format = parseInt(hours, 10);
+  
+    // Determine the period (AM or PM)
+    const period = hoursIn12Format >= 12 ? 'PM' : 'AM';
+  
+    // Adjust hours for 12-hour format
+    hoursIn12Format = hoursIn12Format % 12 || 12;
+  
+    // Construct the 12-hour time string
+    const time12 = `${hoursIn12Format}:${minutes} ${period}`;
+  
+    return time12;
+  }
+
 
 
   return (
@@ -173,6 +187,21 @@ export default function MonthCalendar({
                     setFormData({ ...formData, description: e.target.value });
                   }}
                   value={formData.description}
+                  required
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="description" className="text-2xl font-bold">
+                  Time of Event
+                </label>
+                <input
+                  type="time"
+                  className="py-2 border-[1px] border-gray-500 rounded-md px-4"
+                  placeholder=" Event Time "
+                  onChange={(e) => {
+                    setFormData({ ...formData, time: e.target.value });
+                  }}
+                  value={formData.time}
                   required
                 />
               </div>
@@ -258,22 +287,28 @@ export default function MonthCalendar({
                       day.week_day === 6) &&
                       "text-rose-600"
                   )}
-                > 
-                  {
-                  eventList.map((event)=>{
-                    if(event.year === JSON.stringify(bs_year) && event.month === JSON.stringify(bs_month) && event.date === JSON.stringify(bs_day) ){
+                >
+                  {eventList.map((event) => {
+                    if (
+                      event.year === JSON.stringify(bs_year) &&
+                      event.month === JSON.stringify(bs_month) &&
+                      event.date === JSON.stringify(bs_day)
+                    ) {
+                      return (
+                        <>
 
-                      return(
-                        <div key={event.id} className=" bg-red-600 h-2 w-2 rounded-full absolute top-3 right-3  ">
-                          
+                        <div
+                          key={event.id}
+                          className=" bg-red-600 h-2 w-2 rounded-full absolute top-3 right-3  "
+                        >
+            
                         </div>
-                      )
+                        <h1 className="bg-gray-300/40 px-2 py-1 rounded-lg absolute top-2 right-6 text-[8px]" >{event.event}</h1>
+                        </>
+                        
+                      );
                     }
-                  })
-                }
-
-                
-
+                  })}
 
                   <time
                     dateTime={day.AD_date.ad}
@@ -284,7 +319,7 @@ export default function MonthCalendar({
                     {nepaliNumber(day.day)}
                   </time>
                   <span className="mx-auto my-0 mt-0 py-0 text-md font-extralight">
-                    {dayInNepaliDate.getAD().date} 
+                    {dayInNepaliDate.getAD().date}
                   </span>
                 </button>
               );
@@ -293,24 +328,22 @@ export default function MonthCalendar({
         </div>
         {/* event  */}
         <div className=" ">
-          
-
-          <div className="absolute top-[90px] z-50" >
+          <div className="absolute top-[90px] z-50">
             <div className="w-[38vh] ">
               <button
                 type="button"
                 className=" w-full rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none  items-center text-center "
               >
                 {/* {t("homepage.View_all_events")}  */}
-                {" Events"}
+                {" Events of " + selectedDay.getDate() }
               </button>
 
               {/* events card  */}
             </div>
-            {eventList.map((event:any) => {
+            {eventList.map((event: any) => {
               if (
                 event.year === JSON.stringify(selectedDay.getBS().year) &&
-                event.month === (JSON.stringify(selectedDay.getBS().month + 1))&&
+                event.month === JSON.stringify(selectedDay.getBS().month + 1) &&
                 event.date === JSON.stringify(selectedDay.getDate())
               ) {
                 return (
@@ -319,30 +352,26 @@ export default function MonthCalendar({
                     key={event.id}
                   >
                     <div className="flex">
-
-                    <div className="flex-col">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold ">
-                        <h1>
-                          
-                          {event.date}
-                        </h1>
+                      <div className="flex-col">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold ">
+                          <h1>{event.date}</h1>
+                        </div>
+                        <p className="mt-2 text-sm text-gray-500 ">
+                          {/* day  */}
+                          {selectedDay
+                            .toJsDate()
+                            .toLocaleDateString(
+                              isNepaliLanguage ? "ne-NP" : "en-US",
+                              {
+                                weekday: "long",
+                              }
+                            )}
+                        </p>
                       </div>
-                      <p className="mt-2 text-sm text-gray-500 ">
-                        {/* day  */}
-                        {selectedDay
-                          .toJsDate()
-                          .toLocaleDateString(
-                            isNepaliLanguage ? "ne-NP" : "en-US",
-                            {
-                              weekday: "long",
-                            }
-                          )}
-                      </p>
-                    </div>
 
-                    <div className="ml-4 grow text-left">
-                      {/* international  */}
-                      {/* <text >
+                      <div className="ml-4 grow text-left">
+                        {/* international  */}
+                        {/* <text >
                         {new Intl.DateTimeFormat(
                           isNepaliLanguage ? "ne-NP" : "en-US",
                           {
@@ -353,19 +382,23 @@ export default function MonthCalendar({
                         ).format(selectedDay.toJsDate())}
 
                       </text> */}
-                      <p className="mt-2 text-sm font-semibold ">
-                        
-                        {event.event}
-                      </p>
-                    </div>
-                    <div className="ml-10 flex-col text-end">
-                      <h1 className="mt-2 text-sm text-gray-500 ">
-                        {relativeTimeFromDates(
-                          selectedDay.toJsDate(),
-                          isNepaliLanguage
-                        )}
-                      </h1>
-                    </div>
+                        <p className="mt-2 text-sm font-semibold ">
+                          {event.event}
+                        </p>
+                      </div>
+                      <div className="ml-5 flex-col text-end">
+                        <h1 className="mt-2 text-sm text-gray-500 ">
+                          {relativeTimeFromDates(
+                            selectedDay.toJsDate(),
+                            isNepaliLanguage
+                          )}
+                        </h1>
+                        <h1 className="mt-2 text-sm text-gray-500 ">
+                          {
+                            convertTo12HourFormat(event.time)
+                          }
+                        </h1>
+                      </div>
                     </div>
                     {/* <div className="flex items-center  justify-around my-1">
                       <button className="bg-indigo-600 text-white px-6 py-2 rounded-md ">Edit </button>
