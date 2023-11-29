@@ -6,7 +6,10 @@ import { useTranslation } from "react-i18next";
 // import InstallPWA from "./InstallBtn";
 // import UserSettings from "./UserSettings";
 import { classNames } from "../helper/utils";
-import Logo from '../../public/logo.png'
+// import Logo from "../../public/logo.png";
+import { useEffect, useState } from "react";
+import NepaliDate from "nepali-date-converter";
+
 
 export default function Navbar() {
   // find current route
@@ -23,6 +26,16 @@ export default function Navbar() {
   // console.log(isCalendarPage,"variable");
 
   const { t } = useTranslation();
+  const [time, setTime] = useState(new Date());
+  const [date , setDate] = useState(new NepaliDate())
+
+  useEffect(() => {
+    setInterval(() => setTime(new Date()), 1000);
+    setDate(new NepaliDate())
+  }, []);
+
+  // const nepaliDays = ['आइतबार','सोमबार','मंगलबार','बुधवार','विहीवार','शुक्रबार','शनिवार']
+  const englishDays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
 
   // const { data, status } = useUser();
   return (
@@ -48,19 +61,15 @@ export default function Navbar() {
                 </div>
 
                 <div className="flex items-center justify-center sm:items-stretch sm:justify-start">
-                  <div className=" flex items-center justify-center"> 
-                  <Link to={'/'} >
-                    <img src={Logo} alt="logo" className=" h-6 rounded-md " />
-                  </Link>
+                  <div className=" flex items-center justify-center">
+                    <Link to={"/"}>
+                      <img src={'/logo.png'} alt="logo" className=" h-6 rounded-md " />
+                    </Link>
                   </div>
-                  <div className="hidden sm:ml-6 sm:block"> 
+                  <div className="hidden sm:ml-6 sm:block">
                     <div className="flex items-center space-x-4">
                       {navigation.map((item) => {
-                        console.log(
-                          location.pathname?.split("/")[1] === "calendar",
-                          item.href === location.pathname,
-                          "check"
-                        );
+                       
                         return (
                           <Link
                             key={item.name}
@@ -68,8 +77,8 @@ export default function Navbar() {
                             className={classNames(
                               item.href === location.pathname
                                 ? "bg-gray-300 "
-                                : "text-gray-900",
-                              "rounded-md px-3 py-2 text-sm font-medium"
+                                :  "text-gray-900",
+                              "rounded-md px-3 py-2 text-lg font-medium"
                             )}
                           >
                             {t(item.name)}
@@ -81,6 +90,17 @@ export default function Navbar() {
                 </div>
               </div>
             </div>
+            <div className="text-lg  absolute right-4 top-3">
+              <p>
+
+              Time: {time.toLocaleTimeString()}
+              </p>
+              <div>
+
+              Date: {`${date.getBS().year}-${date.getBS().month}-${date.getBS().date}`} {englishDays[date.getBS().day!]}
+              </div>
+            </div>
+            
 
             <Disclosure.Panel className="sm:hidden">
               <div className=" px-2 pb-3 pt-2 ">

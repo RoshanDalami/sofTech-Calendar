@@ -1,6 +1,6 @@
 import "./i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState ,useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { EventProvider,  } from "./Context";
 import { BrowserRouter } from "react-router-dom";
@@ -18,6 +18,19 @@ const App = () => {
     setEventList(updatedEvents)
     return updatedEvents
   }
+
+  useEffect(()=>{
+    const events =  JSON.parse(localStorage.getItem('Events')!)
+    if(events && events.length){
+      setEventList(events)
+    }
+  },[])
+
+  useEffect(()=>{
+    localStorage.setItem('Events',JSON.stringify(eventList))
+  },[eventList])
+
+
 
   return (
     <BrowserRouter>

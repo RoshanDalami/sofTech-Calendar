@@ -13,7 +13,7 @@ import Events from "./pages/Events.tsx";
 const Body = () => {
 
   return (
-    <div className={" flex min-h-screen flex-col"}>
+    <div className={" flex min-h-screen flex-col font-mono"}>
       <div className=" sticky top-0 z-10" >
 
       <Navbar />

@@ -192,6 +192,7 @@ export default function Events() {
                         </button>
                         <Link
                           to={"https://mail.google.com/"}
+                          target="_blank"
                           className="rounded-md bg-lime-600 px-4 py-1.5 text-white hover:bg-lime-700 uppercase"
                         >
                           <EnvelopeIcon className="h-5 w-5"/>

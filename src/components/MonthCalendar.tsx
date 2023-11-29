@@ -14,8 +14,7 @@ import { DayData } from "../types/calendar.types";
 import { useEffect, useMemo, useState  } from "react";
 import NepaliDate from "nepali-date-converter";
 // import useUser from "../helper/useUser";
-import { CalendarEventsResult } from "../types/events.types";
-import colors from "../constants/colors";
+
 // import SingleUserEvent from "./SingleUserEvent";
 import { classNames } from "../helper/utils";
 import { useParams } from "react-router-dom";
@@ -26,23 +25,6 @@ import { nanoid } from 'nanoid'
 
 import { useEvent } from "../Context";
 
-const getEventsOfSelectedDay = (events: CalendarEventsResult, day: Date) => {
-  if (!events || !events.events.length) return [];
-  return events.events.filter((event) => {
-    const startDate = new Date(
-      event.start.date || event.start.dateTime || day.toDateString()
-    );
-    const endDate = new Date(
-      event.end.date || event.end.dateTime || day.toDateString()
-    );
-    const dayStart = new Date(day);
-    dayStart.setHours(0, 0, 0, 0);
-    const dayEnd = new Date(day);
-    dayEnd.setHours(23, 59, 59, 999);
-    if (event.end.date) endDate.setDate(endDate.getDate() - 1);
-    return startDate <= dayEnd && endDate >= dayStart;
-  });
-};
 
 const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
   return (
@@ -52,14 +34,13 @@ const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
 };
 
 
-
+console.log(new NepaliDate())
 
 export default function MonthCalendar({
   monthData,
-  userEvents,
+
 }: {
   monthData: DayData[];
-  userEvents?: CalendarEventsResult;
 }) {
   const { BSYear, BSMonth } = useParams();
   
@@ -119,8 +100,6 @@ export default function MonthCalendar({
   });
   // console.log(formData,"hello")
 
-console.log( typeof selectedDay.toJsDate().toLocaleDateString())
-console.log(selectedDay.getDay())
   const onSubmitHandler = (e: any) => {
     e.preventDefault();
     try {
@@ -268,7 +247,7 @@ console.log(selectedDay.getDay())
                     dayIdx === 0 ? { gridColumnStart: day.week_day + 1 } : {}
                   }
                   className={classNames(
-                    "p-1 font-mukta leading-3  focus:z-10",
+                    "p-1 font-mukta leading-3  focus:z-10 relative",
                     (isSelectedDay || isToday) && "font-semibold",
                     isToday && "bg-blue-600   font-semibold text-indigo-600",
                     !isSelectedDay && "bg-white ",
@@ -279,28 +258,23 @@ console.log(selectedDay.getDay())
                       day.week_day === 6) &&
                       "text-rose-600"
                   )}
-                >
-                  {!!userEvents?.events?.length &&
-                    Array.from(
-                      new Set(
-                        getEventsOfSelectedDay(
-                          userEvents,
-                          new Date(day.AD_date.ad)
-                        ).map((event) => {
-                          return event?.colorId || false;
-                        })
+                > 
+                  {
+                  eventList.map((event)=>{
+                    if(event.year === JSON.stringify(bs_year) && event.month === JSON.stringify(bs_month) && event.date === JSON.stringify(bs_day) ){
+
+                      return(
+                        <div key={event.id} className=" bg-red-600 h-2 w-2 rounded-full absolute top-3 right-3  ">
+                          
+                        </div>
                       )
-                    )?.map((color, i) => (
-                      <span
-                        key={i}
-                        style={{
-                          backgroundColor: color ? colors[color] : "#475569",
-                        }}
-                        className={classNames(
-                          `mx-[1px] inline-block h-1 w-1 rounded-full`
-                        )}
-                      ></span>
-                    ))}
+                    }
+                  })
+                }
+
+                
+
+
                   <time
                     dateTime={day.AD_date.ad}
                     className={classNames(
@@ -319,55 +293,7 @@ console.log(selectedDay.getDay())
         </div>
         {/* event  */}
         <div className=" ">
-          {/* <div className="my-5">
-
-     <div className="w-[40vh] ">
-        <Link
-          type="button"
-          to={`/upcoming`}
-          className=" w-full rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 items-center text-center ">
-          {t("homepage.View_all_events")} 
-        </Link>
-      </div>
-       <div className="mx-2 mt-1 flex rounded-md border  bg-white p-4 shadow-lg ">
-        <div className="flex-col">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold ">
-            <h1>
-              {isNepaliLanguage ? nepaliNumber(`${selectedDay.getBS().date}`) : selectedDay.getBS().date}
-            </h1>
-          </div>
-          <p className="mt-2 text-sm text-gray-500 ">
-            {selectedDay
-              .toJsDate()
-              .toLocaleDateString(isNepaliLanguage ? "ne-NP" : "en-US", { weekday: "long" })}
-          </p>
-        </div>
-
-        <div className="ml-4 grow text-left">
-          <h2 className="font-semibold">
-            {new Intl.DateTimeFormat(isNepaliLanguage ? "ne-NP" : "en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            }).format(selectedDay.toJsDate())}
-          </h2>
-          <p className="mt-2 text-sm text-gray-500">
-            {isNepaliLanguage
-              ? `${getTithiNepali(selectedDayData.AD_date.tithi)},
-              ${getChandramaNepali(selectedDayData.AD_date.chandrama)} •
-              ${selectedDayData?.events.map((event) => event?.jds?.ne).join(" | ")}`
-              : `${getTithiEnglish(selectedDayData?.AD_date?.tithi)},
-              ${getChandramaEnglish(selectedDayData?.AD_date?.chandrama)} •
-              ${selectedDayData?.events.map((event) => event?.jds?.en).join(" | ")}`}
-          </p>
-        </div>
-        <div className="ml-10 flex-col text-end">
-          <h1 className="mt-2 text-sm text-gray-500 ">
-            {relativeTimeFromDates(selectedDay.toJsDate(), isNepaliLanguage)}
-          </h1>
-        </div>
-      </div> 
-      </div> */}
+          
 
           <div className="absolute top-[90px] z-50" >
             <div className="w-[38vh] ">
