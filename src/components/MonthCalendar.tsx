@@ -298,9 +298,9 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                             key={event.id}
                             className=" bg-red-600 h-2 w-2 rounded-full absolute top-3 right-3  "
                           ></div>
-                          <h1 className="bg-gray-300/40 px-2 py-1 rounded-lg absolute top-2 right-6 text-[8px] hidden sm:block ">
+                          {/* <h1 className="bg-gray-300/40 px-2 py-1 rounded-lg absolute top-2 right-6 text-[8px] hidden sm:block ">
                             {event.event}
-                          </h1>
+                          </h1> */}
                         </>
                       );
                     }
