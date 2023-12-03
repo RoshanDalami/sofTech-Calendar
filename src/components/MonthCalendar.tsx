@@ -1,10 +1,3 @@
-// import {
-//   getTithiNepali,
-//   getChandramaNepali,
-//   getTithiEnglish,
-//   getChandramaEnglish,
-//   relativeTimeFromDates,
-// } from "../helper/dates";
 import { relativeTimeFromDates } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
 // import AddEventModal from "./AddEventModal";
@@ -13,13 +6,9 @@ import useLanguage from "../helper/useLanguage";
 import { DayData } from "../types/calendar.types";
 import { useEffect, useMemo, useState } from "react";
 import NepaliDate from "nepali-date-converter";
-// import useUser from "../helper/useUser";
-
-// import SingleUserEvent from "./SingleUserEvent";
 import { classNames } from "../helper/utils";
 import { useParams } from "react-router-dom";
 import Model from "./Model";
-// import { eventList } from "../pages/Home";
 import { PlusIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { nanoid } from "nanoid";
 
@@ -70,11 +59,6 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
   const [selectedDay, setSelectedDay] = useState<NepaliDate>(
     isSameMonth(today, firstDay) ? today : firstDay
   );
-  // const selectedDayData = useMemo(() => {
-  //   const selectedDayIndex = selectedDay.getBS().date - 1;
-  //   return monthData[selectedDayIndex];
-  // }, [selectedDay]);
-
   useEffect(() => {
     setSelectedDay(isSameMonth(today, firstDay) ? today : firstDay);
   }, [monthData]);
@@ -83,8 +67,8 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
     event: "",
     description: "",
     time: "",
-    year: BSYear,
-    month: BSMonth,
+    year: "",
+    month: "",
 
     date: selectedDay.getDate(),
   });
@@ -114,8 +98,8 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
         event: "",
         description: "",
         time: "",
-        year: BSYear,
-        month: BSMonth,
+        year: "",
+        month: "",
         date: 0,
       });
     } catch (error) {
@@ -207,19 +191,29 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                 <div>
                   <label htmlFor="">Year</label>
                   <input
-                    type="text"
+                    type="number"
                     className="py-2 border-[1px] border-gray-500 rounded-md px-4"
-                    value={BSYear}
-                    readOnly
+                    placeholder={JSON.stringify(selectedDay.getYear())}
+                    onChange={(e) => {
+                      setFormData({ ...formData, year: e.target.value });
+                    }}
+                    value={formData.year}
+                    // value={BSYear}
+                    required
                   />
                 </div>
                 <div>
                   <label htmlFor="">Month</label>
                   <input
-                    type="text"
+                    type="number"
                     className="py-2 border-[1px] border-gray-500 rounded-md px-4"
-                    value={BSMonth}
-                    readOnly
+                    placeholder={JSON.stringify(selectedDay.getMonth() + 1)}
+                    onChange={(e) => {
+                      setFormData({ ...formData, month: e.target.value });
+                    }}
+                    value={formData.month}
+                    // value={BSMonth}
+                    required
                   />
                 </div>
                 <div>
@@ -366,18 +360,6 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                       </div>
 
                       <div className="ml-4 grow text-left">
-                        {/* international  */}
-                        {/* <text >
-                        {new Intl.DateTimeFormat(
-                          isNepaliLanguage ? "ne-NP" : "en-US",
-                          {
-                            month: "long",
-                            day: "numeric",
-                            year: "numeric",
-                          }
-                        ).format(selectedDay.toJsDate())}
-
-                      </text> */}
                         <p className="mt-2 text-sm font-semibold ">
                           {event.event}
                         </p>
@@ -394,12 +376,6 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                         </h1>
                       </div>
                     </div>
-                    {/* <div className="flex items-center  justify-around my-1">
-                      <button className="bg-indigo-600 text-white px-6 py-2 rounded-md ">Edit </button>
-                      <button className="bg-red-600 text-white px-6 py-2 rounded-md " onClick={()=>{
-                        eventDeleteHandler(event.id)
-                      }} >delete </button>
-                    </div> */}
                   </div>
                 );
               }

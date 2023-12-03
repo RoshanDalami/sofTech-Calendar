@@ -33,12 +33,12 @@ function Home() {
 
     // previous code for without reloading 
   useEffect(() => {
-    const fixedPageType =  "calendar";
+
     // set params in url withour reloading
     history.pushState(
       null,
       "",
-      `/${fixedPageType}/${currentNepaliDate.getYear()}/${currentNepaliDate.getMonth() + 1
+      `/calendar/${currentNepaliDate.getYear()}/${currentNepaliDate.getMonth() + 1
       }`
     );    
   }, [currentNepaliDate, pageType]);

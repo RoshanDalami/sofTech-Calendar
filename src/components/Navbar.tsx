@@ -30,7 +30,7 @@ export default function Navbar() {
   // find current route
   const navigation = [
     { name: "Home", href: "/" },
-    { name: "Calendar", href: "/:pageType?/:BSYear?/:BSMonth?" },
+    { name: "Calendar", href: "/calendar/:BSYear?/:BSMonth?" },
     { name: "Events", href: "/events" },
     // { name: "navbar.Date_Converter", href: "/converter" },
     // { name: "navbar.About", href: "/about" },

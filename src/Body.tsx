@@ -22,7 +22,7 @@ const Body = () => {
       <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/:pageType?/:BSYear?/:BSMonth?" element={<Home />} />
+          <Route path="/calendar/:BSYear?/:BSMonth?" element={<Home />} />
           <Route path="/events" element={<Events />} />
         </Routes>
       </div>
