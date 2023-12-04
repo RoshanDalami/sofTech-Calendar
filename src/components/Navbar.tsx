@@ -32,6 +32,7 @@ export default function Navbar() {
     { name: "Home", href: "/" },
     { name: "Calendar", href: "/calendar/:BSYear?/:BSMonth?" },
     { name: "Events", href: "/events" },
+    { name: "Tasks", href: "/tasks" },
     // { name: "navbar.Date_Converter", href: "/converter" },
     // { name: "navbar.About", href: "/about" },
   ];

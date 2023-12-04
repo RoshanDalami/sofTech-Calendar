@@ -1,7 +1,7 @@
 import { relativeTimeFromDates } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
 // import AddEventModal from "./AddEventModal";
-
+import { Transition } from '@headlessui/react'
 import useLanguage from "../helper/useLanguage";
 import { DayData } from "../types/calendar.types";
 import { useEffect, useMemo, useState } from "react";
@@ -21,12 +21,12 @@ const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
   );
 };
 
-console.log(new NepaliDate());
+console.log(new NepaliDate(),'nepali Date');
 
 export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
   const { BSYear, BSMonth } = useParams();
 
-  console.log(BSYear, BSMonth, "test");
+
 
   const [modelOpen, setModelOpen] = useState(false);
 
@@ -128,7 +128,17 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
 
   return (
     <>
-      {modelOpen && (
+    
+        <Transition show={modelOpen} 
+        enter="transition ease-in-out duration-300 transform"
+        enterFrom="translate-x-full"
+        enterTo="translate-x-0"
+        leave="transition ease-in-out duration-300 transform"
+        leaveFrom="translate-x-0"
+        leaveTo="translate-x-full"
+        className='w-full min-h-screen absolute z-40 inset-0'
+        >
+
         <Model>
           <div className="bg-white p-3 rounded-md relative">
             <XCircleIcon
@@ -235,7 +245,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
             </form>
           </div>
         </Model>
-      )}
+        </Transition>
       <div className=" flex gap-3   ">
         <div className="">
           <div className="mt-3    grid grid-cols-7 text-xs leading-10 text-gray-500 ">
@@ -318,7 +328,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
         </div>
         {/* event  */}
         <div className=" ">
-          <div className="absolute top-[90px] z-50">
+          <div className="absolute top-[90px] z-20">
             <div className="w-[38vh] ">
               <button
                 type="button"

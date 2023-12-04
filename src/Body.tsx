@@ -8,6 +8,8 @@ import Navbar from "./components/Navbar.tsx";
 
 import Landing from "./pages/Landing.tsx";
 import Events from "./pages/Events.tsx";
+import Tasks from "./pages/Tasks.tsx";
+import IndividualTask from "./pages/IndividualTask.tsx";
 
 
 const Body = () => {
@@ -24,6 +26,8 @@ const Body = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/calendar/:BSYear?/:BSMonth?" element={<Home />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/tasks" element={ <Tasks/> } />
+          <Route path="/tasks/:taskID" element={ <IndividualTask/> } />
         </Routes>
       </div>
 
