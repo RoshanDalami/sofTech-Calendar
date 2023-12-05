@@ -6,7 +6,7 @@ import { FormEvent, useState } from "react";
 import Model from "../components/Model";
 import { nanoid } from "nanoid";
 import { XMarkIcon } from '@heroicons/react/24/outline'
-
+import { Transition } from '@headlessui/react'
 export default function Tasks() {
   const { taskList , addTask } = useTask();
   const [isModelOpen, setIsModelOpen] = useState(false);
@@ -36,7 +36,7 @@ export default function Tasks() {
           setFormData({
             title:'',
             id:'',
-            createdAt:'',
+            createdAt: new Date().toDateString() ,
             description:'',
             assingedTo:'',
             todo:[],
@@ -51,7 +51,16 @@ export default function Tasks() {
     }
   return (
     <>
-      {isModelOpen && (
+      
+        <Transition show={isModelOpen} 
+        enter="transition ease-in-out duration-300 transform"
+        enterFrom="translate-x-full"
+        enterTo="translate-x-0"
+        leave="transition ease-in-out duration-300 transform"
+        leaveFrom="translate-x-0"
+        leaveTo="translate-x-full"
+        className='w-full  min-h-screen fixed md:absolute z-40 inset-0  '
+        >
         <Model>
           <div className="rounded-md bg-white p-5 relative">
             <div className="bg-black/10 absolute right-5 rounded-full p-2 hover:bg-black/20 transition duration-300 ">
@@ -113,21 +122,22 @@ export default function Tasks() {
             </form>
           </div>
         </Model>
-      )}
+        </Transition>
+      
       <div>
         {taskList.length > 0 ? (
           <div className="mx-5 mt-10 overflow-hidden  ">
-            <section className="flex h-full items-center justify-between border-b bg-slate-100 px-10  py-2 text-4xl">
+            <section className="flex h-full items-center justify-between border-b bg-slate-100 md:px-10 px-2  py-2 text-4xl">
               Tasks
               <button
-                className="my-5 flex items-center gap-5 rounded-md bg-indigo-600 px-10 py-2 text-lg text-white hover:bg-indigo-700 "
+                className="my-5 flex items-center gap-3 md:gap-5 rounded-md bg-indigo-600 md:px-10 md:py-2 text-sm py-1 px-1 md:text-lg text-white hover:bg-indigo-700 "
                 onClick={() => setIsModelOpen(true)}
               >
                 Create Task
                 <PlusCircleIcon className="h-8 w-7" />
               </button>
             </section>
-            <div className="mt-10 flex  items-center gap-10">
+            <div className="mt-10 flex flex-col mb-10 md:flex-row  items-center justify-center gap-10 ">
               {taskList.map((task) => {
                 return (
                   <Link to={`/tasks/${task.id}`}>
@@ -150,7 +160,7 @@ export default function Tasks() {
             </div>
           </div>
         ) : (
-          <div className="mt-16 flex  w-full  flex-col items-center justify-center">
+          <div className="md:mt-16 flex  w-full mt-[-50px] min-h-screen md:min-h-full flex-col items-center justify-center">
             <div className="relative">
               <img src="/no_task.svg" loading="lazy" />
               <h1 className="absolute inset-0 left-14 top-[70%] text-center text-4xl font-semibold text-gray-500/80">

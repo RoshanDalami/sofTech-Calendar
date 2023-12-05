@@ -164,7 +164,7 @@ export default function Events() {
 
       <TableHeader title={"Events List"} />
 
-      <div className="relative mx-4">
+      <div className="relative mx-4 overflow-x-auto ">
         <table className="w-full text-left text-sm text-gray-500 rtl:text-right ">
           {sortedEvents?.length > 0 ? (
             <thead className="bg-gray-200 text-xs uppercase text-gray-700 ">

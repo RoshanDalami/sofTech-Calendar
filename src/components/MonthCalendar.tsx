@@ -136,7 +136,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
         leave="transition ease-in-out duration-300 transform"
         leaveFrom="translate-x-0"
         leaveTo="translate-x-full"
-        className='w-full min-h-screen absolute z-40 inset-0'
+        className='w-full md:min-h-screen fixed md:absolute z-40 inset-0  '
         >
 
         <Model>
@@ -197,12 +197,12 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                   required
                 />
               </div>
-              <div className="flex items-center gap-2 ">
-                <div>
+              <div className="flex   items-center gap-2 flex-wrap ">
+                <div className="flex flex-col gap-2">
                   <label htmlFor="">Year</label>
                   <input
                     type="number"
-                    className="py-2 border-[1px] border-gray-500 rounded-md px-4"
+                    className="py-2 border-[1px] border-gray-500 rounded-md px-4 w-ful"
                     placeholder={JSON.stringify(selectedDay.getYear())}
                     onChange={(e) => {
                       setFormData({ ...formData, year: e.target.value });
@@ -212,7 +212,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                     required
                   />
                 </div>
-                <div>
+                <div className="flex flex-col  gap-2">
                   <label htmlFor="">Month</label>
                   <input
                     type="number"
@@ -226,7 +226,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                     required
                   />
                 </div>
-                <div>
+                <div className="flex flex-col  gap-2">
                   <label htmlFor="">Date</label>
                   <input
                     type="text"
@@ -246,8 +246,8 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
           </div>
         </Model>
         </Transition>
-      <div className=" flex gap-3   ">
-        <div className="">
+      <div className=" flex gap-3 flex-col md:flex-row border w-[90vw] md:w-[72.8vw] ">
+        <div className=" ">
           <div className="mt-3    grid grid-cols-7 text-xs leading-10 text-gray-500 ">
             <div className="text-xl text-center">{t("homepage.S")}</div>
             <div className="text-xl text-center">{t("homepage.M")}</div>
@@ -257,7 +257,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
             <div className="text-xl text-center">{t("homepage.F")}</div>
             <div className="text-xl text-center">{t("homepage.Sa")}</div>
           </div>
-          <div className="isolate  mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200 h-[78vh] w-[72.6vw] ">
+          <div className="isolate  mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200 h-[50vh] w-[90vw]  md:h-[78vh] md:w-[72.6vw] ">
             {monthData.map((day, dayIdx) => {
               const { bs_year, bs_month, bs_day } = day.AD_date;
               const dayInNepaliDate = new NepaliDate(
@@ -328,7 +328,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
         </div>
         {/* event  */}
         <div className=" ">
-          <div className="absolute top-[90px] z-20">
+          <div className="absolute md:top-[90px] z-20">
             <div className="w-[38vh] ">
               <button
                 type="button"
@@ -395,7 +395,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
 
         {/* add event button  */}
 
-        <div className=" bg-black rounded-full bottom-5 right-10 p-2 cursor-pointer  absolute">
+        <div className=" bg-black rounded-full md:bottom-5 md:right-10 bottom-20 right-5 z-50 p-2 cursor-pointer fixed   md:absolute">
           <PlusIcon
             className=" h-10 w-10 text-white"
             onClick={() => {

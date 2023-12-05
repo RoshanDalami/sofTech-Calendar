@@ -71,7 +71,7 @@ function Home() {
     <>
    
       <div className=" grid grid-cols-4 px-5 mt-5  ">
-        <div className=" col-span-3  bg-gray-300 rounded-md   ">
+        <div className=" col-span-3   rounded-md   ">
           <YearMonthPicker
             currentNepaliDate={currentNepaliDate}
             setCurrentNepaliDate={setCurrentNepaliDate}
