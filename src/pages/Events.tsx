@@ -34,7 +34,7 @@ export default function Events() {
 
   function convertTo12HourFormat(time24: string) {
     // Split the time string into hours and minutes
-    const [hours, minutes] = time24.split(":");
+    const [hours, minutes] = time24?.split(":");
 
     // Convert hours to a number
     let hoursIn12Format = parseInt(hours, 10);
