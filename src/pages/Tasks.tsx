@@ -142,6 +142,7 @@ export default function Tasks() {
                       assignedTo={task.assignedTo}
                       createdAt={task.createdAt}
                       description={task.description}
+                      id={task.id}
                     />
                   </Link>
                 );
