@@ -246,9 +246,9 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
           </div>
         </Model>
         </Transition>
-      <div className=" flex gap-3 flex-col md:flex-row border w-[90vw] md:w-[72.8vw] ">
+      <div className=" flex gap-3 flex-col md:flex-row w-[90vw] md:w-[60.6vw] ">
         <div className=" ">
-          <div className="mt-3    grid grid-cols-7 text-xs leading-10 text-gray-500 ">
+          <div className="mt-3  dark:text-white  grid grid-cols-7 text-xs leading-10 text-gray-500 ">
             <div className="text-xl text-center">{t("homepage.S")}</div>
             <div className="text-xl text-center">{t("homepage.M")}</div>
             <div className="text-xl text-center">{t("homepage.T")}</div>
@@ -257,7 +257,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
             <div className="text-xl text-center">{t("homepage.F")}</div>
             <div className="text-xl text-center">{t("homepage.Sa")}</div>
           </div>
-          <div className="isolate  mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200 h-[50vh] w-[90vw]  md:h-[78vh] md:w-[72.6vw] ">
+          <div className="isolate  mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200 h-[50vh] w-[90vw]  md:h-[78vh] md:w-[60.6vw] ">
             {monthData.map((day, dayIdx) => {
               const { bs_year, bs_month, bs_day } = day.AD_date;
               const dayInNepaliDate = new NepaliDate(
@@ -328,8 +328,8 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
         </div>
         {/* event  */}
         <div className=" ">
-          <div className="absolute md:top-[90px] z-20">
-            <div className="w-[38vh] ">
+          <div className="absolute md:top-[20px] flex items-center flex-col z-20">
+            <div className="w-[32vh] ">
               <button
                 type="button"
                 className=" w-full rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none  items-center text-center "
