@@ -278,7 +278,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                     dayIdx === 0 ? { gridColumnStart: day.week_day + 1 } : {}
                   }
                   className={classNames(
-                    "p-1 font-mukta leading-3  focus:z-10 relative rounded-md ",
+                    "p-1  font-mukta leading-3  focus:z-10 relative rounded-md ",
                     (isSelectedDay || isToday) && "font-semibold",
                     isToday && "bg-blue-600   font-semibold text-indigo-600",
                     !isSelectedDay && "bg-white ",
@@ -318,8 +318,8 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                   >
                     {nepaliNumber(day.day)}
                   </time>
-                  <span className="mx-auto my-0 mt-0 py-0 text-md font-extralight">
-                    {dayInNepaliDate.getAD().date}
+                  <span className="mx-auto absolute bottom-1 right-1 md:bottom-2 text-xs md:right-2 md:text-md font-extralight">
+                    {dayInNepaliDate.getAD().date} 
                   </span>
                 </button>
               );
