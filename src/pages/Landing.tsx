@@ -204,7 +204,7 @@ export default function Landing() {
   ];
 
   return (
-    <div className="bg-white dark:bg-gray-900 font-sans">
+    <div className="bg-white dark:bg-gray-800 font-sans dark:text-white">
       {/* Header */}
       <header className="absolute inset-x-0 top-0 z-50">
         <nav
@@ -224,12 +224,12 @@ export default function Landing() {
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <div className="hidden lg:flex lg:items-center  lg:gap-x-12">
+          <div className="hidden lg:flex lg:items-center   lg:gap-x-12">
             {navigation.map((item) => (
               <div
                 key={item.name}
                 // href={item.href}
-                className="cursor-pointer text-sm font-semibold leading-6 text-gray-900"
+                className="cursor-pointer text-sm font-semibold leading-6 text-gray-900 dark:text-white"
                 onClick={item.onclick}
               >
                 {item.name}
@@ -243,11 +243,11 @@ export default function Landing() {
             >
               For Job Poster <span aria-hidden="true"></span>
             </Link> */}
-<Link to={'/login'}>
-            <button className="text-sm font-semibold leading-6 text-gray-900">
-              Sign in <span aria-hidden="true">&rarr;</span>
-            </button>
-</Link>
+            <Link to={"/login"}>
+              <button className="text-sm dark:text-white font-semibold leading-6 text-gray-900 ">
+                Sign in <span aria-hidden="true">&rarr;</span>
+              </button>
+            </Link>
             {/* ) : (
               <Link
               to="/sign-in"
@@ -291,12 +291,11 @@ export default function Landing() {
                   ))}
                 </div>
                 <div className="py-6">
-                 
-                <Link to={'/login'} >
-                  <button className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                    Sign in
-                  </button>
-                </Link>
+                  <Link to={"/login"}>
+                    <button className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                      Sign in
+                    </button>
+                  </Link>
                   {/* ) : (
                     <Link
                       to="/sign-in"
@@ -315,7 +314,11 @@ export default function Landing() {
       <main className="isolate">
         {/* Hero section */}
         <div className="relative pt-14">
-          <img src="https://web-static.wrike.com/tp/storage/uploads/4bbe8695-1639-4af5-8a0e-516061e33c8b/rebrand-hero-illustration-homepage-screenshots-white-desktop.svg" alt="" className="absolute -top-8" />
+          <img
+            src="https://web-static.wrike.com/tp/storage/uploads/4bbe8695-1639-4af5-8a0e-516061e33c8b/rebrand-hero-illustration-homepage-screenshots-white-desktop.svg"
+            alt=""
+            className="absolute -top-8 -z-30"
+          />
           <div
             className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
             aria-hidden="true"
@@ -331,10 +334,10 @@ export default function Landing() {
           <div className="py-24 sm:py-32">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
               <div className="mx-auto max-w-6xl text-center ">
-                <h1 className="mx-auto bg-gradient-to-r  text-indigo-600   text-4xl font-bold leading-10 tracking-tight  sm:text-7xl ">
+                <h1 className="mx-auto bg-gradient-to-r  text-indigo-600 dark:text-white  text-4xl font-bold leading-10 tracking-tight  sm:text-7xl ">
                   One platform to streamline all workflows
                 </h1>
-                <p className="mx-auto  mt-6  text-md  max-w-3xl text-lg leading-8 text-gray-600">
+                <p className="mx-auto  mt-6  text-md  max-w-3xl text-lg leading-8 text-gray-600 dark:text-gray-200">
                   Simplify event planning with our streamlined Event Management
                   System.
                 </p>
@@ -387,7 +390,7 @@ export default function Landing() {
 
         {/* Logo cloud */}
 
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto dark:hidden max-w-7xl px-6 lg:px-8">
           <div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-5">
             <img
               className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
@@ -442,13 +445,13 @@ export default function Landing() {
         {/* Feature section */}
         <div className="mx-auto mt-32 max-w-7xl  px-6 sm:mt-32 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-indigo-600">
+            <h2 className="text-base font-semibold leading-7 text-indigo-600 dark:text-gray-300">
               Manage your events
             </h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
               Everything you need to start managing your events
             </p>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
+            <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
               "Discover a complete solution designed to effortlessly kickstart
               your event management journey, offering all the essential tools
               you need."
@@ -458,7 +461,7 @@ export default function Landing() {
             <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
               {features.map((feature) => (
                 <div key={feature.name} className="relative pl-16">
-                  <dt className="text-base font-semibold leading-7 text-gray-900">
+                  <dt className="text-base font-semibold leading-7 text-gray-900 dark:text-white">
                     <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-[#2245D7] ">
                       <feature.icon
                         className="h-6 w-6 text-white"
@@ -467,7 +470,7 @@ export default function Landing() {
                     </div>
                     {feature.name}
                   </dt>
-                  <dd className="mt-2 text-base leading-7 text-gray-600">
+                  <dd className="mt-2 text-base leading-7 text-gray-600 dark:text-gray-300">
                     {feature.description}
                   </dd>
                 </div>
@@ -627,20 +630,20 @@ export default function Landing() {
 
         {/* FAQs */}
         <div className="mx-auto max-w-2xl divide-y divide-gray-900/10 px-6 pb-8 sm:pb-24 sm:pt-12 lg:max-w-7xl lg:px-8 lg:pb-32 my-10 ">
-          <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
+          <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900 dark:text-white">
             Frequently asked questions
           </h2>
-          <dl className="mt-10 space-y-8 divide-y divide-gray-900/10">
+          <dl className="mt-10 space-y-8 divide-y divide-gray-900/10 dark:text-white dark:divide-gray-100/50">
             {faqs.map((faq) => (
               <div
                 key={faq.id}
-                className="pt-8 lg:grid lg:grid-cols-12 lg:gap-8"
+                className="pt-8 lg:grid lg:grid-cols-12 lg:gap-8 dark:text-white"
               >
-                <dt className="text-base font-semibold leading-7 text-gray-900 lg:col-span-5">
+                <dt className="text-base font-semibold leading-7 text-gray-900 lg:col-span-5 dark:text-white ">
                   {faq.question}
                 </dt>
                 <dd className="mt-4 lg:col-span-7 lg:mt-0">
-                  <p className="text-base leading-7 text-gray-600">
+                  <p className="text-base leading-7 text-gray-600 dark:text-gray-300">
                     {faq.answer}
                   </p>
                 </dd>
@@ -664,13 +667,14 @@ export default function Landing() {
             />
           </div>
           <div className="mx-auto max-w-6xl text-center">
-            <h2 className="text-3xl  text-center   font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="text-3xl  text-center   font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
               Optimize Your Event Managing process !
             </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-gray-600">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-gray-600 dark:text-gray-300">
               {/* Ease your job search process and discover a range of opportunities
               tailored to your preferences on Startup Hire. */}
-              Ease your event planning and managing process with Softech Event management system.
+              Ease your event planning and managing process with Softech Event
+              management system.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
@@ -716,7 +720,7 @@ export default function Landing() {
             <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold leading-6 text-gray-900">
+                  <h3 className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                     Solutions
                   </h3>
                   <ul role="list" className="mt-6 space-y-4">
@@ -724,7 +728,7 @@ export default function Landing() {
                       <li key={item.name}>
                         <a
                           href={item.href}
-                          className="text-sm leading-6 text-gray-600 hover:text-gray-900"
+                          className="text-sm leading-6 text-gray-600 hover:text-gray-900 dark:text-gray-300"
                         >
                           {item.name}
                         </a>
@@ -733,7 +737,7 @@ export default function Landing() {
                   </ul>
                 </div>
                 <div className="mt-10 md:mt-0">
-                  <h3 className="text-sm font-semibold leading-6 text-gray-900">
+                  <h3 className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                     Support
                   </h3>
                   <ul role="list" className="mt-6 space-y-4">
@@ -741,7 +745,7 @@ export default function Landing() {
                       <li key={item.name}>
                         <a
                           href={item.href}
-                          className="text-sm leading-6 text-gray-600 hover:text-gray-900"
+                          className="text-sm leading-6 text-gray-600 hover:text-gray-900 dark:text-gray-300"
                         >
                           {item.name}
                         </a>
@@ -752,7 +756,7 @@ export default function Landing() {
               </div>
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold leading-6 text-gray-900">
+                  <h3 className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                     Company
                   </h3>
                   <ul role="list" className="mt-6 space-y-4">
@@ -760,7 +764,7 @@ export default function Landing() {
                       <li key={item.name}>
                         <a
                           href={item.href}
-                          className="text-sm leading-6 text-gray-600 hover:text-gray-900"
+                          className="text-sm leading-6 text-gray-600 hover:text-gray-900 dark:text-gray-300"
                         >
                           {item.name}
                         </a>
@@ -769,7 +773,7 @@ export default function Landing() {
                   </ul>
                 </div>
                 <div className="mt-10 md:mt-0">
-                  <h3 className="text-sm font-semibold leading-6 text-gray-900">
+                  <h3 className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                     Legal
                   </h3>
                   <ul role="list" className="mt-6 space-y-4">
@@ -777,7 +781,7 @@ export default function Landing() {
                       <li key={item.name}>
                         <a
                           href={item.href}
-                          className="text-sm leading-6 text-gray-600 hover:text-gray-900"
+                          className="text-sm leading-6 text-gray-600 hover:text-gray-900 dark:text-gray-300"
                         >
                           {item.name}
                         </a>
