@@ -1,4 +1,5 @@
 // import React from 'react'
+import AreaChartComp from "./AreaChart"
 import BarChartComp from "./BarChart"
 import EventCard from "./EventCard"
 import MainProfileCard from "./MainProfileCard"
@@ -19,7 +20,7 @@ export default function Dashboard() {
         <div className="mx-5 my-7 flex items-center justify-center gap-10">
 
         <DonutChartComp title="Task" />
-        <DonutChartComp title="Events" />
+<AreaChartComp/>
         </div>
         <div className="mx-5 my-7">
 

@@ -1,6 +1,9 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
 import { CalendarDaysIcon } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { userData } from "../recoil/userAtom";
+import { useRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
 
 export interface formDataType {}
 
@@ -9,11 +12,35 @@ export default function Login() {
     email:'superadmin@gmail.com',
     password:'Softech@123'
   });
-  const onSubmitHandler = (e:FormEvent)=>{
+  const navigate = useNavigate()
+
+  const {  data ,isLoading } = useQuery({
+    queryKey: ['repoData'],
+    queryFn: () =>
+      fetch('http://calenderapi.meropalika.com/api/login',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify(formData)
+      }).then(
+        (res) => res.json()
+        
+      ),
+  })
+
+  const [detail,setUserDetails] = useRecoilState(userData)
+  const onSubmitHandler =(e:FormEvent)=>{
     e.preventDefault();
-    console.log('submited')
-    console.log(formData)
-  } 
+    setUserDetails(data)
+    localStorage.setItem('userdetail',JSON.stringify(detail))
+    if(detail?.status === true){
+      navigate('/dashboard')
+    }
+  }
+
+  
+
   return (
     <div className="min-h-screen flex w-full justify-between  item-center">
       <div className="hidden md:block">
@@ -21,8 +48,8 @@ export default function Login() {
       </div>
       <div className=" md:w-2/4 flex bg-zinc-200  flex-col py-20 gap-20">
         <div className="flex flex-col items-center gap-10 ">
-          <CalendarDaysIcon className="h-10 w-10" />
-          <h1 className="text-4xl  font-bold text-center ">Calendar Management System</h1>
+          <CalendarDaysIcon className="h-24 w-24 text-blue-600 " />
+          <h1 className="text-4xl  font-bold text-center text-blue-600 ">Calendar Management System</h1>
         </div>
 
         <form action="" onSubmit={onSubmitHandler}  className="flex flex-col gap-5 px-4 md:px-24 py-4 ">
@@ -54,15 +81,15 @@ export default function Login() {
               placeholder="********"
             />
           </div>
+      
           <button
             type="submit"
-            className="bg-indigo-600 rounded-md py-2 text-white my-3 "
+            className="bg-indigo-600 rounded-md py-2 w-full text-white my-3 "
           >
-          <Link to={'/dashboard'} >
             
             Log in
-          </Link>
           </button>
+         
         </form>
       </div>
     </div>

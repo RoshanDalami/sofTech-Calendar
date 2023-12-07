@@ -8,6 +8,8 @@ import { BrowserRouter } from "react-router-dom";
 import Body from "./Body";
 import { EventType } from "./Context/eventContext";
 import { TaskType } from "./Context/taskContext";
+import { RecoilRoot } from "recoil";
+
 const queryClient = new QueryClient();
 const App = () => {
   const [eventList, setEventList] = useState<EventType[]>([]);
@@ -25,20 +27,35 @@ const App = () => {
     setTaskList((prevState) => [...prevState, { ...task }]);
   };
 
+
   useEffect(() => {
     const events = JSON.parse(localStorage.getItem("Events")!);
     if (events && events.length) {
       setEventList(events);
     }
   }, []);
+  useEffect(() => {
+    const tasks = JSON.parse(localStorage.getItem("Tasks")!);
+    if (tasks && tasks.length) {
+      setTaskList(tasks);
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("Events", JSON.stringify(eventList));
   }, [eventList]);
+  useEffect(() => {
+    localStorage.setItem("Tasks", JSON.stringify(taskList));
+  }, [taskList]);
 
   return (
     <BrowserRouter>
+    <RecoilRoot>
+
       <QueryClientProvider client={queryClient}>
+
+
+
         <EventProvider value={{ eventList, addEvent, removeEvent }}>
           <TaskProvider value={{ taskList, addTask }}>
             <Body />
@@ -46,7 +63,12 @@ const App = () => {
 
           <Toaster position="bottom-center" />
         </EventProvider>
+
+
+
+
       </QueryClientProvider>
+    </RecoilRoot>
     </BrowserRouter>
   );
 };

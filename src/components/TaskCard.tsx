@@ -15,7 +15,7 @@ export default function TaskCard({
 }) {
   return (
     <div className=" w-80 md:w-96 h-96 rounded-md border dark:bg-white dark:hover:shadow-lg dark:hover:shadow-gray-200   border-black/50 px-3 py-4 transition duration-300 hover:-translate-y-3 hover:shadow-lg relative">
-      <h1 className="my-2 border-b pb-4 text-3xl font-bold ">{title}</h1>
+      <h1 className="my-2 border-b pb-4 text-xl  font-bold ">{title}</h1>
       <p className=" border-b py-5    ">
         <span className="text-md font-bold">Assigned To {""} :</span>
         <span className="text-md capitalize"> {assignedTo}</span>
@@ -24,7 +24,7 @@ export default function TaskCard({
         <span className="text-md font-bold">Created At {""} :</span>
         <span className="text-md capitalize"> {createdAt}</span>
       </p>
-      <p className=" border-b py-5   ">
+      <p className=" border-b py-5 h-24 overflow-y-auto   ">
         <span className="text-md font-bold">Description {""} :</span>
         <span className="text-md capitalize"> {description}</span>
       </p>

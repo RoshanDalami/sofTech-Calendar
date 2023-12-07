@@ -1,5 +1,80 @@
-import React from "react";
 
+import React from "react";
+//example task
+// {
+//   title: 'Drag and Drop Feature',
+// id: nanoid(),
+// createdAt: new Date().toDateString(),
+// assignedTo: 'Roshan Dalami',
+// description: 'Enhance task management panel',
+// todo:[
+// {
+// title:'Card Bg green',
+// id:nanoid(),
+// assignedTo:'Roshan Dalami'
+// },
+// {
+// title:'Increase Panel height',
+// id:nanoid(),
+// assignedTo:'Roshan Dalami'
+// },
+// {
+// title:'Make Scrollable',
+// id:nanoid(),
+// assignedTo:'Roshan Dalami',
+// },
+// ],
+// inprogress:[
+// {
+//   title:'Card Bg green',
+//   id:nanoid(),
+//   assignedTo:'Roshan Dalami'
+// },
+//   {
+//   title:'Increase Panel height',
+//   id:nanoid(),
+//   assignedTo:'Roshan Dalami'
+// },
+//   {
+//   title:'Make Scrollable',
+//   id:nanoid(),
+//   assignedTo:'Roshan Dalami',
+// },
+
+// ],
+// complete: [
+// {
+//   title:'Card Bg green',
+//   id:nanoid(),
+//   assignedTo:'Roshan Dalami'
+// },
+//   {
+//   title:'Increase Panel height',
+//   id:nanoid(),
+//   assignedTo:'Roshan Dalami'
+// },
+//   {
+//   title:'Make Scrollable',
+//   id:nanoid(),
+//   assignedTo:'Roshan Dalami',
+// },
+// ],
+// backlogs:[{
+// title:'Card Bg green',
+// id:nanoid(),
+// assignedTo:'Roshan Dalami'
+// },
+// {
+// title:'Increase Panel height',
+// id:nanoid(),
+// assignedTo:'Roshan Dalami'
+// },
+// {
+// title:'Make Scrollable',
+// id:nanoid(),
+// assignedTo:'Roshan Dalami',
+// },]
+// }
 
 export interface TodoTaskType {
   title:string
@@ -17,6 +92,7 @@ export interface TaskType {
   ];
   complete: TodoTaskType[
   ];
+  backlogs:TodoTaskType[]
 }
 
 

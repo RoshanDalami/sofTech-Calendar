@@ -16,9 +16,7 @@ export default function Tasks() {
     createdAt: new Date().toDateString(),
     description:'',
     assingedTo: "",
-    todo: [],
-    inprogress: [],
-    completed: [],
+    
   });
     const onSubmitHandler =(e:FormEvent)=>{
         e.preventDefault()
@@ -31,7 +29,8 @@ export default function Tasks() {
             assignedTo :formData.assingedTo ,
             todo:[],
             inprogress:[],
-            complete:[]
+            complete:[],
+            backlogs:[]
           })
           setFormData({
             title:'',
@@ -39,9 +38,6 @@ export default function Tasks() {
             createdAt: new Date().toDateString() ,
             description:'',
             assingedTo:'',
-            todo:[],
-            inprogress:[],
-            completed:[]
           })
           setIsModelOpen(false)
         } catch (error) {
@@ -126,7 +122,7 @@ export default function Tasks() {
       
       <div>
         {taskList.length > 0 ? (
-          <div className="mx-5 mt-10 overflow-hidden  ">
+          <div className="mx-1 mt-10 overflow-hidden  ">
             <section className="flex h-full items-center justify-between border-b bg-slate-100 md:px-10 px-2  py-2 text-4xl">
               Tasks
               <button
@@ -137,7 +133,7 @@ export default function Tasks() {
                 <PlusCircleIcon className="h-8 w-7" />
               </button>
             </section>
-            <div className="mt-10 flex flex-col mb-10 md:flex-row  items-center justify-center gap-10 ">
+            <div className="mt-10 flex flex-col mb-10 md:flex-row flex-wrap  items-center justify-center  gap-3">
               {taskList.map((task) => {
                 return (
                   <Link to={`/tasks/${task.id}`}>
