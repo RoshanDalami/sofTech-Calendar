@@ -11,7 +11,7 @@ const userDetail = {
 
 export default function MainProfileCard() {
 
-  const userDetails = useRecoilValue(userData)
+  const userDetails:any = useRecoilValue(userData)
   console.log(userDetails)
   return (
     <div className='flex items-center border shadow-md border-gray-400/50 px-5 py-2 rounded-md gap-10 '>

@@ -1,11 +1,17 @@
-import React, { FormEvent, useEffect } from "react";
+import React, { FormEvent } from "react";
 import { CalendarDaysIcon } from "@heroicons/react/24/solid";
 import { useQuery } from "@tanstack/react-query";
-import { userData } from "../recoil/userAtom";
-import { useRecoilState } from "recoil";
+// import { userData } from "../recoil/userAtom";
+// import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 
 export interface formDataType {}
+
+// interface ResponseType{
+//   data: {},
+//   message: string 
+//   status : boolean
+// }
 
 export default function Login() {
   const [formData, setFormData] = React.useState({
@@ -14,29 +20,36 @@ export default function Login() {
   });
   const navigate = useNavigate()
 
-  const {  data ,isLoading } = useQuery({
-    queryKey: ['repoData'],
-    queryFn: () =>
-      fetch('http://calenderapi.meropalika.com/api/login',{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json'
-        },
-        body:JSON.stringify(formData)
-      }).then(
-        (res) => res.json()
-        
-      ),
-  })
 
-  const [detail,setUserDetails] = useRecoilState(userData)
+
+  // const [detail,setUserDetails] = useRecoilState(userData)
   const onSubmitHandler =(e:FormEvent)=>{
     e.preventDefault();
-    setUserDetails(data)
-    localStorage.setItem('userdetail',JSON.stringify(detail))
-    if(detail?.status === true){
-      navigate('/dashboard')
-    }
+
+    const {  data  } = useQuery({
+      queryKey: ['repoData'],
+      queryFn: () =>
+        fetch('http://calenderapi.meropalika.com/api/login',{
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json'
+          },
+          body:JSON.stringify(formData)
+        }).then(
+          (res) => {
+            if(res.status === 200){
+                navigate('/dashboard')
+            }
+          }
+          
+        ),
+    })
+    console.log(data)
+
+
+    // if(detail?.status === true){
+    //   navigate('/dashboard')
+    // }
   }
 
   
