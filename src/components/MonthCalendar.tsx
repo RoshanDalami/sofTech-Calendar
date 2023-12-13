@@ -1,7 +1,7 @@
 import { relativeTimeFromDates } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
 // import AddEventModal from "./AddEventModal";
-import { Transition } from '@headlessui/react'
+import { Transition } from "@headlessui/react";
 import useLanguage from "../helper/useLanguage";
 import { DayData } from "../types/calendar.types";
 import { useEffect, useMemo, useState } from "react";
@@ -21,12 +21,10 @@ const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
   );
 };
 
-console.log(new NepaliDate(),'nepali Date');
+console.log(new NepaliDate(), "nepali Date");
 
 export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
   const { BSYear, BSMonth } = useParams();
-
-
 
   const [modelOpen, setModelOpen] = useState(false);
 
@@ -125,20 +123,18 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
 
     return time12;
   }
-
   return (
     <>
-    
-        <Transition show={modelOpen} 
+      <Transition
+        show={modelOpen}
         enter="transition ease-in-out duration-300 transform"
         enterFrom="translate-x-full"
         enterTo="translate-x-0"
         leave="transition ease-in-out duration-300 transform"
         leaveFrom="translate-x-0"
         leaveTo="translate-x-full"
-        className='w-full md:min-h-screen fixed md:absolute z-40 inset-0  '
-        >
-
+        className="w-full md:min-h-screen fixed md:absolute z-40 inset-0  "
+      >
         <Model>
           <div className="bg-white p-3 rounded-md relative">
             <XCircleIcon
@@ -245,7 +241,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
             </form>
           </div>
         </Model>
-        </Transition>
+      </Transition>
       <div className=" flex gap-3 flex-col md:flex-row w-[90vw] md:w-[60.6vw] ">
         <div className=" ">
           <div className="mt-3  dark:text-white  grid grid-cols-7 text-xs leading-10 text-gray-500 ">
@@ -278,7 +274,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                     dayIdx === 0 ? { gridColumnStart: day.week_day + 1 } : {}
                   }
                   className={classNames(
-                    "p-1  font-mukta leading-3  focus:z-10 relative rounded-md ",
+                    "p-1  group font-mukta leading-3  focus:z-10 relative rounded-md ",
                     (isSelectedDay || isToday) && "font-semibold",
                     isToday && "bg-blue-600   font-semibold text-indigo-600",
                     !isSelectedDay && "bg-white ",
@@ -290,26 +286,30 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                       "text-rose-600"
                   )}
                 >
+                  
                   {eventList.map((event) => {
                     if (
                       event.year === JSON.stringify(bs_year) &&
                       event.month === JSON.stringify(bs_month) &&
                       event.date === JSON.stringify(bs_day)
                     ) {
+                     
+                    
+
                       return (
                         <>
                           <div
                             key={event.id}
-                            className=" bg-red-600 h-2 w-2 rounded-full absolute top-3 right-3  "
+                            className="  bg-red-600 h-2 w-2 rounded-full absolute top-3 right-3  "
                           ></div>
-                          {/* <h1 className="bg-gray-300/40 px-2 py-1 rounded-lg absolute top-2 right-6 text-[8px] hidden sm:block ">
+                          <h1 className="bg-gray-300/40 px-2 py-1 rounded-lg absolute top-2 right-6 text-md group-hover:text-red-600 hidden sm:block  ">
                             {event.event}
-                          </h1> */}
+                          </h1>
+                         
                         </>
                       );
                     }
                   })}
-
                   <time
                     dateTime={day.AD_date.ad}
                     className={classNames(
@@ -319,7 +319,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                     {nepaliNumber(day.day)}
                   </time>
                   <span className="mx-auto absolute bottom-1 right-1 md:bottom-2 text-xs md:right-2 md:text-md font-extralight">
-                    {dayInNepaliDate.getAD().date} 
+                    {dayInNepaliDate.getAD().date}
                   </span>
                 </button>
               );

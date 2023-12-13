@@ -25,7 +25,6 @@ export default function IndividualTask() {
   const { taskID } = useParams();
   const newTaskList = taskList.filter((task) => task.id === taskID);
 
-
   const singleTask = { ...newTaskList[0] };
   const [todos, setTodos] = useState<TodoType[]>([
     {
@@ -36,7 +35,8 @@ export default function IndividualTask() {
     },
   ]);
 
-  const [inProgress, _setInProgress] = useState<TodoType[]>([]);
+  const [inProgress, setInProgress] = useState<TodoType[]>([]);
+  const [completed, setCompleted] = useState<TodoType[]>([]);
 
   const [formData, setFormData] = useState<TodoType>({
     title: "",
@@ -56,6 +56,7 @@ export default function IndividualTask() {
         createdAt: formData.createdAt,
       },
     ]);
+    setIsModelOpen(false)
 
     setFormData({
       title: "",
@@ -65,13 +66,43 @@ export default function IndividualTask() {
     });
   };
 
-  const toProgressHandler = (id:string) =>{
-      const item = {...todos.filter((item)=>item.id === id)}
-      console.log(item)
-  }
+  const toProgressHandler = (id: string) => {
+    const item = todos.filter((item) => item.id === id);
+    const singleItem = { ...item[0] };
+    const newTodo = todos.filter((item) => item.id !== id);
+    console.log(item);
+    console.log(singleItem);
+    setTodos(newTodo);
+    setInProgress([
+      ...inProgress,
+      {
+        title: singleItem.title,
+        createdAt: singleItem.createdAt,
+        id: singleItem.id,
+        assignedTo: singleItem.id,
+      },
+    ]);
+  };
+  const toCompleteHandler = (id: string) => {
+    const item = inProgress.filter((item) => item.id === id);
+    const singleItem = { ...item[0] };
+    const newInprogress = inProgress.filter((item) => item.id !== id);
+    console.log(item);
+    console.log(singleItem);
+    setInProgress(newInprogress);
+    setCompleted([
+      ...completed,
+      {
+        title: singleItem.title,
+        createdAt: singleItem.createdAt,
+        id: singleItem.id,
+        assignedTo: singleItem.id,
+      },
+    ]);
+  };
 
   const onDragEnd = (result: DropResult) => {
-    const {  destination} = result
+    const { destination } = result;
 
     // if(!destination) return ;
 
@@ -85,9 +116,9 @@ export default function IndividualTask() {
     //   console.log('in progress')
     // }
     // if(result.destination?.droppableId === 'todoCol'){
-    //  return ;   
+    //  return ;
     // }
-    return destination
+    return destination;
   };
   return (
     <>
@@ -198,10 +229,12 @@ export default function IndividualTask() {
                       {"This task hasn't been started "}
                     </p>
                   </h1>
-                  <Droppable droppableId={'todoCol'} type="todo" >
-                    {(provided,snapshot) => (
+                  <Droppable droppableId={"todoCol"} type="todo">
+                    {(provided, snapshot) => (
                       <div
-                        className={` h-[90vh] overflow-auto ${snapshot.isDraggingOver?'bg-lime-300/60':''} `}
+                        className={` h-[90vh] overflow-auto ${
+                          snapshot.isDraggingOver ? "bg-lime-300/60" : ""
+                        } `}
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                       >
@@ -216,7 +249,7 @@ export default function IndividualTask() {
                                   {(provided, snapshot) => (
                                     <section
                                       className={clsx(
-                                        "mx-3 my-4 h-24 cursor-pointer rounded-md border border-green-800 bg-green-900/30",
+                                        "mx-3 my-4  p-3 cursor-pointer rounded-md border border-green-800 bg-green-900/30",
                                         { "bg-red-600/50": snapshot.isDragging }
                                       )}
                                       key={todo.id}
@@ -224,10 +257,18 @@ export default function IndividualTask() {
                                       {...provided.dragHandleProps}
                                       ref={provided.innerRef}
                                     >
-                                      <p className="mx-3 my-5 text-2xl ">
+                                      <p className="mx-3 my-2 text-2xl ">
                                         {todo.title}
                                       </p>
-                                      <button className="bg-red-600" onClick={()=>toProgressHandler(todo.id)} >inprogress </button>
+                                        <button
+                                          className=" px-3 py-2  rounded-md text-md  bg-indigo-600 text-white "
+                                          onClick={() =>
+                                            toProgressHandler(todo.id)
+                                          }
+                                        >
+                                          inprogress{" "}
+                                        </button>
+
                                     </section>
                                   )}
                                 </Draggable>
@@ -258,7 +299,7 @@ export default function IndividualTask() {
                       {"This is actively being worked on"}
                     </p>
                   </h1>
-                  <Droppable droppableId={'inprogressCol'} type="inprogress" >
+                  <Droppable droppableId={"inprogressCol"} type="inprogress">
                     {(provided) => (
                       <div
                         className="h-[90vh] overflow-auto"
@@ -266,7 +307,7 @@ export default function IndividualTask() {
                         ref={provided.innerRef}
                       >
                         {newTaskList.length > 0
-                          ? inProgress.map((todo: any, index: number) => {
+                          ? inProgress?.map((todo: any, index: number) => {
                               return (
                                 <Draggable
                                   key={singleTask.id}
@@ -276,7 +317,7 @@ export default function IndividualTask() {
                                   {(provided, snapshot) => (
                                     <section
                                       className={clsx(
-                                        "mx-3 my-4 h-24 cursor-pointer rounded-md border border-green-800 bg-green-900/30",
+                                        "mx-3 my-4  cursor-pointer rounded-md border border-green-800 bg-green-900/30",
                                         { "bg-red-600/50": snapshot.isDragging }
                                       )}
                                       key={todo.id}
@@ -287,7 +328,14 @@ export default function IndividualTask() {
                                       <p className="mx-3 my-5 text-2xl">
                                         {todo.title}
                                       </p>
-                                      
+                                      <button
+                                          className=" px-3 py-2  rounded-md text-md  bg-indigo-600 text-white "
+                                          onClick={() =>
+                                            toCompleteHandler(todo.id)
+                                          }
+                                        >
+                                          completed{" "}
+                                        </button>
                                     </section>
                                   )}
                                 </Draggable>
@@ -319,7 +367,7 @@ export default function IndividualTask() {
                   </h1>
                   <div className="h-[90vh] overflow-auto">
                     {newTaskList.length > 0
-                      ? singleTask.complete.map((todo: any) => {
+                      ? completed?.map((todo: any) => {
                           return (
                             <section
                               className="mx-3 my-4 h-24 rounded-md border border-black/50 bg-slate-300/30"
@@ -354,7 +402,6 @@ export default function IndividualTask() {
               </div>
               {provided.placeholder}
             </div>
-
           )}
         </Droppable>
       </DragDropContext>

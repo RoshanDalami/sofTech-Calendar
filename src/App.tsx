@@ -9,11 +9,22 @@ import Body from "./Body";
 import { EventType } from "./Context/eventContext";
 import { TaskType } from "./Context/taskContext";
 import { RecoilRoot } from "recoil";
+import { UserProvider } from "./Context";
+
+
 
 const queryClient = new QueryClient();
 const App = () => {
   const [eventList, setEventList] = useState<EventType[]>([]);
   const [taskList, setTaskList] = useState<TaskType[]>([]);
+  const [user,setUser] = useState<any>({});
+  const addUser = (user:any)=>{
+    setUser(user)
+  }
+  const removeUser=()=>{
+    setUser({})
+  }
+
 
   const addEvent = (event: EventType) => {
     setEventList((preState) => [...preState, { ...event }]);
@@ -28,6 +39,7 @@ const App = () => {
   };
 
 
+
   useEffect(() => {
     const events = JSON.parse(localStorage.getItem("Events")!);
     if (events && events.length) {
@@ -40,6 +52,12 @@ const App = () => {
       setTaskList(tasks);
     }
   }, []);
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user")!);
+    if (user && user.length) {
+      setUser(user);
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("Events", JSON.stringify(eventList));
@@ -47,9 +65,16 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem("Tasks", JSON.stringify(taskList));
   }, [taskList]);
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
+
+
 
   return (
-    <BrowserRouter>
+    <UserProvider value={{user,addUser,removeUser}}>
+  <BrowserRouter>
+
     <RecoilRoot>
 
       <QueryClientProvider client={queryClient}>
@@ -70,6 +95,7 @@ const App = () => {
       </QueryClientProvider>
     </RecoilRoot>
     </BrowserRouter>
+</UserProvider>
   );
 };
 

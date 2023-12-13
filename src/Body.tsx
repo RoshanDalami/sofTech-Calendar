@@ -12,6 +12,7 @@ import IndividualTask from "./pages/IndividualTask.tsx";
 import SideBar from "./components/SideBar.tsx";
 import Dashboard from "./components/Dashboard.tsx";
 import Login from "./components/Login.tsx";
+import Reports from "./pages/Reports.tsx";
 
 
 
@@ -20,6 +21,8 @@ const location = useLocation();
   return (
     <div className={" flex min-h-screen flex-col font-mono dark:bg-gray-800 "}>
       <div className=" sticky top-0 z-10" >
+        {/* <ProgressBar value={100} showAnimation={true} /> */}
+
      {
       location.pathname === '/' || location.pathname === '/login' ? '' :   <SideBar/>
      }
@@ -36,6 +39,7 @@ const location = useLocation();
           <Route path="/tasks" element={ <Tasks/> } />
           <Route path="/tasks/:taskID" element={ <IndividualTask/> } />
           <Route path="/dashboard" element={ <Dashboard/> } />
+          <Route path="/reports" element={ <Reports/> } />
           <Route path="/login" element={ <Login/> } />
         </Routes>
       </div>

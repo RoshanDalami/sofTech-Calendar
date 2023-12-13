@@ -4,11 +4,12 @@ import LinkLists from "./LinkLists";
 import ProfileCard from "./ProfileCard";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../Context";
 
 export default function SideBar() {
   const navigate = useNavigate();
 
-
+const {removeUser} = useUser();
 
   return (
     <div className="h-[100vh] w-60 fixed bg-slate-200 rounded-r-3xl flex flex-col items-center overflow-hidden dark:bg-gray-900 ">
@@ -19,8 +20,12 @@ export default function SideBar() {
       <ProfileCard />
       <div className="border border-gray-300 w-52"></div>
       <LinkLists />
+      
       <div className=" absolute bottom-5">
-        <button className="bg-red-600 rounded-md px-4 py-1.5 text-white flex text-lg items-center gap-3 w-full " onClick={()=>navigate('/')} >
+        <button className="bg-red-600 rounded-md px-4 py-1.5 text-white flex text-lg items-center gap-3 w-full " onClick={()=>{
+          removeUser()
+           navigate('/')
+           }} >
           Log Out
           <ArrowRightOnRectangleIcon className="h-5 w-5" />
         </button>
