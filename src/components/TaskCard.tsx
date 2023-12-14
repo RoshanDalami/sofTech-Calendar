@@ -1,11 +1,14 @@
-import { Task } from "../types";
+import { Task ,Id} from "../types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { TrashIcon } from '@heroicons/react/24/outline'
+import { useState } from "react";
 interface Props {
   task: Task;
+  taskDeleteHandler:(id:Id)=>void;
 }
 
-export default function TaskCard({ task }: Props) {
+export default function TaskCard({ task,taskDeleteHandler }: Props) {
   const {
     setNodeRef,
     attributes,
@@ -20,6 +23,7 @@ export default function TaskCard({ task }: Props) {
       task,
     },
   });
+  const [isMouseOver,setIsMouseOver] = useState(false);
 
   const style = {
     transition,
@@ -44,9 +48,21 @@ export default function TaskCard({ task }: Props) {
       style={style}
       {...attributes}
       {...listeners}
-      className="bg-gray-600/50 p-2.5 h-[100px] min-h-[100px] items-center flex  text-left rounded-md mx-4 cursor-grab "
+      className="bg-gray-600/50 p-2.5 h-[100px] min-h-[100px] items-center flex  text-left rounded-md mx-4 cursor-grab justify-between px-4 "
+      onMouseEnter={()=>{
+        setIsMouseOver(true)
+      }}
+      onMouseLeave={()=>{
+        setIsMouseOver(false)
+      }}
     >
+      <p>
+
       {task.content}
+      </p>
+     { isMouseOver && <button className="bg-red-600 rounded-md text-white px-2 py-1" onClick={()=>taskDeleteHandler(task.id)}  >
+        <TrashIcon className="h-5 w-5" />
+      </button>}
     </div>
   );
 }

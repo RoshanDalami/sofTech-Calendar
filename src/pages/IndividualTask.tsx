@@ -1,5 +1,5 @@
 import { useTask } from "../Context";
-import { PlusIcon } from "@heroicons/react/24/outline";
+// import { PlusIcon } from "@heroicons/react/24/outline";
 import { nanoid } from "nanoid";
 import Model from "../components/Model";
 
@@ -149,7 +149,7 @@ export default function IndividualTask() {
         </p>
       </div>
 
-      <KanbanBoard/>
+      <KanbanBoard  />
 
       
     </>
