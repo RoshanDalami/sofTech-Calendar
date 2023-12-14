@@ -79,9 +79,9 @@ const App = () => {
 
 
   return (
+    
+    <BrowserRouter>
     <UserProvider value={{user,addUser,removeUser}}>
-
-  <BrowserRouter>
 
 
     <RecoilRoot>
@@ -103,8 +103,8 @@ const App = () => {
 
       </QueryClientProvider>
     </RecoilRoot>
-    </BrowserRouter>
 </UserProvider>
+    </BrowserRouter>
   );
 };
 
