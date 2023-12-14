@@ -133,19 +133,19 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
         leave="transition ease-in-out duration-300 transform"
         leaveFrom="translate-x-0"
         leaveTo="translate-x-full"
-        className="w-full md:min-h-screen fixed md:absolute z-40 inset-0  "
+        className="fixed inset-0 z-40 w-full md:absolute md:min-h-screen  "
       >
         <Model>
-          <div className="bg-white p-3 rounded-md relative">
+          <div className="relative rounded-md bg-white p-3">
             <XCircleIcon
-              className="h-10 w-10 text-black cursor-pointer absolute right-5"
+              className="absolute right-5 h-10 w-10 cursor-pointer text-black"
               onClick={() => {
                 setModelOpen(false);
               }}
             />
             <form
               action=""
-              className="flex flex-col mx-5 mt-12 gap-4"
+              className="mx-5 mt-12 flex flex-col gap-4"
               onSubmit={onSubmitHandler}
             >
               <div className="flex flex-col gap-2">
@@ -154,7 +154,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                 </label>
                 <input
                   type="text"
-                  className="py-2 border-[1px] border-gray-500 rounded-md px-4"
+                  className="rounded-md border-[1px] border-gray-500 px-4 py-2"
                   placeholder="Events"
                   onChange={(e) => {
                     setFormData({ ...formData, event: e.target.value });
@@ -169,7 +169,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                 </label>
                 <input
                   type="text"
-                  className="py-2 border-[1px] border-gray-500 rounded-md px-4"
+                  className="rounded-md border-[1px] border-gray-500 px-4 py-2"
                   placeholder="Event Description"
                   onChange={(e) => {
                     setFormData({ ...formData, description: e.target.value });
@@ -184,7 +184,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                 </label>
                 <input
                   type="time"
-                  className="py-2 border-[1px] border-gray-500 rounded-md px-4"
+                  className="rounded-md border-[1px] border-gray-500 px-4 py-2"
                   placeholder=" Event Time "
                   onChange={(e) => {
                     setFormData({ ...formData, time: e.target.value });
@@ -193,12 +193,12 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                   required
                 />
               </div>
-              <div className="flex   items-center gap-2 flex-wrap ">
+              <div className="flex   flex-wrap items-center gap-2 ">
                 <div className="flex flex-col gap-2">
                   <label htmlFor="">Year</label>
                   <input
                     type="number"
-                    className="py-2 border-[1px] border-gray-500 rounded-md px-4 w-ful"
+                    className="w-ful rounded-md border-[1px] border-gray-500 px-4 py-2"
                     placeholder={JSON.stringify(selectedDay.getYear())}
                     onChange={(e) => {
                       setFormData({ ...formData, year: e.target.value });
@@ -212,7 +212,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                   <label htmlFor="">Month</label>
                   <input
                     type="number"
-                    className="py-2 border-[1px] border-gray-500 rounded-md px-4"
+                    className="rounded-md border-[1px] border-gray-500 px-4 py-2"
                     placeholder={JSON.stringify(selectedDay.getMonth() + 1)}
                     onChange={(e) => {
                       setFormData({ ...formData, month: e.target.value });
@@ -226,7 +226,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                   <label htmlFor="">Date</label>
                   <input
                     type="text"
-                    className="py-2 border-[1px] border-gray-500 rounded-md px-4"
+                    className="rounded-md border-[1px] border-gray-500 px-4 py-2"
                     value={selectedDay.getBS().date}
                     readOnly
                   />
@@ -234,7 +234,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
               </div>
               <button
                 type="submit"
-                className="bg-blue-600 rounded-md py-2 mb-3 text-white mt-2"
+                className="mb-3 mt-2 rounded-md bg-blue-600 py-2 text-white"
               >
                 Add Event
               </button>
@@ -242,18 +242,18 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
           </div>
         </Model>
       </Transition>
-      <div className=" flex gap-3 flex-col md:flex-row w-[90vw] md:w-[60.6vw] ">
+      <div className=" flex w-[90vw] flex-col gap-3 md:w-[60.6vw] md:flex-row ">
         <div className=" ">
-          <div className="mt-3  dark:text-white  grid grid-cols-7 text-xs leading-10 text-gray-500 ">
-            <div className="text-xl text-center">{t("homepage.S")}</div>
-            <div className="text-xl text-center">{t("homepage.M")}</div>
-            <div className="text-xl text-center">{t("homepage.T")}</div>
-            <div className="text-xl text-center">{t("homepage.W")}</div>
-            <div className="text-xl text-center">{t("homepage.Th")}</div>
-            <div className="text-xl text-center">{t("homepage.F")}</div>
-            <div className="text-xl text-center">{t("homepage.Sa")}</div>
+          <div className="mt-3  grid  grid-cols-7 text-xs leading-10 text-gray-900 dark:text-white ">
+            <div className="text-center text-xl">{t("homepage.S")}</div>
+            <div className="text-center text-xl">{t("homepage.M")}</div>
+            <div className="text-center text-xl">{t("homepage.T")}</div>
+            <div className="text-center text-xl">{t("homepage.W")}</div>
+            <div className="text-center text-xl">{t("homepage.Th")}</div>
+            <div className="text-center text-xl">{t("homepage.F")}</div>
+            <div className="text-center text-xl text-red-600">{t("homepage.Sa")}</div>
           </div>
-          <div className="isolate  mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200 h-[50vh] w-[90vw]  md:h-[78vh] md:w-[60.6vw] ">
+          <div className="isolate  mt-2 grid h-[50vh] w-[90vw] grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200  md:h-[78vh] md:w-[60.6vw] ">
             {monthData.map((day, dayIdx) => {
               const { bs_year, bs_month, bs_day } = day.AD_date;
               const dayInNepaliDate = new NepaliDate(
@@ -274,39 +274,32 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                     dayIdx === 0 ? { gridColumnStart: day.week_day + 1 } : {}
                   }
                   className={classNames(
-                    "p-1  group font-mukta leading-3  focus:z-10 relative rounded-md ",
+                    "font-mukta  group relative rounded-md  p-1 leading-3 focus:z-10 ",
                     (isSelectedDay || isToday) && "font-semibold",
                     isToday && "bg-blue-600   font-semibold text-indigo-600",
-                    !isSelectedDay && "bg-white ",
+                    
+                    !isSelectedDay && "bg-white",
                     isSelectedDay &&
                       " bg-blue-600  text-white  hover:bg-blue-700",
                     isSelectedDay && "bg-blue-600",
-                    (day.events.find((event) => event.jds?.gh == "1") ||
-                      day.week_day === 6) &&
-                      "text-rose-600"
+                   ((day.events.find((event) => event.jds?.gh == "1") ||
+                      day.week_day === 6 ) && !isSelectedDay )    &&
+                       " text-rose-600  ",
                   )}
                 >
-                  
                   {eventList.map((event) => {
                     if (
                       event.year === JSON.stringify(bs_year) &&
                       event.month === JSON.stringify(bs_month) &&
                       event.date === JSON.stringify(bs_day)
                     ) {
-                     
-                    
-
                       return (
-                        <>
-                          <div
-                            key={event.id}
-                            className="  bg-red-600 h-2 w-2 rounded-full absolute top-3 right-3  "
-                          ></div>
-                          <h1 className="bg-gray-300/40 px-2 py-1 rounded-lg absolute top-2 right-6 text-md group-hover:text-red-600 hidden sm:block  ">
-                            {event.event}
-                          </h1>
-                         
-                        </>
+                        <div key={event.id} className="">
+                          <div className="  absolute right-3 top-3  h-2 w-2 rounded-full bg-red-600  "></div>
+                          <div className="text-md my-1 hidden h-[2vh] rounded-lg bg-gray-300/40  px-2 py-1 group-hover:text-red-600 sm:block    ">
+                            <p>{event.event.slice(0, 10)}</p>
+                          </div>
+                        </div>
                       );
                     }
                   })}
@@ -318,7 +311,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                   >
                     {nepaliNumber(day.day)}
                   </time>
-                  <span className="mx-auto absolute bottom-1 right-1 md:bottom-2 text-xs md:right-2 md:text-md font-extralight">
+                  <span className="md:text-md absolute bottom-1 right-1 mx-auto text-xs font-extralight md:bottom-2 md:right-2">
                     {dayInNepaliDate.getAD().date}
                   </span>
                 </button>
@@ -328,11 +321,11 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
         </div>
         {/* event  */}
         <div className=" ">
-          <div className="absolute md:top-[20px] flex items-center flex-col z-20">
+          <div className="absolute z-20 flex flex-col items-center md:top-[20px]">
             <div className="w-[32vh] ">
               <button
                 type="button"
-                className=" w-full rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none  items-center text-center "
+                className=" w-full items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white shadow  hover:bg-blue-700 focus:outline-none "
               >
                 {/* {t("homepage.View_all_events")}  */}
                 {" Events of " + selectedDay.getDate()}
@@ -348,7 +341,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
               ) {
                 return (
                   <div
-                    className="mx-2 mt-1 flex gap-2 flex-col rounded-md border  bg-white p-4 shadow-lg "
+                    className="mx-2 mt-1 flex flex-col gap-2 rounded-md border  bg-white p-4 shadow-lg "
                     key={event.id}
                   >
                     <div className="flex">
@@ -371,7 +364,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
 
                       <div className="ml-4 grow text-left">
                         <p className="mt-2 text-sm font-semibold ">
-                          {event.event}
+                          {event.event.slice(0,10)}
                         </p>
                       </div>
                       <div className="ml-5 flex-col text-end">
@@ -395,7 +388,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
 
         {/* add event button  */}
 
-        <div className=" bg-black rounded-full md:bottom-5 md:right-10 bottom-20 right-5 z-50 p-2 cursor-pointer fixed   md:absolute">
+        <div className=" fixed bottom-20 right-5 z-50 cursor-pointer rounded-full bg-black p-2 md:absolute md:bottom-5   md:right-10">
           <PlusIcon
             className=" h-10 w-10 text-white"
             onClick={() => {

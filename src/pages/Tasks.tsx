@@ -1,7 +1,7 @@
 import { useTask } from "../Context/index";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import TaskCard from "../components/TaskCard";
+import TaskCard from "../components/TaskCardComp";
 import { FormEvent, useState } from "react";
 import Model from "../components/Model";
 import { nanoid } from "nanoid";

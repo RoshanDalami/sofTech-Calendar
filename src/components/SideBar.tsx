@@ -9,7 +9,8 @@ import { useUser } from "../Context";
 export default function SideBar() {
   const navigate = useNavigate();
 
-const {removeUser} = useUser();
+const {removeUser } = useUser();
+
 
   return (
     <div className="h-[100vh] w-60 fixed bg-slate-200 rounded-r-3xl flex flex-col items-center overflow-hidden dark:bg-gray-900 ">

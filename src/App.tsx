@@ -13,14 +13,21 @@ import { UserProvider } from "./Context";
 
 
 
+
 const queryClient = new QueryClient();
 const App = () => {
   const [eventList, setEventList] = useState<EventType[]>([]);
   const [taskList, setTaskList] = useState<TaskType[]>([]);
+  console.log(taskList,"helo task");
+  
   const [user,setUser] = useState<any>({});
+  console.log(user,"helo user");
+
   const addUser = (user:any)=>{
     setUser(user)
   }
+  console.log(addUser,"addUser");
+  
   const removeUser=()=>{
     setUser({})
   }
@@ -53,9 +60,9 @@ const App = () => {
     }
   }, []);
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user")!);
-    if (user && user.length) {
-      setUser(user);
+    const users = JSON.parse(localStorage.getItem("User")!);
+    if (users && users.length) {
+      setUser(users);
     }
   }, []);
 
@@ -66,14 +73,16 @@ const App = () => {
     localStorage.setItem("Tasks", JSON.stringify(taskList));
   }, [taskList]);
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("User", JSON.stringify(user));
   }, [user]);
 
 
 
   return (
     <UserProvider value={{user,addUser,removeUser}}>
+
   <BrowserRouter>
+
 
     <RecoilRoot>
 

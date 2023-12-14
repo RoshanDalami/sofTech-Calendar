@@ -56,10 +56,10 @@ export default function LinkLists() {
             })}
           >
             <div
-              className={clsx(
-                "text-black  flex items-center gap-3  dark:text-white",
-                { "text-black dark:text-black": isPath }
-              )}
+              className={`
+                flex items-center gap-3  ${isPath ? "text-black dark:text-black" : ' dark:text-white  text-black ' }
+                 `
+              }
             >
               {link.icon}
               <p className="text-lg">{link.title}</p>

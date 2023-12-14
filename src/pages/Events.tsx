@@ -236,8 +236,8 @@ export default function Events() {
                       </p>
                     </td>
 
-                    <td className="px-6 py-4">{event.event}</td>
-                    <td className="px-6 py-4">{event.description}</td>
+                    <td className="px-6 py-4">{event.event.slice(0,10)}</td>
+                    <td className="px-6 py-4">{event.description.slice(0,10)}</td>
                     <td className="px-6 py-4">
                       {convertTo12HourFormat(event.time)}
                     </td>

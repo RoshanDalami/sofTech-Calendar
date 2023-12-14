@@ -11,7 +11,7 @@ import { useUser } from '../Context'
 export default function Login() {
 
   const navigate = useNavigate()
-  const {addUser } = useUser();
+  // const {addUser } = useUser();
 
   const { register, handleSubmit } = useForm();
   const [loading,setLoading] = useState(false);
@@ -58,11 +58,15 @@ export default function Login() {
       })
       const userData = await response.json()
      
+      console.log(userData,"userData");
 
       
+      
       if(response.status === 200){
-        console.log('success')
-        addUser(userData)
+        localStorage.setItem('UserDetails',JSON.stringify(userData.data))
+        
+        
+        // addUser(userData)
         setLoading(false)
         navigate('/dashboard')
       }

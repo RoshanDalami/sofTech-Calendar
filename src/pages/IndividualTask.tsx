@@ -2,16 +2,12 @@ import { useTask } from "../Context";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { nanoid } from "nanoid";
 import Model from "../components/Model";
-import {
-  DragDropContext,
-  Draggable,
-  DropResult,
-  Droppable,
-} from "react-beautiful-dnd";
+
 import { FormEvent, useState } from "react";
 import { useParams } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import clsx from "clsx";
+
+import KanbanBoard from "../components/KanbanBoard";
 
 export interface TodoType {
   id: string;
@@ -35,8 +31,7 @@ export default function IndividualTask() {
     },
   ]);
 
-  const [inProgress, setInProgress] = useState<TodoType[]>([]);
-  const [completed, setCompleted] = useState<TodoType[]>([]);
+
 
   const [formData, setFormData] = useState<TodoType>({
     title: "",
@@ -65,61 +60,7 @@ export default function IndividualTask() {
       createdAt: new Date().toDateString(),
     });
   };
-
-  const toProgressHandler = (id: string) => {
-    const item = todos.filter((item) => item.id === id);
-    const singleItem = { ...item[0] };
-    const newTodo = todos.filter((item) => item.id !== id);
-    console.log(item);
-    console.log(singleItem);
-    setTodos(newTodo);
-    setInProgress([
-      ...inProgress,
-      {
-        title: singleItem.title,
-        createdAt: singleItem.createdAt,
-        id: singleItem.id,
-        assignedTo: singleItem.id,
-      },
-    ]);
-  };
-  const toCompleteHandler = (id: string) => {
-    const item = inProgress.filter((item) => item.id === id);
-    const singleItem = { ...item[0] };
-    const newInprogress = inProgress.filter((item) => item.id !== id);
-    console.log(item);
-    console.log(singleItem);
-    setInProgress(newInprogress);
-    setCompleted([
-      ...completed,
-      {
-        title: singleItem.title,
-        createdAt: singleItem.createdAt,
-        id: singleItem.id,
-        assignedTo: singleItem.id,
-      },
-    ]);
-  };
-
-  const onDragEnd = (result: DropResult) => {
-    const { destination } = result;
-
-    // if(!destination) return ;
-
-    // if(result.type === 'todo'){
-    //   const New  =   todos.filter((todo)=>todo.id === result.draggableId)
-    //   const {id,title,assignedTo,createdAt} = {...New[0]}
-    //   setTodos([...todos,{id,title,assignedTo,createdAt}])
-    // console.log('todo')
-    // }
-    // if(result.type === 'inprogress'){
-    //   console.log('in progress')
-    // }
-    // if(result.destination?.droppableId === 'todoCol'){
-    //  return ;
-    // }
-    return destination;
-  };
+  
   return (
     <>
       {isModelOpen && (
@@ -201,210 +142,16 @@ export default function IndividualTask() {
         </Model>
       )}
 
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="0">
-          {(provided) => (
-            <div
-              className="flex w-[100vw] relative   min-h-screen flex-col overflow-x-auto  bg-slate-100   md:px-10 "
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              <section className=" pb-2 pt-3  text-3xl">
-                <p className="text-3xl font-bold fixed   " key={singleTask.id}>
-                  {singleTask.title}
-                </p>
-              </section>
+      <div>
+        <p className="text-2xl font-bold text-white px-4 py-3">
 
-              <div className="flex w-[1000px] md:w-full  overflow-x-scroll mx-5 mt-10   items-center md:justify-between  gap-3 ">
-                {/* todo  */}
+      {singleTask.title}
+        </p>
+      </div>
 
-                <section className=" relative h-[90vh] w-72 md:w-1/4 overflow-hidden rounded-md border border-black/60 ">
-                  <h1 className="z-10 bg-slate-200 px-1 py-3 text-xl  ">
-                    <div className="flex items-center gap-2">
-                      <div className="h-5 w-5 rounded-full border-2 border-green-600 "></div>
-                      {"Todo"}
-                    </div>
+      <KanbanBoard/>
 
-                    <p className="px-1 text-sm">
-                      {"This task hasn't been started "}
-                    </p>
-                  </h1>
-                  <Droppable droppableId={"todoCol"} type="todo">
-                    {(provided, snapshot) => (
-                      <div
-                        className={` h-[90vh] overflow-auto ${
-                          snapshot.isDraggingOver ? "bg-lime-300/60" : ""
-                        } `}
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                      >
-                        {newTaskList.length > 0
-                          ? todos.map((todo: any, index) => {
-                              return (
-                                <Draggable
-                                  draggableId={todo.id}
-                                  key={todo.id}
-                                  index={index}
-                                >
-                                  {(provided, snapshot) => (
-                                    <section
-                                      className={clsx(
-                                        "mx-3 my-4  p-3 cursor-pointer rounded-md border border-green-800 bg-green-900/30",
-                                        { "bg-red-600/50": snapshot.isDragging }
-                                      )}
-                                      key={todo.id}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      ref={provided.innerRef}
-                                    >
-                                      <p className="mx-3 my-2 text-2xl ">
-                                        {todo.title}
-                                      </p>
-                                        <button
-                                          className=" px-3 py-2  rounded-md text-md  bg-indigo-600 text-white "
-                                          onClick={() =>
-                                            toProgressHandler(todo.id)
-                                          }
-                                        >
-                                          inprogress{" "}
-                                        </button>
-
-                                    </section>
-                                  )}
-                                </Draggable>
-                              );
-                            })
-                          : ""}
-
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                  <div
-                    className=" absolute bottom-0 flex w-full items-center justify-center bg-indigo-600 py-2 text-center text-xl  text-white cursor-pointer "
-                    onClick={() => setIsModelOpen(true)}
-                  >
-                    {"Add Item"}
-                    <PlusIcon className="h-6 w-10 cursor-pointer " />
-                  </div>
-                </section>
-                {/* in progress  */}
-                <section className=" relative h-[90vh] w-72 md:w-1/4 overflow-hidden rounded-md border border-black/60 ">
-                  <h1 className="bg-slate-200 px-1 py-3 text-xl  ">
-                    <div className="flex items-center gap-2">
-                      <div className="h-5 w-5 rounded-full border-2 border-orange-600 "></div>
-                      {"In Progress"}
-                    </div>
-                    <p className="px-1 text-sm">
-                      {"This is actively being worked on"}
-                    </p>
-                  </h1>
-                  <Droppable droppableId={"inprogressCol"} type="inprogress">
-                    {(provided) => (
-                      <div
-                        className="h-[90vh] overflow-auto"
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                      >
-                        {newTaskList.length > 0
-                          ? inProgress?.map((todo: any, index: number) => {
-                              return (
-                                <Draggable
-                                  key={singleTask.id}
-                                  draggableId={todo.id}
-                                  index={index}
-                                >
-                                  {(provided, snapshot) => (
-                                    <section
-                                      className={clsx(
-                                        "mx-3 my-4  cursor-pointer rounded-md border border-green-800 bg-green-900/30",
-                                        { "bg-red-600/50": snapshot.isDragging }
-                                      )}
-                                      key={todo.id}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      ref={provided.innerRef}
-                                    >
-                                      <p className="mx-3 my-5 text-2xl">
-                                        {todo.title}
-                                      </p>
-                                      <button
-                                          className=" px-3 py-2  rounded-md text-md  bg-indigo-600 text-white "
-                                          onClick={() =>
-                                            toCompleteHandler(todo.id)
-                                          }
-                                        >
-                                          completed{" "}
-                                        </button>
-                                    </section>
-                                  )}
-                                </Draggable>
-                              );
-                            })
-                          : ""}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                  {/* <div className=" absolute bottom-0 flex w-full items-center  border-t border-t-black">
-              <input
-                type="text"
-                className="w-full px-4 py-2 placeholder:text-lg focus:outline-none "
-                placeholder="Add Item"
-              />
-
-              <PlusIcon className="h-6 w-10 cursor-pointer " />
-            </div> */}
-                </section>
-                {/* completed  */}
-                <section className=" relative h-[90vh] w-72 md:w-1/4 overflow-hidden rounded-md border border-black/60 ">
-                  <h1 className="bg-slate-200 px-1 py-3 text-xl ">
-                    <div className="flex items-center gap-2 ">
-                      <div className="h-5 w-5 rounded-full border-2 border-indigo-600 "></div>
-                      {"Complete"}
-                    </div>
-                    <p className="px-1 text-sm">This has been completed</p>
-                  </h1>
-                  <div className="h-[90vh] overflow-auto">
-                    {newTaskList.length > 0
-                      ? completed?.map((todo: any) => {
-                          return (
-                            <section
-                              className="mx-3 my-4 h-24 rounded-md border border-black/50 bg-slate-300/30"
-                              draggable="true"
-                              key={todo.id}
-                            >
-                              <p className="mx-3 my-5 text-2xl">{todo.title}</p>
-                            </section>
-                          );
-                        })
-                      : ""}
-                  </div>
-                  {/* <div className=" absolute bottom-0 flex w-full items-center  border-t border-t-black">
-              <input
-                type="text"
-                className="w-full px-4 py-2 placeholder:text-lg focus:outline-none "
-                placeholder="Add Item"
-              />
-
-              <PlusIcon className="h-6 w-10 cursor-pointer " />
-            </div> */}
-                </section>
-                {/* backlog  */}
-                <section className=" h-[90vh] md:w-1/4 w-72 overflow-hidden rounded-md border border-black/60 ">
-                  <h1 className="flex items-center gap-2 bg-slate-200 px-1 py-3 text-xl ">
-                    <div className="h-5 w-5 rounded-full border-2 border-blue-600 "></div>
-
-                    {"Backlogs"}
-                  </h1>
-                  <section></section>
-                </section>
-              </div>
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      
     </>
   );
 }

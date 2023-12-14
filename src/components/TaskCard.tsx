@@ -1,41 +1,52 @@
-import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
-export default function TaskCard({
-  title,
-  assignedTo,
-  createdAt,
-  description,
-  id,
-}: {
-  title: string;
-  assignedTo: string;
-  createdAt: string;
-  description: string;
-  id: string;
-}) {
+import { Task } from "../types";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+interface Props {
+  task: Task;
+}
+
+export default function TaskCard({ task }: Props) {
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: task.id,
+    data: {
+      type: "Task",
+      task,
+    },
+  });
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  };
+
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        className="bg-gray-600/50 p-2.5 h-[100px] min-h-[100px] items-center flex  text-left rounded-md mx-4 cursor-grab"
+      >
+        
+      </div>
+    );
+  }
+
   return (
-    <div className=" w-80 md:w-96 h-96 rounded-md border dark:bg-white dark:hover:shadow-lg dark:hover:shadow-gray-200   border-black/50 px-3 py-4 transition duration-300 hover:-translate-y-3 hover:shadow-lg relative">
-      <h1 className="my-2 border-b pb-4 text-xl  font-bold ">{title}</h1>
-      <p className=" border-b py-5    ">
-        <span className="text-md font-bold">Assigned To {""} :</span>
-        <span className="text-md capitalize"> {assignedTo}</span>
-      </p>
-      <p className=" border-b py-5   ">
-        <span className="text-md font-bold">Created At {""} :</span>
-        <span className="text-md capitalize"> {createdAt}</span>
-      </p>
-      <p className=" border-b py-5 h-24 overflow-y-auto   ">
-        <span className="text-md font-bold">Description {""} :</span>
-        <span className="text-md capitalize"> {description}</span>
-      </p>
-      <Link to={`/tasks/${id}`} className="">
-        <div className="bg-indigo-600 hover:bg-indigo-700 rounded-md flex items-center mt-6 ">
-          <p className="flex items-center py-3 justify-center font-bold text-xl text-white w-full hover:scale-125 transition duration-200   ">
-            Manage Task
-            <ArrowSmallRightIcon className="h-6 w-6  mx-3" />
-          </p>
-        </div>
-      </Link>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="bg-gray-600/50 p-2.5 h-[100px] min-h-[100px] items-center flex  text-left rounded-md mx-4 cursor-grab "
+    >
+      {task.content}
     </div>
   );
 }
