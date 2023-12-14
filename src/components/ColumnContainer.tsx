@@ -123,12 +123,13 @@ export default function ColumnContainer(props: Props) {
           </div>
         </Model>
       )}
+
       <div
         ref={setNodeRef}
         style={style}
         className="
     flex
-    h-[90vh]
+    h-[85vh]
     w-[400px]
 flex-col
     overflow-hidden

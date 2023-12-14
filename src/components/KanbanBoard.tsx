@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Column, Task, Id } from "../types";
 import { nanoid } from "nanoid";
 import ColumnContainer from "./ColumnContainer";
@@ -16,8 +16,11 @@ import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
 
+ interface Props{
+id:string
+}
 
-export default function KanbanBoard() {
+export default function KanbanBoard(props:Props) {
   const [columns] = useState<Column[]>([
     {
       id: nanoid(),
@@ -100,12 +103,25 @@ export default function KanbanBoard() {
       content: data.content,
       assignedTo: data.assignedTo,
       createdAt: new Date().toDateString(),
+      projectId: props.id
     };
 
     setTasks([...tasks, newTask]);
 console.log(newTask.columnId)
   }
   console.log(tasks);
+
+
+  useEffect(()=>{
+    localStorage.setItem('Tasks',JSON.stringify(tasks))
+  },[tasks])
+  useEffect(()=>{
+    const task = JSON.parse(localStorage.getItem('Tasks')!)
+    setTasks(task)
+  },[])
+
+
+
   function onDragOverHandler(event: DragOverEvent) {
     // console.log(event)
     const { active, over } = event;

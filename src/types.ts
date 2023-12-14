@@ -11,4 +11,5 @@ export type Task = {
     content:string;
     assignedTo:string;
     createdAt: string;
+    projectId:string;
 }

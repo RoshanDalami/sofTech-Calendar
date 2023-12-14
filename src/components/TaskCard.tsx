@@ -56,13 +56,20 @@ export default function TaskCard({ task,taskDeleteHandler }: Props) {
         setIsMouseOver(false)
       }}
     >
-      <p>
+      <div>
+
+      <p className="text-white text-lg font-bold">
 
       {task.content}
       </p>
+      <p className="text-white/60 text-xs">
+        {task.assignedTo}
+      </p>
+      </div>
      { isMouseOver && <button className="bg-red-600 rounded-md text-white px-2 py-1" onClick={()=>taskDeleteHandler(task.id)}  >
         <TrashIcon className="h-5 w-5" />
       </button>}
+
     </div>
   );
 }
