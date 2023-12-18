@@ -49,7 +49,7 @@ export default function Login() {
   const submitHandler = async (data:FieldValues) =>{
     try {
       setLoading(true)
-      const response = await fetch('http://calenderapi.meropalika.com/api/login',{
+      const response = await fetch('https://calenderapi.meropalika.com/api/login',{
         method:'POST',
         headers:{
           'Content-Type':'application/json'
