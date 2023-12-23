@@ -7,12 +7,14 @@ import { DayData } from "../types/calendar.types";
 import { useEffect, useMemo, useState } from "react";
 import NepaliDate from "nepali-date-converter";
 import { classNames } from "../helper/utils";
-import { useParams } from "react-router-dom";
+import {url} from '../service/apiHelper'
 import Model from "./Model";
 import { PlusIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { nanoid } from "nanoid";
-
+import { FieldValues, useForm } from "react-hook-form";
+import axios from 'axios'
 import { useEvent } from "../Context";
+
 
 const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
   return (
@@ -21,28 +23,14 @@ const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
   );
 };
 
-console.log(new NepaliDate(), "nepali Date");
+// console.log(new NepaliDate(), "nepali Date");
 
 export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
-  const { BSYear, BSMonth } = useParams();
 
   const [modelOpen, setModelOpen] = useState(false);
 
-  if (BSMonth === undefined || BSYear === undefined) {
-    window.location.reload();
-  }
 
-  // const [eventList, setEventList] = useState<
-  //   {
-  //     event: string;
-  //     description: string;
-  //     year: string | undefined;
-  //     month: string | undefined;
-  //     date: string | undefined;
-  //     id:string;
-  //   }[]
-  // >([]);
-
+  const { register , reset, handleSubmit } = useForm()
   const { addEvent, eventList } = useEvent();
 
   const { t, isNepaliLanguage } = useLanguage();
@@ -60,46 +48,30 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
   useEffect(() => {
     setSelectedDay(isSameMonth(today, firstDay) ? today : firstDay);
   }, [monthData]);
+ 
+  const onSubmitHandler = async(data: FieldValues) => {
+    const selectedDateNepali = selectedDay.format("YYYY-MM-DD")
+    const selectedDateEnglish = selectedDay.toJsDate().toLocaleDateString('fr-CA')
+    const bodyData = {
+      eventId:nanoid(),
+      eventTitle:data.eventTitle,
+      eventDescription : data.eventDescription,
+      eventStartTime:data.eventStartTime,
+      eventEndTime:data.eventEndTime,
+      eventDateNepali:selectedDateNepali,
+      eventDateEnglish:selectedDateEnglish
 
-  const [formData, setFormData] = useState({
-    event: "",
-    description: "",
-    time: "",
-    year: "",
-    month: "",
-
-    date: selectedDay.getDate(),
-  });
-  // console.log(formData,"hello")
-
-  const onSubmitHandler = (e: any) => {
-    e.preventDefault();
+    }
+   
     try {
-      const formattedDate = selectedDay.format("DD");
-      // const formattedMonth = selectedDay.format("MM");
-      // const formattedYear = selectedDay.format("YYY");
+        const response = await axios.post(`${url.postEvent}`,bodyData)
+        if(!response.status){
+          console.log('error')
+        }
 
-      // Update eventList using setEventList
-      // setEventList((prevEventList) => [
-      //   ...prevEventList,
-      //   {
-      //     ...formData,
-      //     date: formattedDate,
-      //     id:nanoid()
-      //   },
-      // ]);
-      // ,month:formattedMonth, year:formattedYear
-      addEvent({ ...formData, date: formattedDate, id: nanoid() });
-      console.log(formData, "data");
+      console.log({data,selectedDateNepali,selectedDateEnglish},'form data')
       setModelOpen(false);
-      setFormData({
-        event: "",
-        description: "",
-        time: "",
-        year: "",
-        month: "",
-        date: 0,
-      });
+      
     } catch (error) {
       console.log(error);
     }
@@ -146,7 +118,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
             <form
               action=""
               className="mx-5 mt-12 flex flex-col gap-4"
-              onSubmit={onSubmitHandler}
+              onSubmit={handleSubmit((data)=>onSubmitHandler(data))}
             >
               <div className="flex flex-col gap-2">
                 <label htmlFor="event" className="text-2xl font-bold">
@@ -156,10 +128,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                   type="text"
                   className="rounded-md border-[1px] border-gray-500 px-4 py-2"
                   placeholder="Events"
-                  onChange={(e) => {
-                    setFormData({ ...formData, event: e.target.value });
-                  }}
-                  value={formData.event}
+                  {...register('eventTitle')}
                   required
                 />
               </div>
@@ -171,67 +140,37 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                   type="text"
                   className="rounded-md border-[1px] border-gray-500 px-4 py-2"
                   placeholder="Event Description"
-                  onChange={(e) => {
-                    setFormData({ ...formData, description: e.target.value });
-                  }}
-                  value={formData.description}
+                 {...register('eventDescription')}
                   required
                 />
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-4   ">
+              <div className="flex flex-col w-2/4 gap-2">
                 <label htmlFor="description" className="text-2xl font-bold">
-                  Time of Event
+                  Event Start Time
                 </label>
                 <input
                   type="time"
-                  className="rounded-md border-[1px] border-gray-500 px-4 py-2"
+                  className="rounded-md border-[1px] border-gray-500 w-full px-4 py-2"
                   placeholder=" Event Time "
-                  onChange={(e) => {
-                    setFormData({ ...formData, time: e.target.value });
-                  }}
-                  value={formData.time}
+                  {...register('eventStartTime')}
                   required
                 />
               </div>
-              <div className="flex   flex-wrap items-center gap-2 ">
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="">Year</label>
-                  <input
-                    type="number"
-                    className="w-ful rounded-md border-[1px] border-gray-500 px-4 py-2"
-                    placeholder={JSON.stringify(selectedDay.getYear())}
-                    onChange={(e) => {
-                      setFormData({ ...formData, year: e.target.value });
-                    }}
-                    value={formData.year}
-                    // value={BSYear}
-                    required
-                  />
-                </div>
-                <div className="flex flex-col  gap-2">
-                  <label htmlFor="">Month</label>
-                  <input
-                    type="number"
-                    className="rounded-md border-[1px] border-gray-500 px-4 py-2"
-                    placeholder={JSON.stringify(selectedDay.getMonth() + 1)}
-                    onChange={(e) => {
-                      setFormData({ ...formData, month: e.target.value });
-                    }}
-                    value={formData.month}
-                    // value={BSMonth}
-                    required
-                  />
-                </div>
-                <div className="flex flex-col  gap-2">
-                  <label htmlFor="">Date</label>
-                  <input
-                    type="text"
-                    className="rounded-md border-[1px] border-gray-500 px-4 py-2"
-                    value={selectedDay.getBS().date}
-                    readOnly
-                  />
-                </div>
+              <div className="flex flex-col w-2/4 gap-2">
+                <label htmlFor="description" className="text-2xl font-bold">
+                  Event End Time
+                </label>
+                <input
+                  type="time"
+                  className="rounded-md border-[1px]  border-gray-500 px-4 py-2"
+                  placeholder=" Event Time "
+                  {...register('eventEndTime')}
+                  required
+                />
               </div>
+              </div>
+              
               <button
                 type="submit"
                 className="mb-3 mt-2 rounded-md bg-blue-600 py-2 text-white"

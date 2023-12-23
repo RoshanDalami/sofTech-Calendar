@@ -1,9 +1,9 @@
 // import React from "react";
 
 import { Link } from "react-router-dom";
-import { useEvent } from "../Context";
+
 import Model from "../components/Model";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   XCircleIcon,
   PencilSquareIcon,
@@ -13,10 +13,13 @@ import {
 import TableHeader from "../components/TableHeader";
 import NepaliDate from "nepali-date-converter";
 import clsx from "clsx";
-
+import axios from 'axios'
+import { url } from "../service/apiHelper";
+import { Event } from "../types";
 export default function Events() {
-  const { eventList, removeEvent } = useEvent();
+  // const { eventList, removeEvent } = useEvent();
   const [isEdit, setIsEdit] = useState(false);
+  const [events,setEvents] = useState<Event[]>([])
   const [currentEventId, setCurrentEventId] = useState("");
   const [formData, setFormData] = useState({
     event: "",
@@ -25,6 +28,30 @@ export default function Events() {
     month: "",
     date: "",
   });
+  const getAllEvents = async()=>{
+    try {
+      
+      const response = await axios.get(url.getAllEvents)
+  
+      setEvents(response.data)
+    } catch (error) {
+        console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getAllEvents();
+  },[events])
+  console.log(events)
+
+  const removeEvent = async(id:any)=>{
+    console.log(id)
+    try { 
+        await axios.delete(url.deleteEvent,{data:{id:id}})
+        
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const onSubmitHandler = (e: any) => {
     e.preventDefault();
@@ -51,9 +78,9 @@ export default function Events() {
     return time12;
   }
 
-  const sortedEvents = eventList?.sort((a, b) => {
-    const dateA = new Date(`${a.year}/${a.month}/${a.date}`).getTime();
-    const dateB = new Date(`${b.year}/${b.month}/${b.date}`).getTime();
+  const sortedEvents = events?.sort((a, b) => {
+    const dateA = new Date(`${a.eventDateNepali}`).getTime();
+    const dateB = new Date(`${b.eventDateNepali}`).getTime();
     return dateA - dateB;
   });
 
@@ -74,14 +101,14 @@ export default function Events() {
                 setIsEdit(false);
               }}
             />
-            {eventList?.map((event) => {
-              if (event.id === currentEventId) {
+            {events?.map((event) => {
+              if (event.eventId === currentEventId) {
                 return (
                   <form
                     action=""
                     className="mx-5 mt-12 flex flex-col gap-4"
                     onSubmit={onSubmitHandler}
-                    key={event.id}
+                    key={event.eventId}
                   >
                     <div className="flex flex-col gap-2">
                       <label htmlFor="event" className="text-2xl font-bold">
@@ -94,7 +121,7 @@ export default function Events() {
                         onChange={(e) => {
                           setFormData({ ...formData, event: e.target.value });
                         }}
-                        value={event.event}
+                        value={event.eventTitle}
                         required
                       />
                     </div>
@@ -115,38 +142,9 @@ export default function Events() {
                             description: e.target.value,
                           });
                         }}
-                        value={event.description}
+                        value={event.eventDescription}
                         required
                       />
-                    </div>
-                    <div className="flex items-center gap-2 ">
-                      <div>
-                        <label htmlFor="">Year</label>
-                        <input
-                          type="text"
-                          className="rounded-md border-[1px] border-gray-500 px-4 py-2"
-                          value={event.year}
-                          readOnly
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="">Month</label>
-                        <input
-                          type="text"
-                          className="rounded-md border-[1px] border-gray-500 px-4 py-2"
-                          value={event.month}
-                          readOnly
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="">Date</label>
-                        <input
-                          type="text"
-                          className="rounded-md border-[1px] border-gray-500 px-4 py-2"
-                          value={event.date}
-                          readOnly
-                        />
-                      </div>
                     </div>
                     <button
                       type="submit"
@@ -193,10 +191,10 @@ export default function Events() {
             ""
           )}
           <tbody>
-            {eventList?.length > 0 ? (
-              eventList?.map((event, index) => {
+            {events?.length > 0 ? (
+              sortedEvents?.map((event, index) => {
                 const eventDate = new Date(
-                  `${event.year}/${event.month}/${event.date}`
+                  `${event.eventDateNepali}`
                 ).getTime();
 
                 const isEventPassed = eventDate < currentDateTime;
@@ -207,7 +205,7 @@ export default function Events() {
                     className={clsx("border-b bg-white  ", {
                       "bg-red-200/50 text-red-600" : isEventPassed ,
                     })}
-                    key={event.id}
+                    key={event.eventId}
                   >
                     <th
                       scope="row"
@@ -218,7 +216,7 @@ export default function Events() {
                     <td className="px-6 py-4">
                       <p className="text-center text-lg">
                         <p className="">
-                          {`${event.year}/${event.month}/${event.date}`}
+                          { `${event.eventDateNepali}`}
                         </p>
                         {isToday ? (
                           <p className="rounded-lg bg-gray-300/60 text-center text-sm  text-lime-600 ">
@@ -236,17 +234,17 @@ export default function Events() {
                       </p>
                     </td>
 
-                    <td className="px-6 py-4">{event.event.slice(0,10)}</td>
-                    <td className="px-6 py-4">{event.description.slice(0,10)}</td>
+                    <td className="px-6 py-4">{event.eventTitle.slice(0,15)}</td>
+                    <td className="px-6 py-4">{event.eventDescription.slice(0,15)}</td>
                     <td className="px-6 py-4">
-                      {convertTo12HourFormat(event.time)}
+                      {convertTo12HourFormat(event.eventStartTime)}
                     </td>
                     <td className="px-6 py-4">
                       <div className="justify-left flex gap-3  ">
                         <button
                           className="rounded-md bg-indigo-600 px-4 py-1.5 uppercase text-white hover:bg-indigo-700"
                           onClick={() => {
-                            setCurrentEventId(event.id);
+                            
                             setIsEdit(true);
                           }}
                         >
@@ -254,7 +252,7 @@ export default function Events() {
                         </button>
                         <button
                           className="rounded-md bg-red-600 px-4 py-1.5 uppercase text-white hover:bg-red-700"
-                          onClick={() => removeEvent(event.id)}
+                          onClick={() => removeEvent(event.eventId)}
                         >
                           <TrashIcon className="h-5 w-5" />
                         </button>

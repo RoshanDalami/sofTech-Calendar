@@ -13,3 +13,13 @@ export type Task = {
     createdAt: string;
     projectId:string;
 }
+
+export type Event = {
+    eventId:string,
+    eventTitle:string,
+    eventDescription:string,
+    eventStartTime:string,
+    eventEndTime:string,
+    eventDateNepali:string,
+    eventDateEnglish:string
+}
