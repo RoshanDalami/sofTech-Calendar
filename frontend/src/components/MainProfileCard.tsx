@@ -10,9 +10,9 @@ const userDetail = {
 };
 import CountUp from "react-countup";
 
+
 export default function MainProfileCard() {
-  const userDetails = JSON.parse(localStorage.getItem("UserDetails")!);
-  console.log(userDetails);
+  const userDetails = JSON.parse(localStorage.getItem('user')!)
 
   // console.log(user, "hey");
   return (
@@ -21,10 +21,10 @@ export default function MainProfileCard() {
         <img src={userDetail.image} className=" h-28 w-28 rounded-full " />
         <div className="mt-[-10px] flex flex-col gap-3">
           <p className="text-3xl font-bold dark:text-white ">
-            Welcome , {userDetails?.name}
+            Welcome ,{userDetails.username}
           </p>
           <p className="text-md text-gray-500 dark:text-white">
-            {userDetails?.role}
+           {userDetails.role}
           </p>
         </div>
       </div>

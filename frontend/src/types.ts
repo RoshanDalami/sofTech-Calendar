@@ -21,5 +21,6 @@ export type Event = {
     eventStartTime:string,
     eventEndTime:string,
     eventDateNepali:string,
-    eventDateEnglish:string
+    eventDateEnglish:string,
+    userDetails:string
 }

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
 import { useState } from "react";
 // import { useUser } from '../Context'
-
+import Cookie from 'js-cookie'
 
 export default function Login() {
 
@@ -49,30 +49,29 @@ export default function Login() {
   const submitHandler = async (data:FieldValues) =>{
     try {
       setLoading(true)
-      const response = await fetch('https://calenderapi.meropalika.com/api/login',{
+      const response = await fetch('http://localhost:8000/api/user/login',{
         method:'POST',
         headers:{
           'Content-Type':'application/json'
         },
         body:JSON.stringify(data)
       })
+      console.log(data)
       const userData = await response.json()
-     
-      console.log(userData,"userData");
-
+      console.log(userData.data)
       
-      
-      if(response.status === 200){
-        localStorage.setItem('UserDetails',JSON.stringify(userData.data))
-        
-        
+      if(userData.status === 200){
         // addUser(userData)
+        Cookie.set('token',userData.token,{ expires: 1 })
+        localStorage.setItem('user',JSON.stringify(userData.data))
         setLoading(false)
         navigate('/dashboard')
       }
     } catch (error) {
       setLoading(false)
       console.log(error)
+    }finally{
+      setLoading(false)
     }
   }
   

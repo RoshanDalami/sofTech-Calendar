@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const EventRouter = require('./router/Events/events.routes')
-
+const UserRouter = require('./router/User/user.routes')
+const cookieParser = require('cookie-parser')
 const app = express();
 
 
@@ -13,8 +14,14 @@ app.use(cors(
 ))
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
+app.use(cookieParser())
+
+
+
+//routers
 
 app.use('/api/events',EventRouter)
+app.use('/api/user',UserRouter)
 
 
 

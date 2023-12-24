@@ -28,6 +28,10 @@ const eventsSchema = new mongoose.Schema({
     eventDateEnglish:{
         type:String,
         required:[true,'Date is required']
+    },
+    userDetails:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'User'
     }
 
 },{timestamps:true})

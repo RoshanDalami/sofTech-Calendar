@@ -13,16 +13,16 @@ const userDetail = {
 
 
 export default function ProfileCard() {
-  // const {user}:any = useUser();
-  const userDetails = JSON.parse(localStorage.getItem('UserDetails')!)
+  const userDetails = JSON.parse(localStorage.getItem('user')!)
+  
   return (
     <div className="bg-gray-300/50 rounded-lg flex items-center gap-4 py-2 px-3 my-5 cursor-pointer ">
       <div className="h-10 w-10 rounded-full overflow-hidden">
         <img src={userDetail.image} alt="profile image" />
       </div>
       <div className="flex flex-col items-start ">
-        <p className="text-md text-gray-600  font-semibold dark:text-white " >{userDetails?.name}</p>
-        <p className="text-gray-500 dark:text-white">{userDetails?.role}</p>
+        <p className="text-md text-gray-600  font-semibold dark:text-white " >{userDetails.username}</p>
+        <p className="text-gray-500 dark:text-white">{userDetails.role}</p>
       </div>
     </div>
   );

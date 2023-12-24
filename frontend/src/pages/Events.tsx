@@ -16,18 +16,13 @@ import clsx from "clsx";
 import axios from 'axios'
 import { url } from "../service/apiHelper";
 import { Event } from "../types";
+import EditFrom from "../components/EditFrom";
 export default function Events() {
   // const { eventList, removeEvent } = useEvent();
   const [isEdit, setIsEdit] = useState(false);
-  const [events,setEvents] = useState<Event[]>([])
+  const [EventList,setEvents] = useState<Event[]>([])
   const [currentEventId, setCurrentEventId] = useState("");
-  const [formData, setFormData] = useState({
-    event: "",
-    description: "",
-    year: "",
-    month: "",
-    date: "",
-  });
+ 
   const getAllEvents = async()=>{
     try {
       
@@ -40,8 +35,9 @@ export default function Events() {
   }
   useEffect(()=>{
     getAllEvents();
-  },[events])
-  console.log(events)
+  },[EventList])
+
+
 
   const removeEvent = async(id:any)=>{
     console.log(id)
@@ -52,12 +48,12 @@ export default function Events() {
       console.log(error)
     }
   }
-
-  const onSubmitHandler = (e: any) => {
-    e.preventDefault();
-    console.log("Hello");
-    console.log(formData);
-  };
+const userDetail = JSON.parse(localStorage.getItem('user')!)
+  // const onSubmitHandler = (e: any) => {
+  //   e.preventDefault();
+  //   console.log("Hello");
+  //   console.log(formData);
+  // };
 
   function convertTo12HourFormat(time24: string) {
     // Split the time string into hours and minutes
@@ -78,7 +74,7 @@ export default function Events() {
     return time12;
   }
 
-  const sortedEvents = events?.sort((a, b) => {
+  const sortedEvents = EventList?.sort((a, b) => {
     const dateA = new Date(`${a.eventDateNepali}`).getTime();
     const dateB = new Date(`${b.eventDateNepali}`).getTime();
     return dateA - dateB;
@@ -101,58 +97,10 @@ export default function Events() {
                 setIsEdit(false);
               }}
             />
-            {events?.map((event) => {
+            {EventList?.map((event) => {
               if (event.eventId === currentEventId) {
                 return (
-                  <form
-                    action=""
-                    className="mx-5 mt-12 flex flex-col gap-4"
-                    onSubmit={onSubmitHandler}
-                    key={event.eventId}
-                  >
-                    <div className="flex flex-col gap-2">
-                      <label htmlFor="event" className="text-2xl font-bold">
-                        Event
-                      </label>
-                      <input
-                        type="text"
-                        className="rounded-md border-[1px] border-gray-500 px-4 py-2"
-                        placeholder="Events"
-                        onChange={(e) => {
-                          setFormData({ ...formData, event: e.target.value });
-                        }}
-                        value={event.eventTitle}
-                        required
-                      />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <label
-                        htmlFor="description"
-                        className="text-2xl font-bold"
-                      >
-                        Description
-                      </label>
-                      <input
-                        type="text"
-                        className="rounded-md border-[1px] border-gray-500 px-4 py-2"
-                        placeholder="Event Description"
-                        onChange={(e) => {
-                          setFormData({
-                            ...formData,
-                            description: e.target.value,
-                          });
-                        }}
-                        value={event.eventDescription}
-                        required
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      className="mb-3 mt-2 rounded-md bg-blue-600 py-2 text-white"
-                    >
-                      Update Event
-                    </button>
-                  </form>
+                  <EditFrom event={event} setIsEdit={setIsEdit} />
                 );
               }
             })}
@@ -191,8 +139,8 @@ export default function Events() {
             ""
           )}
           <tbody>
-            {events?.length > 0 ? (
-              sortedEvents?.map((event, index) => {
+            {EventList?.length > 0 ? (
+              sortedEvents?.filter((event)=>event.userDetails === userDetail._id ).map((event, index) => {
                 const eventDate = new Date(
                   `${event.eventDateNepali}`
                 ).getTime();
@@ -244,7 +192,7 @@ export default function Events() {
                         <button
                           className="rounded-md bg-indigo-600 px-4 py-1.5 uppercase text-white hover:bg-indigo-700"
                           onClick={() => {
-                            
+                            setCurrentEventId(event.eventId)
                             setIsEdit(true);
                           }}
                         >

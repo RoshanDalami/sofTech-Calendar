@@ -26,6 +26,7 @@
     "i18next": "^23.2.3",
     "i18next-browser-languagedetector": "^7.0.2",
     "i18next-http-backend": "^2.2.1",
+    "js-cookie": "^3.0.5",
     "nanoid": "^5.0.4",
     "nepali-date-converter": "^3.3.1",
     "nextjs-progressbar": "^0.0.16",
@@ -43,6 +44,7 @@
     "workbox-window": "^7.0.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/react": "^18.0.37",
     "@types/react-beautiful-dnd": "^13.1.7",
     "@types/react-dom": "^18.0.11",
