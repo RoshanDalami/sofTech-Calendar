@@ -1,50 +1,20 @@
 
 import { CalendarDaysIcon } from "@heroicons/react/24/solid";
-// import { useQuery } from "@tanstack/react-query";
-
 import { useNavigate } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
-import { useState } from "react";
-// import { useUser } from '../Context'
-import Cookie from 'js-cookie'
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { userAtom } from "../recoil/userAtom";
+
 
 export default function Login() {
 
   const navigate = useNavigate()
-  // const {addUser } = useUser();
+  const [user , setUser] = useRecoilState(userAtom)
+
 
   const { register, handleSubmit } = useForm();
   const [loading,setLoading] = useState(false);
-
-  
-  // const onSubmitHandler =(data:any)=>{
-
-    // const {  data  } = useQuery({
-    //   queryKey: ['repoData'],
-    //   queryFn: () =>
-    //     fetch('http://calenderapi.meropalika.com/api/login',{
-    //       method:'POST',
-    //       headers:{
-    //         'Content-Type':'application/json'
-    //       },
-    //       body:JSON.stringify(formData)
-    //     }).then(
-    //       (res) => {
-    //         if(res.status === 200){
-    //             navigate('/dashboard')
-    //         }
-    //       }
-
-    //     ),
-    // })
-  //   // console.log(data)
-
-  //   console.log(data)
-
-  //   // if(detail?.status === true){
-  //   //   navigate('/dashboard')
-  //   // }
-  //
 
   const submitHandler = async (data:FieldValues) =>{
     try {
@@ -58,12 +28,11 @@ export default function Login() {
       })
       console.log(data)
       const userData = await response.json()
-      console.log(userData.data)
+      console.log(userData,'userData')
+      
       
       if(userData.status === 200){
-        // addUser(userData)
-        Cookie.set('token',userData.token,{ expires: 1 })
-        localStorage.setItem('user',JSON.stringify(userData.data))
+        setUser(userData)
         setLoading(false)
         navigate('/dashboard')
       }
@@ -74,6 +43,12 @@ export default function Login() {
       setLoading(false)
     }
   }
+  
+ 
+
+  useEffect(()=>{
+    localStorage.setItem('user',JSON.stringify(user))
+  },[user]) 
   
 
   return (

@@ -7,15 +7,15 @@ import { DayData } from "../types/calendar.types";
 import { useEffect, useMemo, useState } from "react";
 import NepaliDate from "nepali-date-converter";
 import { classNames } from "../helper/utils";
-import {url} from '../service/apiHelper'
+import { url } from "../service/apiHelper";
 import Model from "./Model";
 import { PlusIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { nanoid } from "nanoid";
 import { FieldValues, useForm } from "react-hook-form";
-import axios from 'axios'
-
+import axios from "axios";
+import { userAtom } from "../recoil/userAtom";
+import { useRecoilValue } from "recoil";
 import { Event } from "../types";
-
 
 const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
   return (
@@ -27,13 +27,10 @@ const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
 // console.log(new NepaliDate(), "nepali Date");
 
 export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
-
   const [modelOpen, setModelOpen] = useState(false);
-  const [EventList,setEventList]=useState<Event[]>([])
-
-
-  const { register , handleSubmit } = useForm()
-  const userDetail = JSON.parse(localStorage.getItem('user')!)
+  const [EventList, setEventList] = useState<Event[]>([]);
+  const user = useRecoilValue(userAtom)
+  const { register, handleSubmit } = useForm();
 
 
   const { t, isNepaliLanguage } = useLanguage();
@@ -52,38 +49,39 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
     setSelectedDay(isSameMonth(today, firstDay) ? today : firstDay);
   }, [monthData]);
 
-  const onSubmitHandler = async(data: FieldValues) => {
-    const selectedDateNepali = selectedDay.format("YYYY-M-D")
-    
-    const selectedDateEnglish = selectedDay.toJsDate().toLocaleDateString('fr-CA')
+  const onSubmitHandler = async (data: FieldValues) => {
+    const selectedDateNepali = selectedDay.format("YYYY-M-D");
+
+    const selectedDateEnglish = selectedDay
+      .toJsDate()
+      .toLocaleDateString("fr-CA");
     const bodyData = {
-      eventId:nanoid(),
-      eventTitle:data.eventTitle,
-      eventDescription : data.eventDescription,
-      eventStartTime:data.eventStartTime,
-      eventEndTime:data.eventEndTime,
-      eventDateNepali:selectedDateNepali,
-      eventDateEnglish:selectedDateEnglish,
-      userDetails:userDetail._id
-    }
+      eventId: nanoid(),
+      eventTitle: data.eventTitle,
+      eventDescription: data.eventDescription,
+      eventStartTime: data.eventStartTime,
+      eventEndTime: data.eventEndTime,
+      eventDateNepali: selectedDateNepali,
+      eventDateEnglish: selectedDateEnglish,
+      userDetails: user.data._id,
+    };
     try {
-        const response = await axios.post(`${url.postEvent}`,bodyData)
-        if(!response.status){
-          console.log('error')
-        }
+      const response = await axios.post(`${url.postEvent}`, bodyData);
+      if (!response.status) {
+        console.log("error");
+      }
       setModelOpen(false);
-      
     } catch (error) {
       console.log(error);
     }
   };
-  const getEvents = async()=>{
+  const getEvents = async () => {
     const response = await axios.get(url.getAllEvents);
-    setEventList(response.data)
-  }
-  useEffect(()=>{
+    setEventList(response.data);
+  };
+  useEffect(() => {
     getEvents();
-  },[EventList])
+  }, []);
 
   function convertTo12HourFormat(time24: string) {
     // Split the time string into hours and minutes
@@ -126,7 +124,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
             <form
               action=""
               className="mx-5 mt-12 flex flex-col gap-4"
-              onSubmit={handleSubmit((data)=>onSubmitHandler(data))}
+              onSubmit={handleSubmit((data) => onSubmitHandler(data))}
             >
               <div className="flex flex-col gap-2">
                 <label htmlFor="event" className="text-2xl font-bold">
@@ -136,7 +134,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                   type="text"
                   className="rounded-md border-[1px] border-gray-500 px-4 py-2"
                   placeholder="Events"
-                  {...register('eventTitle')}
+                  {...register("eventTitle")}
                   required
                 />
               </div>
@@ -148,37 +146,37 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                   type="text"
                   className="rounded-md border-[1px] border-gray-500 px-4 py-2"
                   placeholder="Event Description"
-                 {...register('eventDescription')}
+                  {...register("eventDescription")}
                   required
                 />
               </div>
               <div className="flex items-center gap-4   ">
-              <div className="flex flex-col w-2/4 gap-2">
-                <label htmlFor="description" className="text-2xl font-bold">
-                  Event Start Time
-                </label>
-                <input
-                  type="time"
-                  className="rounded-md border-[1px] border-gray-500 w-full px-4 py-2"
-                  placeholder=" Event Time "
-                  {...register('eventStartTime')}
-                  required
-                />
+                <div className="flex w-2/4 flex-col gap-2">
+                  <label htmlFor="description" className="text-2xl font-bold">
+                    Event Start Time
+                  </label>
+                  <input
+                    type="time"
+                    className="w-full rounded-md border-[1px] border-gray-500 px-4 py-2"
+                    placeholder=" Event Time "
+                    {...register("eventStartTime")}
+                    required
+                  />
+                </div>
+                <div className="flex w-2/4 flex-col gap-2">
+                  <label htmlFor="description" className="text-2xl font-bold">
+                    Event End Time
+                  </label>
+                  <input
+                    type="time"
+                    className="rounded-md border-[1px]  border-gray-500 px-4 py-2"
+                    placeholder=" Event Time "
+                    {...register("eventEndTime")}
+                    required
+                  />
+                </div>
               </div>
-              <div className="flex flex-col w-2/4 gap-2">
-                <label htmlFor="description" className="text-2xl font-bold">
-                  Event End Time
-                </label>
-                <input
-                  type="time"
-                  className="rounded-md border-[1px]  border-gray-500 px-4 py-2"
-                  placeholder=" Event Time "
-                  {...register('eventEndTime')}
-                  required
-                />
-              </div>
-              </div>
-              
+
               <button
                 type="submit"
                 className="mb-3 mt-2 rounded-md bg-blue-600 py-2 text-white"
@@ -198,7 +196,9 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
             <div className="text-center text-xl">{t("homepage.W")}</div>
             <div className="text-center text-xl">{t("homepage.Th")}</div>
             <div className="text-center text-xl">{t("homepage.F")}</div>
-            <div className="text-center text-xl text-red-600">{t("homepage.Sa")}</div>
+            <div className="text-center text-xl text-red-600">
+              {t("homepage.Sa")}
+            </div>
           </div>
           <div className="isolate  mt-2 grid h-[50vh] w-[90vw] grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200  md:h-[78vh] md:w-[60.6vw] ">
             {monthData.map((day, dayIdx) => {
@@ -224,28 +224,21 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                     "font-mukta  group relative rounded-md  p-1 leading-3 focus:z-10 ",
                     (isSelectedDay || isToday) && "font-semibold",
                     isToday && "bg-blue-600   font-semibold text-indigo-600",
-                    
+
                     !isSelectedDay && "bg-white",
                     isSelectedDay &&
                       " bg-blue-600  text-white  hover:bg-blue-700",
                     isSelectedDay && "bg-blue-600",
-                   ((day.events.find((event) => event.jds?.gh == "1") ||
-                      day.week_day === 6 ) && !isSelectedDay )    &&
-                       " text-rose-600  ",
+                    (day.events.find((event) => event.jds?.gh == "1") ||
+                      day.week_day === 6) &&
+                      !isSelectedDay &&
+                      " text-rose-600  "
                   )}
                 >
                   {EventList.map((event) => {
-                    // console.log(event.eventDateNepali === (`${bs_year}-${bs_month}-${bs_day}`))
-
-                    // console.log(event.eventDateNepali)
-                    // console.log(`${bs_year}-${bs_month}-${bs_day}`)
-                    console.log(event.eventDateNepali.split('-')[2])
-                    
                     if (
-                      // event.eventDateNepali === JSON.stringify(bs_year) &&
-                      // event.eventDateNepali === JSON.stringify(bs_month) &&
-                      // event.eventDateNepali === JSON.stringify(bs_day)
-                      event.eventDateNepali === (`${bs_year}-${bs_month}-${bs_day}`)
+                     ( event.eventDateNepali ===
+                      `${bs_year}-${bs_month}-${bs_day}`) && event.userDetails === user.data._id
                     ) {
                       return (
                         <div key={event.eventId} className="">
@@ -289,11 +282,10 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
             </div>
             {EventList.map((event: any) => {
               if (
-                event.eventDateNepali === selectedDay.format("YYYY-M-D")
+                event.eventDateNepali === selectedDay.format("YYYY-M-D") && event.userDetails === user.data._id
                 // event.year === JSON.stringify(selectedDay.getBS().year) &&
                 // event.month === JSON.stringify(selectedDay.getBS().month + 1) &&
                 // event.date === JSON.stringify(selectedDay.getDate())
-
               ) {
                 return (
                   <div
@@ -303,7 +295,9 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                     <div className="flex">
                       <div className="flex-col">
                         <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold ">
-                          <h1 className="text-xl">{event.eventDateNepali.split('-')[2]}</h1>
+                          <h1 className="text-xl">
+                            {event.eventDateNepali.split("-")[2]}
+                          </h1>
                         </div>
                         <p className="mt-2 text-sm text-gray-500 ">
                           {/* day  */}
@@ -320,7 +314,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
 
                       <div className="ml-4 grow text-left">
                         <p className="mt-2 text-sm font-semibold ">
-                          {event.eventTitle.slice(0,10)}
+                          {event.eventTitle.slice(0, 10)}
                         </p>
                       </div>
                       <div className="ml-5 flex-col text-end">

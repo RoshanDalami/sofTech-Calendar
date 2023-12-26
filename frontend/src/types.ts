@@ -24,3 +24,17 @@ export type Event = {
     eventDateEnglish:string,
     userDetails:string
 }
+
+export type User = {
+    message:string,
+    status:number,
+    data: {
+        _id: string,
+        username: string,
+        email: string,
+        role: string,
+        createdAt: string,
+        updatedAt: string,
+        __v: number
+    }
+}

@@ -45,7 +45,7 @@ export default function LinkLists() {
       {navLinks.map((link) => {
         const isPath =
           location.pathname.split("/")[1] === link.herf.split("/")[1];
-        console.log(isPath);
+
 
         return (
           <Link

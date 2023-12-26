@@ -13,31 +13,21 @@ import SideBar from "./components/SideBar.tsx";
 import Dashboard from "./components/Dashboard.tsx";
 import Login from "./components/Login.tsx";
 import Reports from "./pages/Reports.tsx";
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import { userAtom } from "./recoil/userAtom";
+import { useSetRecoilState } from "recoil";
 import { useEffect } from "react";
+
+
 
 const Body = () => {
 const location = useLocation();
-const navigate = useNavigate();
-const token = Cookies.get('token');
-useEffect(()=>{
-    if(token){
-      navigate('/dashboard')
-    }
-  },[])
+const setUser = useSetRecoilState(userAtom);
   useEffect(()=>{
-    if(token && location.pathname === '/'){
-      navigate('/dashboard')
-    }
-
-  },[location.pathname])
-  useEffect(()=>{
-    if(token === '' || !token){
-      navigate('/')
-    }
-
+    const user = JSON.parse(localStorage.getItem('user')!)
+    setUser(user)
   },[])
+
+
 
   return (
     <div className={" flex min-h-screen flex-col font-mono dark:bg-gray-800 "}>

@@ -17,12 +17,14 @@ import axios from 'axios'
 import { url } from "../service/apiHelper";
 import { Event } from "../types";
 import EditFrom from "../components/EditFrom";
+import { userAtom } from "../recoil/userAtom";
+import { useRecoilValue } from "recoil";
 export default function Events() {
   // const { eventList, removeEvent } = useEvent();
   const [isEdit, setIsEdit] = useState(false);
   const [EventList,setEvents] = useState<Event[]>([])
   const [currentEventId, setCurrentEventId] = useState("");
- 
+  const user = useRecoilValue(userAtom)
   const getAllEvents = async()=>{
     try {
       
@@ -140,7 +142,7 @@ const userDetail = JSON.parse(localStorage.getItem('user')!)
           )}
           <tbody>
             {EventList?.length > 0 ? (
-              sortedEvents?.filter((event)=>event.userDetails === userDetail._id ).map((event, index) => {
+              sortedEvents?.filter((event)=>event?.userDetails === user?.data?._id ).map((event, index) => {
                 const eventDate = new Date(
                   `${event.eventDateNepali}`
                 ).getTime();

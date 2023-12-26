@@ -9,10 +9,14 @@ const userDetail = {
   role: "Admin",
 };
 import CountUp from "react-countup";
-
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../recoil/userAtom";
+import { User } from "../types";
 
 export default function MainProfileCard() {
-  const userDetails = JSON.parse(localStorage.getItem('user')!)
+  
+  const user:User =  useRecoilValue(userAtom)
+
 
   // console.log(user, "hey");
   return (
@@ -21,10 +25,10 @@ export default function MainProfileCard() {
         <img src={userDetail.image} className=" h-28 w-28 rounded-full " />
         <div className="mt-[-10px] flex flex-col gap-3">
           <p className="text-3xl font-bold dark:text-white ">
-            Welcome ,{userDetails.username}
+            Welcome ,{user?.data?.username}
           </p>
           <p className="text-md text-gray-500 dark:text-white">
-           {userDetails.role}
+           {user?.data?.role}
           </p>
         </div>
       </div>
