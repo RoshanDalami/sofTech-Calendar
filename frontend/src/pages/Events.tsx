@@ -50,12 +50,7 @@ export default function Events() {
       console.log(error)
     }
   }
-const userDetail = JSON.parse(localStorage.getItem('user')!)
-  // const onSubmitHandler = (e: any) => {
-  //   e.preventDefault();
-  //   console.log("Hello");
-  //   console.log(formData);
-  // };
+
 
   function convertTo12HourFormat(time24: string) {
     // Split the time string into hours and minutes

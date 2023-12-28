@@ -17,7 +17,6 @@ const App = () => {
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
           <Body />
-
           <Toaster position="bottom-center" />
         </QueryClientProvider>
       </RecoilRoot>
