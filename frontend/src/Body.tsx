@@ -58,7 +58,7 @@ const Body = () => {
           location.pathname === "/login" ||
           location.pathname === "/register"
             ? ""
-            : "md:ml-60"
+            : "mt-7 md:ml-60 md:mt-0"
         }  `}
       >
         <Routes>

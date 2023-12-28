@@ -10,21 +10,20 @@ const userDetail = {
 };
 import CountUp from "react-countup";
 
-
 export default function MainProfileCard() {
-  const userDetails = JSON.parse(localStorage.getItem('user')!)
+  const userDetails = JSON.parse(localStorage.getItem("user")!);
 
   // console.log(user, "hey");
   return (
     <div className="flex justify-between rounded-md border border-gray-400/50 px-5 py-5 shadow-md   ">
-      <div className="flex items-center gap-10 ">
+      <div className="flex flex-col items-center gap-10 md:flex-row ">
         <img src={userDetail.image} className=" h-28 w-28 rounded-full " />
-        <div className="mt-[-10px] flex flex-col gap-3">
-          <p className="text-3xl font-bold dark:text-white ">
+        <div className="mt-[-10px] flex flex-col items-center md:gap-3">
+          <p className="font-bold dark:text-white md:text-3xl ">
             Welcome ,{userDetails.username}
           </p>
           <p className="text-md text-gray-500 dark:text-white">
-           {userDetails.role}
+            {userDetails.role}
           </p>
         </div>
       </div>
@@ -36,7 +35,6 @@ export default function MainProfileCard() {
           <div className="mx-3 flex h-6  w-6 items-center justify-center  rounded-full bg-gray-400/50 text-xs  text-black dark:text-white">
             <span>
               <CountUp end={10} />
-              
             </span>
           </div>
         </span>
@@ -45,8 +43,8 @@ export default function MainProfileCard() {
           <p className="text-md text-black dark:text-white">In progress</p>
           <div className="mx-3 flex h-6  w-6 items-center justify-center rounded-full bg-gray-400/50 text-xs  text-black dark:text-white">
             <span>
-              <CountUp end={13}/>
-              </span>
+              <CountUp end={13} />
+            </span>
           </div>
         </span>
         <span className="flex  items-center ">
@@ -63,7 +61,7 @@ export default function MainProfileCard() {
           <p className="text-md text-black dark:text-white">Backlogs</p>
           <div className="mx-3 flex h-6  w-6 items-center justify-center rounded-full bg-gray-400/50 text-xs  text-black dark:text-white">
             <span>
-              <CountUp end={2}/>
+              <CountUp end={2} />
             </span>
           </div>
         </span>
