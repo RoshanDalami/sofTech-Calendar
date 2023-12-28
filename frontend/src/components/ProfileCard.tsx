@@ -1,7 +1,5 @@
 // import React from 'react'
 
-
-
 // import { useUser } from "../Context";
 const userDetail = {
   image:
@@ -10,19 +8,19 @@ const userDetail = {
   role: "Admin",
 };
 
-
-
 export default function ProfileCard() {
-  const userDetails = JSON.parse(localStorage.getItem('user')!)
-  
+  const userDetails = JSON.parse(localStorage.getItem("user")!);
+
   return (
-    <div className="bg-gray-300/50 rounded-lg flex items-center gap-4 py-2 px-3 my-5 cursor-pointer ">
-      <div className="h-10 w-10 rounded-full overflow-hidden">
+    <div className="my-5 flex cursor-pointer items-center gap-4 rounded-lg bg-gray-300/50 px-3 py-2 ">
+      <div className="h-10 w-10 overflow-hidden rounded-full">
         <img src={userDetail.image} alt="profile image" />
       </div>
       <div className="flex flex-col items-start ">
-        <p className="text-md text-gray-600  font-semibold dark:text-white " >{userDetails.username}</p>
-        <p className="text-gray-500 dark:text-white">{userDetails.role}</p>
+        <p className="text-md font-semibold  text-gray-600 dark:text-white ">
+          {userDetails?.username}
+        </p>
+        <p className="text-gray-500 dark:text-white">{userDetails?.role}</p>
       </div>
     </div>
   );

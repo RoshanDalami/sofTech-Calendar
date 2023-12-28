@@ -1,5 +1,3 @@
-
-
 import Home from "./pages/Home.tsx";
 import { useLocation } from "react-router-dom";
 
@@ -16,52 +14,63 @@ import Reports from "./pages/Reports.tsx";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
+import Register from "./components/Register.tsx";
 
 const Body = () => {
-const location = useLocation();
-const navigate = useNavigate();
-const token = Cookies.get('token');
-useEffect(()=>{
-    if(token){
-      navigate('/dashboard')
+  const location = useLocation();
+  const navigate = useNavigate();
+  const token = Cookies.get("token");
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard");
     }
-  },[])
-  useEffect(()=>{
-    if(token && location.pathname === '/'){
-      navigate('/dashboard')
+  }, []);
+  useEffect(() => {
+    if (token && location.pathname === "/") {
+      navigate("/dashboard");
     }
-
-  },[location.pathname])
-  useEffect(()=>{
-    if(token === '' || !token){
-      navigate('/')
+  }, [location.pathname]);
+  useEffect(() => {
+    if (token === "" || !token) {
+      navigate("/");
     }
-
-  },[])
+  }, []);
 
   return (
     <div className={" flex min-h-screen flex-col font-mono dark:bg-gray-800 "}>
-      <div className=" sticky top-0 z-10" >
+      <div className=" sticky top-0 z-10">
         {/* <ProgressBar value={100} showAnimation={true} /> */}
 
-     {
-      location.pathname === '/' || location.pathname === '/login' ? '' :   <SideBar/>
-     }
+        {location.pathname === "/" ||
+        location.pathname === "/login" ||
+        location.pathname === "/register" ? (
+          ""
+        ) : (
+          <SideBar />
+        )}
 
-    
-      {/* <Navbar /> */}
+        {/* <Navbar /> */}
       </div>
-      
-      <div className={`flex-grow  ${location.pathname === '/'||location.pathname==='/login' ? '':'ml-60'}  `}>
+
+      <div
+        className={`flex-grow  ${
+          location.pathname === "/" ||
+          location.pathname === "/login" ||
+          location.pathname === "/register"
+            ? ""
+            : "md:ml-60"
+        }  `}
+      >
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/calendar/:BSYear?/:BSMonth?" element={<Home />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/tasks" element={ <Tasks/> } />
-          <Route path="/tasks/:taskID" element={ <IndividualTask/> } />
-          <Route path="/dashboard" element={ <Dashboard/> } />
-          <Route path="/reports" element={ <Reports/> } />
-          <Route path="/login" element={ <Login/> } />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/tasks/:taskID" element={<IndividualTask />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
 
