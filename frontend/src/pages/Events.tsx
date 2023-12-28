@@ -42,7 +42,6 @@ export default function Events() {
 
 
   const removeEvent = async(id:any)=>{
-    console.log(id)
     try { 
         await axios.delete(url.deleteEvent,{data:{id:id}})
         
