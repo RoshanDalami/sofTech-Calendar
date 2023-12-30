@@ -6,4 +6,9 @@ const baseurl = "http://localhost:8000/api"
     getAllEvents :`${baseurl}/events/getAllEvents`,
     postEvent : `${baseurl}/events/createEvent`,
     deleteEvent:`${baseurl}/events/deleteEvent`,
+    getAllTasks:`${baseurl}/tasks/getAllTasks`,
+    createTask:`${baseurl}/tasks/createTask`,
+    updateTask:`${baseurl}/tasks/updateTask`,
+    deleteTask:`${baseurl}/tasks/deleteTask`,
+
 }

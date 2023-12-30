@@ -35,9 +35,14 @@ async function deleteTask(req, res) {
     res.status(400).json({message:"Bad Request"})
   }
 }
+async function getAllTask(req,res){
+  const tasks = await Task.find({},{__v:0})
+  res.status(200).json(tasks)
+}
 
 module.exports = {
   createTask,
   updateTask,
   deleteTask,
+  getAllTask
 };
