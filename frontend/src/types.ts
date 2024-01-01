@@ -38,3 +38,9 @@ export type User = {
         __v: number
     }
 }
+
+export type TaskType = {
+    taskTitle:string,
+    taskDescription:string,
+    _id:string
+}
