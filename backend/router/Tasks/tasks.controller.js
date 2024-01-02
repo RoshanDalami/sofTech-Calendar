@@ -6,7 +6,7 @@ async function saveTask(task) {
 
 async function createTask(req, res) {
   const task = req.body;
-  // await saveTask(task);
+
   if (!task) res.status(400).json({ message: "Bad Request" });
   try {
     await Task.create(task);
@@ -39,10 +39,21 @@ async function getAllTask(req,res){
   const tasks = await Task.find({},{__v:0})
   res.status(200).json(tasks)
 }
+async function getTaskById(req,res){
+  try {
+    const id = req.params.id;
+
+    const taskById = await Task.findById({_id:id},{__v:0})
+    res.status(200).json(taskById)
+  } catch (error) {
+    res.status(200).json(error)
+  }
+}
 
 module.exports = {
   createTask,
   updateTask,
   deleteTask,
-  getAllTask
+  getAllTask,
+  getTaskById
 };

@@ -2,11 +2,12 @@ import { useTask } from "../Context";
 import { nanoid } from "nanoid";
 import Model from "../components/Model";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-
+import { url } from "../service/apiHelper";
 import KanbanBoard from "../components/KanbanBoard";
+import axios from "axios";
 
 export interface TodoType {
   id: string;
@@ -16,11 +17,11 @@ export interface TodoType {
 }
 
 export default function IndividualTask() {
-  const { taskList } = useTask();
   const { taskID } = useParams();
-  const newTaskList = taskList.filter((task) => task.id === taskID);
 
-  const singleTask = { ...newTaskList[0] };
+  
+
+
   const [todos, setTodos] = useState<TodoType[]>([
     {
       title: "Drag and Drop",
@@ -29,6 +30,24 @@ export default function IndividualTask() {
       createdAt: new Date().toDateString(),
     },
   ]);
+  const [individualTask,setIndividualTask]=useState({
+    createdAt:'',
+    taskDescription:'',
+    taskTitle:'',
+    todos:[],
+    updatedAt:'',
+    _id:'',
+  })
+  const getTaskById = async()=>{
+
+    try {
+      const response = await axios.get(`${url.getTaskById}/${taskID}`)
+    setIndividualTask(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(()=>{getTaskById()},[])
 
 
 
@@ -143,12 +162,12 @@ export default function IndividualTask() {
 
       <div>
         <p className="text-2xl font-bold text-white px-4 py-3">
+              {individualTask.taskTitle}
 
-      {singleTask.title}
         </p>
       </div>
 
-      <KanbanBoard  id={singleTask.id} />
+      <KanbanBoard  id={individualTask._id} />
 
       
     </>

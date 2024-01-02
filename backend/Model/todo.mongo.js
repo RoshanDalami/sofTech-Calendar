@@ -8,6 +8,15 @@ const todoSchema = new mongoose.Schema({
         type:String,
         require:[true,'Assigne is required']
     },
+    columnId:{
+        type:String,
+        require:[true,'ColumnId is required'],
+        default:'1'
+    },
+    taskId:{
+        type:String,
+        require:[true]
+    }
     
 },{timestamps:true});
 

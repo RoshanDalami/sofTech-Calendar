@@ -13,14 +13,6 @@ const taskSchema = new mongoose.Schema({
         type:String,
         require:[true,'Task description is required']
     },
-    todos:[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref:'Todo'
-        }
-    ]
-
-
 },{timestamps:true})
 
 const Task = mongoose.model('Task',taskSchema)

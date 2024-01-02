@@ -8,10 +8,11 @@ export type Column = {
 export type Task = {
     id:Id;
     columnId:Id;
-    content:string;
+    todoTitle:string;
     assignedTo:string;
-    createdAt: string;
-    projectId:string;
+
+    taskId:string;
+
 }
 
 export type Event = {

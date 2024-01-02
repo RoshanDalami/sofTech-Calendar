@@ -9,36 +9,41 @@ import {
   DragOverlay,
   DragStartEvent,
   PointerSensor,
-useSensor,
-  useSensors
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
+import axios from "axios";
+import { url } from "../service/apiHelper";
+import { useParams } from "react-router-dom";
 
- interface Props{
-id:string
+interface Props {
+  id: string;
 }
 
-export default function KanbanBoard(props:Props) {
+export default function KanbanBoard(props: Props) {
+  const { taskID } = useParams();
+  console.log(taskID, "params");
   const [columns] = useState<Column[]>([
     {
-      id: nanoid(),
+      id: "1",
       title: "Todo",
       color: "bg-red-600",
     },
     {
-      id: nanoid(),
+      id: "2",
       title: "In Progress",
       color: "bg-green-600",
     },
     {
-      id: nanoid(),
+      id: "3",
       title: "Completed",
       color: "bg-blue-600",
     },
     {
-      id: nanoid(),
+      id: "4",
       title: "Backlogs",
       color: "bg-indigo-600",
     },
@@ -48,13 +53,22 @@ export default function KanbanBoard(props:Props) {
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
 
+  const getTodos = async () => {
+    const response = await axios.get(`${url.getAllTodo}`);
+    setTasks(response.data.filter((item: Task) => item.taskId === taskID));
+  };
+  useEffect(() => {
+    getTodos();
+  }, []);
+
+  console.log(tasks, "tasksTodo");
   const sensor = useSensors(
-    useSensor(PointerSensor,{
-      activationConstraint:{
-        distance:3
-      }
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 3,
+      },
     })
-  )
+  );
 
   //   function createNewColumn() {
   //     const columnToAdd: Column = {
@@ -100,27 +114,15 @@ export default function KanbanBoard(props:Props) {
     const newTask: Task = {
       id: nanoid(),
       columnId,
-      content: data.content,
+      todoTitle: data.todoTitle,
       assignedTo: data.assignedTo,
-      createdAt: new Date().toDateString(),
-      projectId: props.id
+      taskId: props.id,
     };
 
     setTasks([...tasks, newTask]);
-console.log(newTask.columnId)
+    console.log(newTask.columnId);
   }
   console.log(tasks);
-
-
-  useEffect(()=>{
-    localStorage.setItem('Tasks',JSON.stringify(tasks))
-  },[tasks])
-  useEffect(()=>{
-    const task = JSON.parse(localStorage.getItem('Tasks')!)
-    setTasks(task)
-  },[])
-
-
 
   function onDragOverHandler(event: DragOverEvent) {
     // console.log(event)
@@ -165,19 +167,16 @@ console.log(newTask.columnId)
     }
   }
 
-  function taskDeleteHandler(id:Id){
-    const newTasks = tasks.filter((task)=>task.id !== id)
-    setTasks(newTasks)
+  function taskDeleteHandler(id: Id) {
+    const newTasks = tasks.filter((todo) => todo.id !== id);
+    setTasks(newTasks);
   }
-
-
 
   return (
     <>
-     
       <div>
         <DndContext
-        sensors={sensor}
+          sensors={sensor}
           onDragStart={onDragStartHandler}
           onDragEnd={onDragEndHandler}
           onDragOver={onDragOverHandler}
@@ -194,7 +193,6 @@ console.log(newTask.columnId)
                     taskDeleteHandler={taskDeleteHandler}
                     createTask={createTask}
                     tasks={tasks.filter((task) => task.columnId === col.id)}
-
                   />
                 );
               })}
@@ -218,10 +216,14 @@ console.log(newTask.columnId)
                   tasks={tasks.filter(
                     (task) => task.columnId === activeColumn.id
                   )}
-
                 />
               )}
-              {activeTask && <TaskCard task={activeTask} taskDeleteHandler={taskDeleteHandler} />}
+              {activeTask && (
+                <TaskCard
+                  task={activeTask}
+                  taskDeleteHandler={taskDeleteHandler}
+                />
+              )}
             </DragOverlay>,
             document.body
           )}
