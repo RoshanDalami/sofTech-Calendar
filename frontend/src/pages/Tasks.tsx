@@ -10,6 +10,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { url } from "../service/apiHelper";
 import { TaskType } from "../types";
+import { nanoid } from "nanoid";
+import { userAtom } from "../recoil/userAtom";
+import { useRecoilValue } from "recoil";
+import {Task} from '../types'
 const schema = z.object({
   taskTitle: z.string().min(1, { message: "Taskname is required" }),
   taskDescription: z
@@ -21,19 +25,21 @@ export default function Tasks() {
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [taskList, setTaskList] = useState<TaskType[]>([]);
+  const userDetails = useRecoilValue(userAtom)
 
   const getAllTask = useCallback(async () => {
     try {
       const response = await axios.get(url.getAllTasks);
-      setTaskList(response.data);
+      setTaskList(response.data.filter((item:Task)=>item.userDetails === userDetails?.data?._id ))
     } catch (error) {
       console.log(error);
     }
   }, []);
   useEffect(() => {
     getAllTask();
-  }, [taskList]);
- 
+  }, []);
+
+
   const {
     register,
     handleSubmit,
@@ -41,14 +47,16 @@ export default function Tasks() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
-    
   });
   const onSubmitHandler = async (data: FieldValues) => {
+    data={
+      ...data,
+      taskId:nanoid(),
+      userDetails:userDetails?.data?._id
+    }
     try {
       setIsLoading(true);
       const response = await axios.post(url.createTask, data);
-
-      console.log(response);
       if (response.status === 200) {
         setIsLoading(false);
         resetField("taskTitle");
@@ -148,9 +156,11 @@ export default function Tasks() {
 
                 return (
                   <TaskCard
+                  key={task._id}
                     taskTitle={task.taskTitle}
                     taskDescription={task.taskDescription}
-                    _id={task._id}
+                    _id={task._id }
+                    taskId={task.taskId}
                   />
                 );
               })}

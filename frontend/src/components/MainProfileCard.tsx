@@ -14,9 +14,7 @@ import { userAtom } from "../recoil/userAtom";
 import { User } from "../types";
 
 export default function MainProfileCard() {
-  
-  const user:User =  useRecoilValue(userAtom)
-
+  const user: User = useRecoilValue(userAtom);
 
 
   // console.log(user, "hey");
@@ -30,7 +28,9 @@ export default function MainProfileCard() {
             Welcome ,{userDetails.username}
           </p>
           <p className="text-md text-gray-500 dark:text-white">
-            {userDetails.role}
+
+            {user?.data?.role}
+
           </p>
         </div>
       </div>

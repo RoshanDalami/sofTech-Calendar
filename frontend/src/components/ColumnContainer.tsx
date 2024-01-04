@@ -6,10 +6,17 @@ import { useMemo } from "react";
 import Model from "./Model";
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
+import axios from "axios";
+import { url } from "../service/apiHelper";
+import { useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { nanoid } from "nanoid";
+import { userAtom } from "../recoil/userAtom";
+import { useRecoilValue } from "recoil";
 interface Props {
   column: Column;
-  createTask: (data: Task, columnId: Id) => void;
+  // onSubmit: (data:FieldValues)=>void;
   tasks: Task[];
   index: number;
   bgColor: string;
@@ -17,12 +24,14 @@ interface Props {
 }
 
 export default function ColumnContainer(props: Props) {
-  const { column, createTask, taskDeleteHandler, tasks, index, bgColor } =
-    props;
-  console.log(tasks);
+  const { column, taskDeleteHandler, tasks, index, bgColor } = props;
+  const { taskID } = useParams();
+  const userDetails = useRecoilValue(userAtom);
+
   const [isModelOpen, setIsModelOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const tasksIds = useMemo(() => {
-    return tasks.map((task) => task.id);
+    return tasks?.map((task) => task.id);
   }, [tasks]);
   const {
     setNodeRef,
@@ -60,7 +69,33 @@ export default function ColumnContainer(props: Props) {
       ></div>
     );
   }
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, resetField } = useForm();
+
+  const onSubmit = async (data: FieldValues) => {
+    data = {
+      ...data,
+      columnId: "1",
+      userDetails: userDetails,
+      id: nanoid(),
+    };
+    console.log(data, "data");
+    try {
+      setIsSubmitting(true);
+      const response = await axios.post(`${url.createTodo}/${taskID}`, data);
+      console.log(response);
+      if (response.status === 200) {
+        toast.success("Todo Created Successfully");
+        resetField("todoTitle");
+        resetField("assignedTo");
+        setIsSubmitting(false);
+        setIsModelOpen(false);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -76,11 +111,7 @@ export default function ColumnContainer(props: Props) {
             <form
               action=""
               className="mt-5 flex flex-col gap-2"
-              onSubmit={handleSubmit((data: any) => {
-                createTask(data, column.id);
-                reset();
-                setIsModelOpen(false);
-              })}
+              onSubmit={handleSubmit((data) => onSubmit(data))}
             >
               <div className="flex flex-col gap-2">
                 <label htmlFor="title">Task Title</label>
@@ -92,16 +123,7 @@ export default function ColumnContainer(props: Props) {
                   required
                 />
               </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="title">Created At</label>
-                <input
-                  type="text"
-                  {...register("createdAt")}
-                  value={new Date().toDateString()}
-                  className="rounded-md border-2 border-slate-200 px-4 py-2 "
-                  required
-                />
-              </div>
+
               <div className="flex flex-col gap-2">
                 <label htmlFor="title">Assigned To</label>
                 <input
@@ -117,7 +139,7 @@ export default function ColumnContainer(props: Props) {
                 type="submit"
                 className="mt-3 rounded-md bg-indigo-600 py-2 font-bold text-white hover:bg-indigo-700"
               >
-                Add Task
+               { isSubmitting?"Submitting ...":"Add Task"}
               </button>
             </form>
           </div>
@@ -154,7 +176,8 @@ export default function ColumnContainer(props: Props) {
         {/* column task container  */}
         <div className="scrollbar-width-thincrollbar-thumb-black scrollbar-track-gray-100 flex flex-grow flex-col gap-2 overflow-y-auto py-3">
           <SortableContext items={tasksIds}>
-            {tasks.map((task) => {
+            {tasks?.map((task: Task) => {
+              console.log(task, "task");
               return (
                 <TaskCard
                   task={task}

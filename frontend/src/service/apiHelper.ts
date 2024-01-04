@@ -11,6 +11,8 @@ const baseurl = "http://localhost:8000/api"
     updateTask:`${baseurl}/tasks/updateTask`,
     deleteTask:`${baseurl}/tasks/deleteTask`,
     getTaskById:`${baseurl}/tasks/getTaskById`,
-    getAllTodo:`${baseurl}/todos/getTodos`,
+    createTodo:`${baseurl}/tasks/addTodo`,
+    updateStatus:`${baseurl}/tasks/updateStatus`
+
 
 }

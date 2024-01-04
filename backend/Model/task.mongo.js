@@ -5,6 +5,10 @@ const taskSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
+    taskId:{
+        type:String,
+        required: true
+    },
     taskTitle:{
         type:String,
         require:[true,'Task title is required']
@@ -13,6 +17,14 @@ const taskSchema = new mongoose.Schema({
         type:String,
         require:[true,'Task description is required']
     },
+    todos:[
+        {   id:String,
+            todoTitle:String,
+            columnId:String ,
+            assignedTo:String
+        }
+    ]
+
 },{timestamps:true})
 
 const Task = mongoose.model('Task',taskSchema)
