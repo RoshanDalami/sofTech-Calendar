@@ -16,17 +16,21 @@ import { User } from "../types";
 export default function MainProfileCard() {
   const user: User = useRecoilValue(userAtom);
 
+
   // console.log(user, "hey");
   return (
     <div className="flex justify-between rounded-md border border-gray-400/50 px-5 py-5 shadow-md   ">
-      <div className="flex items-center gap-10 ">
+      <div className="flex flex-col items-center gap-10 md:flex-row ">
         <img src={userDetail.image} className=" h-28 w-28 rounded-full " />
-        <div className="mt-[-10px] flex flex-col gap-3">
-          <p className="text-3xl font-bold dark:text-white ">
-            Welcome ,{user?.data?.username}
+
+        <div className="mt-[-10px] flex flex-col items-center md:gap-3">
+          <p className="font-bold dark:text-white md:text-3xl ">
+            Welcome ,{userDetails.username}
           </p>
           <p className="text-md text-gray-500 dark:text-white">
+
             {user?.data?.role}
+
           </p>
         </div>
       </div>

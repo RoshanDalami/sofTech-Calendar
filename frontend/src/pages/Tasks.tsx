@@ -67,6 +67,7 @@ export default function Tasks() {
       console.log(error);
     } finally {
       setIsLoading(false);
+
     }
   };
   return (
@@ -92,13 +93,17 @@ export default function Tasks() {
             <form
               action=""
               className="mt-5 flex flex-col gap-2"
+
               onSubmit={handleSubmit((data) => onSubmitHandler(data))}
+
             >
               <div className="flex flex-col gap-2">
                 <label htmlFor="title">Task Title</label>
                 <input
                   type="text"
+
                   {...register("taskTitle")}
+
                   className="rounded-md border-2 border-slate-200 px-4 py-2 "
                   placeholder="Eg: Event Management"
                   required
@@ -109,7 +114,9 @@ export default function Tasks() {
                 <label htmlFor="title">Description</label>
                 <input
                   type="text"
+
                   {...register("taskDescription")}
+
                   className="rounded-md border-2 border-slate-200 px-4 py-2 "
                   placeholder="Eg: Should be ended at 3:00 PM"
                   required
@@ -119,7 +126,9 @@ export default function Tasks() {
                 type="submit"
                 className="mt-3 rounded-md bg-indigo-600 py-2 font-bold text-white hover:bg-indigo-700"
               >
+
                 {isLoading ? "submitting..." : "Add Task"}
+
               </button>
             </form>
           </div>
@@ -129,7 +138,9 @@ export default function Tasks() {
       <div>
         {taskList.length > 0 ? (
           <div className="mx-1 mt-10 overflow-hidden  ">
-            <section className="flex h-full items-center justify-between border-b bg-slate-100 px-2 py-2  text-4xl md:px-10">
+
+            <section className="mx-4 flex h-full items-center justify-between rounded-md border-b bg-slate-100  px-2 py-2 text-4xl md:mx-0 md:px-10">
+
               Tasks
               <button
                 className="my-5 flex items-center gap-3 rounded-md bg-indigo-600 px-1 py-1 text-sm text-white hover:bg-indigo-700 md:gap-5 md:px-10 md:py-2 md:text-lg "
@@ -139,8 +150,10 @@ export default function Tasks() {
                 <PlusCircleIcon className="h-8 w-7" />
               </button>
             </section>
+
             <div className="mb-10 mt-10 flex flex-col flex-wrap items-center  justify-center gap-10  md:flex-row">
               {taskList.map((task: TaskType) => {
+
                 return (
                   <TaskCard
                   key={task._id}

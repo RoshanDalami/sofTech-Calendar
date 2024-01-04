@@ -13,7 +13,7 @@ import {
 import TableHeader from "../components/TableHeader";
 import NepaliDate from "nepali-date-converter";
 import clsx from "clsx";
-import axios from 'axios'
+import axios from "axios";
 import { url } from "../service/apiHelper";
 import { Event } from "../types";
 import EditFrom from "../components/EditFrom";
@@ -22,33 +22,33 @@ import { useRecoilValue } from "recoil";
 export default function Events() {
   // const { eventList, removeEvent } = useEvent();
   const [isEdit, setIsEdit] = useState(false);
-  const [EventList,setEvents] = useState<Event[]>([])
+  const [EventList, setEvents] = useState<Event[]>([]);
   const [currentEventId, setCurrentEventId] = useState("");
+
   const user = useRecoilValue(userAtom)
   const getAllEvents = async()=>{
-    try {
-      
-      const response = await axios.get(url.getAllEvents)
-  
-      setEvents(response.data)
-    } catch (error) {
-        console.log(error)
-    }
-  }
-  useEffect(()=>{
-    getAllEvents();
-  },[EventList])
 
+    try {
+      const response = await axios.get(url.getAllEvents);
+
+      setEvents(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getAllEvents();
+  }, [EventList]);
 
 
   const removeEvent = async(id:any)=>{
     try { 
         await axios.delete(url.deleteEvent,{data:{id:id}})
         
+
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
 
 
   function convertTo12HourFormat(time24: string) {
@@ -95,9 +95,7 @@ export default function Events() {
             />
             {EventList?.map((event) => {
               if (event.eventId === currentEventId) {
-                return (
-                  <EditFrom event={event} setIsEdit={setIsEdit} />
-                );
+                return <EditFrom event={event} setIsEdit={setIsEdit} />;
               }
             })}
           </div>
@@ -136,6 +134,7 @@ export default function Events() {
           )}
           <tbody>
             {EventList?.length > 0 ? (
+
               sortedEvents?.filter((event)=>event?.userDetails === user?.data?._id ).map((event, index) => {
                 const eventDate = new Date(
                   `${event.eventDateNepali}`
@@ -154,62 +153,69 @@ export default function Events() {
                     <th
                       scope="row"
                       className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 "
-                    >
-                      {index + 1}
-                    </th>
-                    <td className="px-6 py-4">
-                      <p className="text-center text-lg">
-                        <p className="">
-                          { `${event.eventDateNepali}`}
-                        </p>
-                        {isToday ? (
-                          <p className="rounded-lg bg-gray-300/60 text-center text-sm  text-lime-600 ">
-                            Today
-                          </p>
-                        ) : isEventPassed ? (
-                          <p className="rounded-lg bg-red-300/60 text-center text-sm  text-red-600 ">
-                            Event passed
-                          </p>
-                        ) : (
-                          <p className="rounded-lg bg-gray-300/60 text-center text-sm  text-blue-600 ">
-                            Upcoming
-                          </p>
-                        )}
-                      </p>
-                    </td>
 
-                    <td className="px-6 py-4">{event.eventTitle.slice(0,15)}</td>
-                    <td className="px-6 py-4">{event.eventDescription.slice(0,15)}</td>
-                    <td className="px-6 py-4">
-                      {convertTo12HourFormat(event.eventStartTime)}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="justify-left flex gap-3  ">
-                        <button
-                          className="rounded-md bg-indigo-600 px-4 py-1.5 uppercase text-white hover:bg-indigo-700"
-                          onClick={() => {
-                            setCurrentEventId(event.eventId)
-                            setIsEdit(true);
-                          }}
-                        >
-                          <PencilSquareIcon className="h-5 w-5" />
-                        </button>
-                        <button
-                          className="rounded-md bg-red-600 px-4 py-1.5 uppercase text-white hover:bg-red-700"
-                          onClick={() => removeEvent(event.eventId)}
-                        >
-                          <TrashIcon className="h-5 w-5" />
-                        </button>
-                        <Link
-                          to={"https://mail.google.com/"}
-                          target="_blank"
-                          className="rounded-md bg-lime-600 px-4 py-1.5 uppercase text-white hover:bg-lime-700"
-                        >
-                          <EnvelopeIcon className="h-5 w-5" />
-                        </Link>
-                      </div>
-                    </td>
-                    {/* <td className="px-6 py-4">
+                    >
+                      <th
+                        scope="row"
+                        className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 "
+                      >
+                        {index + 1}
+                      </th>
+                      <td className="px-6 py-4">
+                        <p className="text-center text-lg">
+                          <p className="">{`${event.eventDateNepali}`}</p>
+                          {isToday ? (
+                            <p className="rounded-lg bg-gray-300/60 text-center text-sm  text-lime-600 ">
+                              Today
+                            </p>
+                          ) : isEventPassed ? (
+                            <p className="rounded-lg bg-red-300/60 text-center text-sm  text-red-600 ">
+                              Event passed
+                            </p>
+                          ) : (
+                            <p className="rounded-lg bg-gray-300/60 text-center text-sm  text-blue-600 ">
+                              Upcoming
+                            </p>
+                          )}
+                        </p>
+                      </td>
+
+                      <td className="px-6 py-4">
+                        {event.eventTitle.slice(0, 15)}
+                      </td>
+                      <td className="px-6 py-4">
+                        {event.eventDescription.slice(0, 15)}
+                      </td>
+                      <td className="px-6 py-4">
+                        {convertTo12HourFormat(event.eventStartTime)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="justify-left flex gap-3  ">
+                          <button
+                            className="rounded-md bg-indigo-600 px-4 py-1.5 uppercase text-white hover:bg-indigo-700"
+                            onClick={() => {
+                              setCurrentEventId(event.eventId);
+                              setIsEdit(true);
+                            }}
+                          >
+                            <PencilSquareIcon className="h-5 w-5" />
+                          </button>
+                          <button
+                            className="rounded-md bg-red-600 px-4 py-1.5 uppercase text-white hover:bg-red-700"
+                            onClick={() => removeEvent(event.eventId)}
+                          >
+                            <TrashIcon className="h-5 w-5" />
+                          </button>
+                          <Link
+                            to={"https://mail.google.com/"}
+                            target="_blank"
+                            className="rounded-md bg-lime-600 px-4 py-1.5 uppercase text-white hover:bg-lime-700"
+                          >
+                            <EnvelopeIcon className="h-5 w-5" />
+                          </Link>
+                        </div>
+                      </td>
+                      {/* <td className="px-6 py-4">
                       {isToday ? (
                         <p className="bg-gray-300 rounded-lg text-center text-lime-600 py-1 ">Today</p>
                       ) : isEventPassed ? (
@@ -220,9 +226,9 @@ export default function Events() {
                         
                       )}
                     </td> */}
-                  </tr>
-                );
-              })
+                    </tr>
+                  );
+                })
             ) : (
               <p className="text-center text-3xl font-bold text-gray-700/60">
                 No Events Available

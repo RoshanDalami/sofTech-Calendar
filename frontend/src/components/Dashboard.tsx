@@ -9,8 +9,9 @@ import DonutChartComp from "./PieChart";
 export default function Dashboard() {
   
   return (
-    <div className="min-h-screen">
-      <p className="mx-5 my-3 text-4xl font-bold dark:text-white">Dashboard</p>
+
+    <div className="   min-h-screen ">
+      {/* <p className="mx-5 my-3 text-4xl font-bold dark:text-white" >Dashboard</p> */}
       <div className="mx-5 my-8">
         <MainProfileCard />
       </div>
