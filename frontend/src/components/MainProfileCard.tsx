@@ -25,7 +25,7 @@ export default function MainProfileCard() {
 
         <div className="mt-[-10px] flex flex-col items-center md:gap-3">
           <p className="font-bold dark:text-white md:text-3xl ">
-            Welcome ,{userDetails.username}
+            Welcome ,{user?.data.username}
           </p>
           <p className="text-md text-gray-500 dark:text-white">
 

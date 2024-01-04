@@ -1,4 +1,4 @@
-
+import { CalendarDaysIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
@@ -77,9 +77,9 @@ export default function Login() {
               {...register("email")}
               placeholder="example@example.com"
             />
-            {errors.email?.message && (
+            {/* {errors.email?.message && (
               <p className="text-red-600">{errors.email?.message}</p>
-            )}
+            )} */}
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="email" className="text-lg">
@@ -92,9 +92,9 @@ export default function Login() {
               {...register("password")}
               placeholder="********"
             />
-            {errors.password?.message && (
+            {/* {errors.password?.message && (
               <p className="text-red-600">{errors.password?.message}</p>
-            )}
+            )} */}
           </div>
 
           <button

@@ -25,9 +25,9 @@ const user:User = useRecoilValue(userAtom);
       <div className="flex flex-col items-start ">
 
         <p className="text-md font-semibold  text-gray-600 dark:text-white ">
-          {userDetails?.username}
+          {user.data?.username}
         </p>
-        <p className="text-gray-500 dark:text-white">{userDetails?.role}</p>
+        <p className="text-gray-500 dark:text-white">{user.data?.role}</p>
       </div>
     </div>
   );

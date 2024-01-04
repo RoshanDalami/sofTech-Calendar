@@ -50,7 +50,7 @@ export default function Events() {
       console.log(error);
     }
 
-
+  }
   function convertTo12HourFormat(time24: string) {
     // Split the time string into hours and minutes
     const [hours, minutes] = time24?.split(":");
@@ -150,11 +150,7 @@ export default function Events() {
                     })}
                     key={event.eventId}
                   >
-                    <th
-                      scope="row"
-                      className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 "
-
-                    >
+                   
                       <th
                         scope="row"
                         className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 "
@@ -239,4 +235,5 @@ export default function Events() {
       </div>
     </div>
   );
+
 }
