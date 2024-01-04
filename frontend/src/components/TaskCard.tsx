@@ -60,7 +60,7 @@ export default function TaskCard({ task,taskDeleteHandler }: Props) {
 
       <p className="text-white text-lg font-bold">
 
-      {task.content}
+      {task?.todoTitle}
       </p>
       <p className="text-white/60 text-xs">
         {task.assignedTo}

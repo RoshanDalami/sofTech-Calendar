@@ -86,7 +86,7 @@ export default function ColumnContainer(props: Props) {
                 <label htmlFor="title">Task Title</label>
                 <input
                   type="text"
-                  {...register("content")}
+                  {...register("todoTitle")}
                   className="rounded-md border-2 border-slate-200 px-4 py-2 "
                   placeholder="Eg: Event Management"
                   required
@@ -131,7 +131,7 @@ export default function ColumnContainer(props: Props) {
     flex
     h-[85vh]
     w-[400px]
-flex-col
+    flex-col
     overflow-hidden
     rounded-md
     bg-gray-200/50

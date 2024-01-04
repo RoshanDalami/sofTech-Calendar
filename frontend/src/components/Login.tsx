@@ -1,63 +1,22 @@
-import { CalendarDaysIcon } from "@heroicons/react/24/solid";
-// import { useQuery } from "@tanstack/react-query";
+
 import { useNavigate } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
-import { useState } from "react";
-// import { useUser } from '../Context'
-import Cookie from "js-cookie";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-const schema = z.object({
-  email: z.string().min(1, { message: "Email is required" }),
-  password: z.string().min(1, { message: "Password is required" }),
-});
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { userAtom } from "../recoil/userAtom";
+
 
 export default function Login() {
-  const navigate = useNavigate();
-  // const {addUser } = useUser();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(schema),
-  });
-  const [loading, setLoading] = useState(false);
-  const [openRegister, setOpenRegister] = useState(false);
-  function handleRegisterModel() {
-    setOpenRegister(true);
-  }
-  // const onSubmitHandler =(data:any)=>{
+  const navigate = useNavigate()
+  const [user , setUser] = useRecoilState(userAtom)
 
-  // const {  data  } = useQuery({
-  //   queryKey: ['repoData'],
-  //   queryFn: () =>
-  //     fetch('http://calenderapi.meropalika.com/api/login',{
-  //       method:'POST',
-  //       headers:{
-  //         'Content-Type':'application/json'
-  //       },
-  //       body:JSON.stringify(formData)
-  //     }).then(
-  //       (res) => {
-  //         if(res.status === 200){
-  //             navigate('/dashboard')
-  //         }
-  //       }
 
-  //     ),
-  // })
-  //   // console.log(data)
+  const { register, handleSubmit } = useForm();
+  const [loading,setLoading] = useState(false);
 
-  //   console.log(data)
+  const submitHandler = async (data:FieldValues) =>{
 
-  //   // if(detail?.status === true){
-  //   //   navigate('/dashboard')
-  //   // }
-  //
-
-  const submitHandler = async (data: FieldValues) => {
     try {
       setLoading(true);
       const response = await fetch("http://localhost:8000/api/user/login", {
@@ -65,19 +24,17 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
-      });
-      console.log(data);
-      const userData = await response.json();
-      console.log(userData.data);
-
-      if (userData.status === 200) {
-        // addUser(userData)
-        Cookie.set("token", userData.token, { expires: 1 });
-        localStorage.setItem("user", JSON.stringify(userData.data));
-        setLoading(false);
-
-        navigate("/dashboard");
+        body:JSON.stringify(data)
+      })
+      console.log(data)
+      const userData = await response.json()
+      console.log(userData,'userData')
+      
+      
+      if(userData.status === 200){
+        setUser(userData)
+        setLoading(false)
+        navigate('/dashboard')
       }
     } catch (error) {
       setLoading(false);
@@ -85,7 +42,11 @@ export default function Login() {
     } finally {
       setLoading(false);
     }
-  };
+
+  }
+  
+ 
+
 
   return (
     <div className="item-center flex min-h-screen w-full  justify-between ">

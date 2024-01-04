@@ -17,13 +17,17 @@ import axios from "axios";
 import { url } from "../service/apiHelper";
 import { Event } from "../types";
 import EditFrom from "../components/EditFrom";
+import { userAtom } from "../recoil/userAtom";
+import { useRecoilValue } from "recoil";
 export default function Events() {
   // const { eventList, removeEvent } = useEvent();
   const [isEdit, setIsEdit] = useState(false);
   const [EventList, setEvents] = useState<Event[]>([]);
   const [currentEventId, setCurrentEventId] = useState("");
 
-  const getAllEvents = async () => {
+  const user = useRecoilValue(userAtom)
+  const getAllEvents = async()=>{
+
     try {
       const response = await axios.get(url.getAllEvents);
 
@@ -36,20 +40,16 @@ export default function Events() {
     getAllEvents();
   }, [EventList]);
 
-  const removeEvent = async (id: any) => {
-    console.log(id);
-    try {
-      await axios.delete(url.deleteEvent, { data: { id: id } });
+
+  const removeEvent = async(id:any)=>{
+    try { 
+        await axios.delete(url.deleteEvent,{data:{id:id}})
+        
+
     } catch (error) {
       console.log(error);
     }
-  };
-  const userDetail = JSON.parse(localStorage.getItem("user")!);
-  // const onSubmitHandler = (e: any) => {
-  //   e.preventDefault();
-  //   console.log("Hello");
-  //   console.log(formData);
-  // };
+
 
   function convertTo12HourFormat(time24: string) {
     // Split the time string into hours and minutes
@@ -134,22 +134,26 @@ export default function Events() {
           )}
           <tbody>
             {EventList?.length > 0 ? (
-              sortedEvents
-                ?.filter((event) => event.userDetails === userDetail._id)
-                .map((event, index) => {
-                  const eventDate = new Date(
-                    `${event.eventDateNepali}`
-                  ).getTime();
 
-                  const isEventPassed = eventDate < currentDateTime;
-                  const isToday = eventDate === currentDateTime;
+              sortedEvents?.filter((event)=>event?.userDetails === user?.data?._id ).map((event, index) => {
+                const eventDate = new Date(
+                  `${event.eventDateNepali}`
+                ).getTime();
 
-                  return (
-                    <tr
-                      className={clsx("border-b bg-white  ", {
-                        "bg-red-200/50 text-red-600": isEventPassed,
-                      })}
-                      key={event.eventId}
+                const isEventPassed = eventDate < currentDateTime;
+                const isToday = eventDate === currentDateTime;
+
+                return (
+                  <tr
+                    className={clsx("border-b bg-white  ", {
+                      "bg-red-200/50 text-red-600" : isEventPassed ,
+                    })}
+                    key={event.eventId}
+                  >
+                    <th
+                      scope="row"
+                      className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 "
+
                     >
                       <th
                         scope="row"

@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const EventRouter = require('./router/Events/events.routes')
 const UserRouter = require('./router/User/user.routes')
+const TaskRouter = require('./router/Tasks/tasks.routes')
+const TodoRouter = require('./router/Todos/todos.routes')
 const cookieParser = require('cookie-parser')
 const app = express();
 
@@ -22,6 +24,8 @@ app.use(cookieParser())
 
 app.use('/api/events',EventRouter)
 app.use('/api/user',UserRouter)
+app.use('/api/tasks',TaskRouter)
+app.use('/api/todos',TodoRouter)
 
 
 

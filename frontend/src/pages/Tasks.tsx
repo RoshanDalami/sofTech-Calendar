@@ -1,46 +1,65 @@
-import { useTask } from "../Context/index";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
 import TaskCard from "../components/TaskCardComp";
-import { FormEvent, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Model from "../components/Model";
-import { nanoid } from "nanoid";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Transition } from "@headlessui/react";
+import { FieldValues, useForm } from "react-hook-form";
+import axios from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { url } from "../service/apiHelper";
+import { TaskType } from "../types";
+const schema = z.object({
+  taskTitle: z.string().min(1, { message: "Taskname is required" }),
+  taskDescription: z
+    .string()
+    .min(1, { message: "Task description is required" }),
+});
+
 export default function Tasks() {
-  const { taskList, addTask } = useTask();
   const [isModelOpen, setIsModelOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    title: "",
-    id: "",
-    createdAt: new Date().toDateString(),
-    description: "",
-    assingedTo: "",
-  });
-  const onSubmitHandler = (e: FormEvent) => {
-    e.preventDefault();
+  const [isLoading, setIsLoading] = useState(false);
+  const [taskList, setTaskList] = useState<TaskType[]>([]);
+
+  const getAllTask = useCallback(async () => {
     try {
-      addTask({
-        title: formData.title,
-        id: nanoid(),
-        createdAt: new Date().toDateString(),
-        description: formData.description,
-        assignedTo: formData.assingedTo,
-        todo: [],
-        inprogress: [],
-        complete: [],
-        backlogs: [],
-      });
-      setFormData({
-        title: "",
-        id: "",
-        createdAt: new Date().toDateString(),
-        description: "",
-        assingedTo: "",
-      });
-      setIsModelOpen(false);
+      const response = await axios.get(url.getAllTasks);
+      setTaskList(response.data);
     } catch (error) {
       console.log(error);
+    }
+  }, []);
+  useEffect(() => {
+    getAllTask();
+  }, [taskList]);
+ 
+  const {
+    register,
+    handleSubmit,
+    resetField,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+    
+  });
+  const onSubmitHandler = async (data: FieldValues) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(url.createTask, data);
+
+      console.log(response);
+      if (response.status === 200) {
+        setIsLoading(false);
+        resetField("taskTitle");
+        resetField("taskDescription");
+        setIsModelOpen(false);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+
     }
   };
   return (
@@ -66,55 +85,30 @@ export default function Tasks() {
             <form
               action=""
               className="mt-5 flex flex-col gap-2"
-              onSubmit={onSubmitHandler}
+
+              onSubmit={handleSubmit((data) => onSubmitHandler(data))}
+
             >
               <div className="flex flex-col gap-2">
                 <label htmlFor="title">Task Title</label>
                 <input
                   type="text"
-                  name="title"
-                  value={formData.title}
-                  onChange={(e) => {
-                    setFormData({ ...formData, title: e.target.value });
-                  }}
+
+                  {...register("taskTitle")}
+
                   className="rounded-md border-2 border-slate-200 px-4 py-2 "
                   placeholder="Eg: Event Management"
                   required
                 />
               </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="title">Created At</label>
-                <input
-                  type="text"
-                  name="title"
-                  value={formData.createdAt}
-                  className="rounded-md border-2 border-slate-200 px-4 py-2 "
-                  required
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="title">Assigned To</label>
-                <input
-                  type="text"
-                  name="title"
-                  value={formData.assingedTo}
-                  onChange={(e) => {
-                    setFormData({ ...formData, assingedTo: e.target.value });
-                  }}
-                  className="rounded-md border-2 border-slate-200 px-4 py-2 "
-                  placeholder="Eg: roshan dalami"
-                  required
-                />
-              </div>
+
               <div className="flex flex-col gap-2">
                 <label htmlFor="title">Description</label>
                 <input
                   type="text"
-                  name="title"
-                  value={formData.description}
-                  onChange={(e) => {
-                    setFormData({ ...formData, description: e.target.value });
-                  }}
+
+                  {...register("taskDescription")}
+
                   className="rounded-md border-2 border-slate-200 px-4 py-2 "
                   placeholder="Eg: Should be ended at 3:00 PM"
                   required
@@ -124,7 +118,9 @@ export default function Tasks() {
                 type="submit"
                 className="mt-3 rounded-md bg-indigo-600 py-2 font-bold text-white hover:bg-indigo-700"
               >
-                Add Task
+
+                {isLoading ? "submitting..." : "Add Task"}
+
               </button>
             </form>
           </div>
@@ -134,7 +130,9 @@ export default function Tasks() {
       <div>
         {taskList.length > 0 ? (
           <div className="mx-1 mt-10 overflow-hidden  ">
+
             <section className="mx-4 flex h-full items-center justify-between rounded-md border-b bg-slate-100  px-2 py-2 text-4xl md:mx-0 md:px-10">
+
               Tasks
               <button
                 className="my-5 flex items-center gap-3 rounded-md bg-indigo-600 px-1 py-1 text-sm text-white hover:bg-indigo-700 md:gap-5 md:px-10 md:py-2 md:text-lg "
@@ -144,24 +142,16 @@ export default function Tasks() {
                 <PlusCircleIcon className="h-8 w-7" />
               </button>
             </section>
-            <div className="mb-10 mt-10 flex flex-col flex-wrap items-center  justify-center gap-3  md:flex-row">
-              {taskList.map((task) => {
+
+            <div className="mb-10 mt-10 flex flex-col flex-wrap items-center  justify-center gap-10  md:flex-row">
+              {taskList.map((task: TaskType) => {
+
                 return (
-                  <Link to={`/tasks/${task.id}`}>
-                    {/* <div className=" flex items-center gap-4 px-5 py-3 border-b cursor-pointer hover:bg-blue-200/40 transition duration-200  " key={task.id}  >
-                            <RectangleGroupIcon className="h-8 w-8"/>
-                            <p className="text-2xl font-semibold" >
-                                {task.title}
-                            </p>
-                        </div> */}
-                    <TaskCard
-                      title={task.title}
-                      assignedTo={task.assignedTo}
-                      createdAt={task.createdAt}
-                      description={task.description}
-                      id={task.id}
-                    />
-                  </Link>
+                  <TaskCard
+                    taskTitle={task.taskTitle}
+                    taskDescription={task.taskDescription}
+                    _id={task._id}
+                  />
                 );
               })}
             </div>

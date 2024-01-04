@@ -1,4 +1,7 @@
 // import React from 'react'
+import { userAtom } from "../recoil/userAtom";
+import { RecoilValue, useRecoilValue } from "recoil";
+import { User } from "../types";
 
 // import { useUser } from "../Context";
 const userDetail = {
@@ -9,7 +12,10 @@ const userDetail = {
 };
 
 export default function ProfileCard() {
-  const userDetails = JSON.parse(localStorage.getItem("user")!);
+
+const user:User = useRecoilValue(userAtom);
+
+  
 
   return (
     <div className="my-5 flex cursor-pointer items-center gap-4 rounded-lg bg-gray-300/50 px-3 py-2 ">
@@ -17,6 +23,7 @@ export default function ProfileCard() {
         <img src={userDetail.image} alt="profile image" />
       </div>
       <div className="flex flex-col items-start ">
+
         <p className="text-md font-semibold  text-gray-600 dark:text-white ">
           {userDetails?.username}
         </p>
