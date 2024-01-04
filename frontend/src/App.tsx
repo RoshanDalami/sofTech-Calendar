@@ -8,16 +8,14 @@ import Body from "./Body";
 
 import { RecoilRoot } from "recoil";
 
-
 const queryClient = new QueryClient();
 const App = () => {
- 
   return (
     <BrowserRouter>
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
           <Body />
-          <Toaster position="bottom-center" />
+          <Toaster position="top-right" reverseOrder={false} />
         </QueryClientProvider>
       </RecoilRoot>
     </BrowserRouter>

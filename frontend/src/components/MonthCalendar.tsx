@@ -16,6 +16,7 @@ import axios from "axios";
 import { userAtom } from "../recoil/userAtom";
 import { useRecoilValue } from "recoil";
 import { Event } from "../types";
+import toast from "react-hot-toast";
 
 const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
   return (
@@ -29,6 +30,7 @@ const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
 export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
   const [modelOpen, setModelOpen] = useState(false);
   const [EventList, setEventList] = useState<Event[]>([]);
+  const [isSubmitting,setIsSubmitting] = useState(false)
   const user = useRecoilValue(userAtom)
   const { register, handleSubmit } = useForm();
 
@@ -66,18 +68,30 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
       userDetails: user.data._id,
     };
     try {
+      setIsSubmitting(true)
       const response = await axios.post(`${url.postEvent}`, bodyData);
       if (!response.status) {
         console.log("error");
       }
+      toast.success('Event Created Successfully')
+      setIsSubmitting(false)
       setModelOpen(false);
+
     } catch (error) {
-      console.log(error);
+      toast.error('Event Creation Failed')
+    }finally{
+      setIsSubmitting(false)
     }
   };
   const getEvents = async () => {
-    const response = await axios.get(url.getAllEvents);
-    setEventList(response.data);
+    
+    try {
+      const response = await axios.get(url.getAllEvents);
+      setEventList(response.data);
+      toast.success('Event Fetching Success')
+    } catch (error) {
+      toast.error('Event Fetching failed')
+    }
   };
   useEffect(() => {
     getEvents();
@@ -181,7 +195,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                 type="submit"
                 className="mb-3 mt-2 rounded-md bg-blue-600 py-2 text-white"
               >
-                Add Event
+                {isSubmitting ? 'Submitting':'Add Event'}
               </button>
             </form>
           </div>

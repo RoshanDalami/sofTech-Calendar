@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Column, Task, Id } from "../types";
-import { nanoid } from "nanoid";
+
 import ColumnContainer from "./ColumnContainer";
 import {
   DndContext,
@@ -18,6 +18,7 @@ import TaskCard from "./TaskCard";
 import axios from "axios";
 import { url } from "../service/apiHelper";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 interface Props {
   id: string;
@@ -25,7 +26,8 @@ interface Props {
 
 export default function KanbanBoard(props: Props) {
   const { taskID } = useParams();
-  console.log(taskID, "params");
+
+
   const [columns] = useState<Column[]>([
     {
       id: "1",
@@ -53,15 +55,6 @@ export default function KanbanBoard(props: Props) {
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  const getTodos = async () => {
-    const response = await axios.get(`${url.getAllTodo}`);
-    setTasks(response.data.filter((item: Task) => item.taskId === taskID));
-  };
-  useEffect(() => {
-    getTodos();
-  }, []);
-
-  console.log(tasks, "tasksTodo");
   const sensor = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -69,6 +62,20 @@ export default function KanbanBoard(props: Props) {
       },
     })
   );
+  // console.log(props.id,'id')
+  const fetchTodos = async ()=>{
+    try {
+        const response = await axios.get(`${url.getTaskById}/${taskID}`)
+        // console.log(response?.data?.todos,'response')
+        setTasks(response.data.todos)
+        toast.success('Todos fetched successfully')
+    } catch (error) {
+      toast.error('Fetching Todos failed')
+    }
+  }
+  useEffect(()=>{
+    fetchTodos()
+  },[taskID])
 
   //   function createNewColumn() {
   //     const columnToAdd: Column = {
@@ -78,7 +85,6 @@ export default function KanbanBoard(props: Props) {
   //     setColumns([...columns, columnToAdd]);
   //   }
   function onDragStartHandler(event: DragStartEvent) {
-    console.log("Drag start", event);
     if (event.active.data.current?.type === "Column") {
       setActiveColumn(event.active.data.current.column);
       return;
@@ -110,21 +116,10 @@ export default function KanbanBoard(props: Props) {
     // });
   }
 
-  function createTask(data: Task, columnId: Id) {
-    const newTask: Task = {
-      id: nanoid(),
-      columnId,
-      todoTitle: data.todoTitle,
-      assignedTo: data.assignedTo,
-      taskId: props.id,
-    };
+  
+ 
 
-    setTasks([...tasks, newTask]);
-    console.log(newTask.columnId);
-  }
-  console.log(tasks);
-
-  function onDragOverHandler(event: DragOverEvent) {
+  async function onDragOverHandler(event: DragOverEvent) {
     // console.log(event)
     const { active, over } = event;
     if (!over) return;
@@ -144,8 +139,8 @@ export default function KanbanBoard(props: Props) {
 
     if (isActiveTask && isOverTask) {
       setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId);
-        const overIndex = tasks.findIndex((t) => t.id === overId);
+        const activeIndex = tasks?.findIndex((t) => t.id === activeId);
+        const overIndex = tasks?.findIndex((t) => t.id === overId);
 
         tasks[activeIndex].columnId = tasks[overIndex].columnId;
 
@@ -155,10 +150,21 @@ export default function KanbanBoard(props: Props) {
 
     //dropping a task over a column
     const isOverColumn = over.data.current?.type === "Column";
+    const todoId = active.data.current?.task?._id
+    console.log(over.data.current,'current')
+    const columnId = over.data.current?.column?.id || active.data.current?.task?.columnId
+
+    const data = {todoId,columnId }
+    try {
+      const response = await axios.put(`${url.updateStatus}/${taskID}`,data);
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
     if (isActiveTask && isOverColumn) {
       setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId);
-        // const overIndex = tasks.findIndex(t=>t.id === overId)
+        const activeIndex = tasks?.findIndex((t) => t.id === activeId);
+        const overIndex = tasks.findIndex(t=>t.id === overId)
 
         tasks[activeIndex].columnId = overId;
 
@@ -168,7 +174,7 @@ export default function KanbanBoard(props: Props) {
   }
 
   function taskDeleteHandler(id: Id) {
-    const newTasks = tasks.filter((todo) => todo.id !== id);
+    const newTasks = tasks?.filter((todo) => todo.id !== id);
     setTasks(newTasks);
   }
 
@@ -190,9 +196,9 @@ export default function KanbanBoard(props: Props) {
                     index={index}
                     bgColor={col.color}
                     column={col}
+                    // onSubmit={onSubmit}
                     taskDeleteHandler={taskDeleteHandler}
-                    createTask={createTask}
-                    tasks={tasks.filter((task) => task.columnId === col.id)}
+                    tasks={tasks?.filter((task) => task.columnId === col.id)}
                   />
                 );
               })}
@@ -211,11 +217,11 @@ export default function KanbanBoard(props: Props) {
                   column={activeColumn}
                   index={0}
                   bgColor=""
-                  createTask={createTask}
                   taskDeleteHandler={taskDeleteHandler}
-                  tasks={tasks.filter(
+                  tasks={tasks?.filter(
                     (task) => task.columnId === activeColumn.id
                   )}
+                  // onSubmit={onSubmit}
                 />
               )}
               {activeTask && (

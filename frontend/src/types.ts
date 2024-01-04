@@ -10,10 +10,11 @@ export type Task = {
     columnId:Id;
     todoTitle:string;
     assignedTo:string;
-
     taskId:string;
+    userDetails:string;
 
 }
+
 
 export type Event = {
     eventId:string,
@@ -43,5 +44,6 @@ export type User = {
 export type TaskType = {
     taskTitle:string,
     taskDescription:string,
-    _id:string
+    _id:string,
+    taskId:string
 }

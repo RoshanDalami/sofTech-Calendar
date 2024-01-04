@@ -4,11 +4,12 @@ import { FieldValues, useForm } from "react-hook-form";
 import { url } from "../service/apiHelper";
 
 
-export default function TaskEditForm({setIsModelOpen,taskTitle,taskDescription,_id}:{
+export default function TaskEditForm({setIsModelOpen,taskTitle,taskDescription,taskId,_id}:{
   setIsModelOpen:any;
   taskTitle:string;
   taskDescription:string;
   _id:string;
+  taskId:string;
 }) {
  
   const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +17,7 @@ export default function TaskEditForm({setIsModelOpen,taskTitle,taskDescription,_
     defaultValues:{
       taskTitle:taskTitle,
       taskDescription:taskDescription,
-      _id:_id
+      taskId:taskId
     }
   });
 

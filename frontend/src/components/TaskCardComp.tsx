@@ -15,11 +15,13 @@ export default function TaskCard({
   taskTitle,
   taskDescription,
   _id,
+  taskId,
 
 }: {
   taskTitle: string;
   taskDescription: string;
   _id: string;
+  taskId:string;
 
 }) {
   const [isEditMode,setIsEditMode] = useState(false);
@@ -41,7 +43,7 @@ export default function TaskCard({
                 setIsEditMode(false);
               }}
             />
-      <TaskEditForm taskTitle={taskTitle} taskDescription={taskDescription} _id={_id} setIsModelOpen={setIsEditMode} />
+      <TaskEditForm taskTitle={taskTitle} taskDescription={taskDescription} _id={_id} setIsModelOpen={setIsEditMode}  taskId={taskId}/>
       </div>
     </Model>}
     <div className=" w-80 md:w-96  rounded-md border dark:bg-white dark:hover:shadow-lg dark:hover:shadow-gray-200   border-black/50 px-3 py-4 transition duration-300 hover:-translate-y-3 hover:shadow-lg relative">

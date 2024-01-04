@@ -167,7 +167,7 @@ export default function IndividualTask() {
         </p>
       </div>
 
-      <KanbanBoard  id={individualTask._id} />
+      <KanbanBoard  id={individualTask._id}  />
 
       
     </>

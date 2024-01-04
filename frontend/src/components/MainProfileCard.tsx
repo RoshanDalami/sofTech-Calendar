@@ -14,9 +14,7 @@ import { userAtom } from "../recoil/userAtom";
 import { User } from "../types";
 
 export default function MainProfileCard() {
-  
-  const user:User =  useRecoilValue(userAtom)
-
+  const user: User = useRecoilValue(userAtom);
 
   // console.log(user, "hey");
   return (
@@ -28,7 +26,7 @@ export default function MainProfileCard() {
             Welcome ,{user?.data?.username}
           </p>
           <p className="text-md text-gray-500 dark:text-white">
-           {user?.data?.role}
+            {user?.data?.role}
           </p>
         </div>
       </div>
@@ -40,7 +38,6 @@ export default function MainProfileCard() {
           <div className="mx-3 flex h-6  w-6 items-center justify-center  rounded-full bg-gray-400/50 text-xs  text-black dark:text-white">
             <span>
               <CountUp end={10} />
-              
             </span>
           </div>
         </span>
@@ -49,8 +46,8 @@ export default function MainProfileCard() {
           <p className="text-md text-black dark:text-white">In progress</p>
           <div className="mx-3 flex h-6  w-6 items-center justify-center rounded-full bg-gray-400/50 text-xs  text-black dark:text-white">
             <span>
-              <CountUp end={13}/>
-              </span>
+              <CountUp end={13} />
+            </span>
           </div>
         </span>
         <span className="flex  items-center ">
@@ -67,7 +64,7 @@ export default function MainProfileCard() {
           <p className="text-md text-black dark:text-white">Backlogs</p>
           <div className="mx-3 flex h-6  w-6 items-center justify-center rounded-full bg-gray-400/50 text-xs  text-black dark:text-white">
             <span>
-              <CountUp end={2}/>
+              <CountUp end={2} />
             </span>
           </div>
         </span>
