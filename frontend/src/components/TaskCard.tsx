@@ -61,8 +61,8 @@ export default function TaskCard({ task,taskDeleteHandler }: Props) {
 
       {task?.todoTitle}
       </p>
-      <p className="text-white/60 text-xs">
-        <p>
+      <p className=" bg-gray-100 w-6 h-6 rounded-full flex items-center justify-center">
+        <p className="text-black text-md font-bold">
 
         {task.assignedTo.split('')[0].toUpperCase()}
         </p>

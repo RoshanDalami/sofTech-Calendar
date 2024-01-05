@@ -45,19 +45,19 @@ export default function TaskReportCard() {
         <div className="flex flex-col gap-4 rounded-lg bg-gray-300 py-5 shadow-lg dark:bg-gray-900 md:gap-0">
           <p className="text-md flex items-center font-bold dark:text-gray-200 md:text-2xl">
             <div className="mx-3 h-2 w-2 rounded-full bg-lime-600 md:h-6 md:w-6"></div>
-            Task on todo: {todo[0]?.count}
+            Task on todo: {todo[0]?.count || 0 }  
           </p>
           <p className="flex items-center font-bold dark:text-gray-200 md:text-2xl">
             <div className="mx-3 h-2 w-2 rounded-full bg-orange-600 md:h-6 md:w-6"></div>
-            Task on progress: {inprogress[0]?.count}
+            Task on progress: {inprogress[0]?.count || 0}
           </p>
           <p className="flex items-center font-bold dark:text-gray-200 md:text-2xl">
             <div className="mx-3 h-2 w-2 rounded-full bg-indigo-600 md:h-6 md:w-6"></div>
-            Task completed: {completed[0]?.count}
+            Task completed: {completed[0]?.count || 0}
           </p>
           <p className="flex items-center font-bold dark:text-gray-200 md:text-2xl">
             <div className="mx-3 h-2 w-2 rounded-full bg-blue-600 md:h-6 md:w-6"></div>
-            Task on backlogs: {backlogs[0]?.count}
+            Task on backlogs: {backlogs[0]?.count || 0}
           </p>
         </div>
         <DonutChartComp title="Task" />

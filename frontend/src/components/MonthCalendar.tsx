@@ -4,7 +4,7 @@ import nepaliNumber from "../helper/nepaliNumber";
 import { Transition } from "@headlessui/react";
 import useLanguage from "../helper/useLanguage";
 import { DayData } from "../types/calendar.types";
-import { useEffect, useMemo, useState } from "react";
+import React, { FormEvent, useEffect, useMemo, useState } from "react";
 import NepaliDate from "nepali-date-converter";
 import { classNames } from "../helper/utils";
 import { url } from "../service/apiHelper";
@@ -26,14 +26,59 @@ const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
 };
 
 // console.log(new NepaliDate(), "nepali Date");
-
+type Input = {
+  eventTitle:'',
+      eventDescription:'',
+      eventStartTime:'',
+      eventEndTime:''
+}
 export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
   const [modelOpen, setModelOpen] = useState(false);
   const [EventList, setEventList] = useState<Event[]>([]);
-  const [isSubmitting,setIsSubmitting] = useState(false)
-  const user = useRecoilValue(userAtom)
-  const { register, handleSubmit } = useForm();
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const nepali_date = new NepaliDate();
+  const user = useRecoilValue(userAtom);
+  // const [addFormInput,setAddFormInput] = useState([
+  //   {
+  //     eventTitle:'',
+  //     eventDescription:'',
+  //     eventStartTime:'',
+  //     eventEndTime:''
+  //   }
+  // ])
+  // const handleEventTitleChange = (e ,index:number)=>{
+  //   const {name,value} = e.target;
+  //   const list = [...addFormInput];
+  //   list[index][name] = value;
+  //   setAddFormInput(list)
+  // }
+  // const handleEventDescriptionChange = (e ,index:number)=>{
+  //   const {name,value} = e.target;
+  //   const list = [...addFormInput];
+  //   list[index][name] = value;
+  //   setAddFormInput(list)
+  // }
+  // const handleEventStartTimeChange = (e ,index:number)=>{
+  //   const {name,value} = e.target;
+  //   const list = [...addFormInput];
+  //   list[index][name] = value;
+  //   setAddFormInput(list)
+  // }
+  // const handleEventEndTimeChange = (e ,index:number)=>{
+  //   const {name,value} = e.target;
+  //   const list = [...addFormInput];
+  //   list[index][name] = value;
+  //   setAddFormInput(list)
+  // }
+  // const handleAddForm = ()=>{
+  //   setAddFormInput([...addFormInput,{
+  //     eventTitle:'',
+  //     eventDescription:'',
+  //     eventStartTime:'',
+  //     eventEndTime:''
+  //   }])
+  // }
+  const { register, handleSubmit, resetField } = useForm();
 
   const { t, isNepaliLanguage } = useLanguage();
   // const { status } = useUser();
@@ -68,29 +113,31 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
       userDetails: user.data._id,
     };
     try {
-      setIsSubmitting(true)
+      setIsSubmitting(true);
       const response = await axios.post(`${url.postEvent}`, bodyData);
       if (!response.status) {
         console.log("error");
       }
-      toast.success('Event Created Successfully')
-      setIsSubmitting(false)
+      toast.success("Event Created Successfully");
+      setIsSubmitting(false);
       setModelOpen(false);
-
+      resetField("eventTitle");
+      resetField("eventDescription");
+      resetField("eventEndTime");
+      resetField("eventStartTime");
     } catch (error) {
-      toast.error('Event Creation Failed')
-    }finally{
-      setIsSubmitting(false)
+      toast.error("Event Creation Failed");
+    } finally {
+      setIsSubmitting(false);
     }
   };
   const getEvents = async () => {
-    
     try {
       const response = await axios.get(url.getAllEvents);
       setEventList(response.data);
       // toast.success('Event Fetching Success')
     } catch (error) {
-      toast.error('Event Fetching failed')
+      toast.error("Event Fetching failed");
     }
   };
   useEffect(() => {
@@ -128,18 +175,23 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
         className="fixed inset-0 z-40 w-full md:absolute md:min-h-screen  "
       >
         <Model>
-          <div className="relative rounded-md bg-white p-3">
+          <div className="relative  rounded-md bg-white p-3">
             <XCircleIcon
               className="absolute right-5 h-10 w-10 cursor-pointer text-black"
               onClick={() => {
                 setModelOpen(false);
               }}
             />
+            {/* <button className="bg-blue-600 rounded-md px-3 py-2 text-white font-bold flex gap-2 items-center" >Add Form
+            <PlusIcon className="h-4 w-4 font-bold"/>
+            </button> */}
             <form
               action=""
               className="mx-5 mt-12 flex flex-col gap-4"
               onSubmit={handleSubmit((data) => onSubmitHandler(data))}
             >
+              
+
               <div className="flex flex-col gap-2">
                 <label htmlFor="event" className="text-2xl font-bold">
                   Event
@@ -149,6 +201,8 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                   className="rounded-md border-[1px] border-gray-500 px-4 py-2"
                   placeholder="Events"
                   {...register("eventTitle")}
+                  // onChange={(e)=>handleEventTitleChange(e,index)}
+                  // value={data.eventTitle}
                   required
                 />
               </div>
@@ -161,6 +215,8 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                   className="rounded-md border-[1px] border-gray-500 px-4 py-2"
                   placeholder="Event Description"
                   {...register("eventDescription")}
+                  // onChange={(e)=>handleEventDescriptionChange(e,index)}
+                  // value={data.eventDescription}
                   required
                 />
               </div>
@@ -174,6 +230,8 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                     className="w-full rounded-md border-[1px] border-gray-500 px-4 py-2"
                     placeholder=" Event Time "
                     {...register("eventStartTime")}
+                    // onChange={(e)=>handleEventStartTimeChange(e,index)}
+                    // value={data.eventStartTime}
                     required
                   />
                 </div>
@@ -186,16 +244,18 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                     className="rounded-md border-[1px]  border-gray-500 px-4 py-2"
                     placeholder=" Event Time "
                     {...register("eventEndTime")}
+                    // onChange={(e)=>handleEventEndTimeChange(e,index)}
+                  //  value={data.eventEndTime}
                     required
                   />
                 </div>
               </div>
-
+                
               <button
                 type="submit"
                 className="mb-3 mt-2 rounded-md bg-blue-600 py-2 text-white"
               >
-                {isSubmitting ? 'Submitting':'Add Event'}
+                {isSubmitting ? "Submitting" : "Add Event"}
               </button>
             </form>
           </div>
@@ -251,8 +311,9 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                 >
                   {EventList.map((event) => {
                     if (
-                     ( event.eventDateNepali ===
-                      `${bs_year}-${bs_month}-${bs_day}`) && event.userDetails === user.data._id
+                      event.eventDateNepali ===
+                        `${bs_year}-${bs_month}-${bs_day}` &&
+                      event.userDetails === user.data._id
                     ) {
                       return (
                         <div key={event.eventId} className="">
@@ -349,6 +410,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
             })}
           </div>
         </div>
+
 
         {/* add event button  */}
 

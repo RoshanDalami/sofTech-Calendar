@@ -225,6 +225,9 @@ export default function EventReportCard() {
                   <p className="text-xl font-bold text-red-600">
                     {event.eventTitle}
                   </p>
+                  <p className="bg-red-900 p-1 rounded-md text-white fond-bold">
+                    {event.eventDateNepali}
+                  </p>
                 </div>
               );
             })}
@@ -245,6 +248,10 @@ export default function EventReportCard() {
                   <p className="text-xl font-bold text-green-600">
                     {event.eventTitle}
                   </p>
+                  <p className="bg-green-900 p-1 rounded-md text-white fond-bold">
+                    {event.eventDateNepali}
+                  </p>
+
                 </div>
               );
             })}
@@ -266,6 +273,9 @@ export default function EventReportCard() {
                     <p className="text-xl font-bold text-blue-600">
                       {event.eventTitle}
                     </p>
+                    <p className="bg-blue-900 p-1 rounded-md text-white fond-bold">
+                    {event.eventDateNepali}
+                  </p>
                   </div>
                 );
               })
