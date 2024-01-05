@@ -16,5 +16,6 @@ const baseurl = "http://localhost:8000/api"
     deleteTodo:`${baseurl}/tasks/deleteTodo`,
     getAllTodos:`${baseurl}/tasks/getAllTodos`,
     getAllEventsByUser:`${baseurl}/events/getEventById`,
-    getAllTaskByUser:`${baseurl}/tasks/getTaskByUser`
+    getAllTaskByUser:`${baseurl}/tasks/getTaskByUser`,
+    getAllUser:`${baseurl}/user/getAllUser`
 }

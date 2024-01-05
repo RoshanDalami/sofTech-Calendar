@@ -1,8 +1,8 @@
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import { Column, Id, Task } from "../types";
+import { Column, IUser, Id, Task, User } from "../types";
 import { CSS } from "@dnd-kit/utilities";
 import TaskCard from "./TaskCard";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Model from "./Model";
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -30,6 +30,7 @@ export default function ColumnContainer(props: Props) {
 
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [userList,setUserList] = useState([])
   const tasksIds = useMemo(() => {
     return tasks?.map((task) => task.id);
   }, [tasks]);
@@ -78,11 +79,11 @@ export default function ColumnContainer(props: Props) {
       userDetails: userDetails,
       id: nanoid(),
     };
-    console.log(data, "data");
+
     try {
       setIsSubmitting(true);
       const response = await axios.post(`${url.createTodo}/${taskID}`, data);
-      console.log(response);
+
       if (response.status === 200) {
         toast.success("Todo Created Successfully");
         resetField("todoTitle");
@@ -96,6 +97,18 @@ export default function ColumnContainer(props: Props) {
       setIsSubmitting(false);
     }
   };
+
+  const getAllUser = async()=>{
+    try {
+      const response = await axios.get(`${url.getAllUser}`)
+      setUserList(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+getAllUser();
+  },[userList])
 
   return (
     <>
@@ -126,13 +139,29 @@ export default function ColumnContainer(props: Props) {
 
               <div className="flex flex-col gap-2">
                 <label htmlFor="title">Assigned To</label>
-                <input
+                <select  id="" 
+                {...register('assignedTo')}
+                className="py-2 border-2 border-slate-200 rounded-md"
+                >
+                  <option value="" disabled selected>--select person to assign--</option>
+                {
+                  userList?.map((item:IUser)=>{
+                    console.log(item,'item')
+                    return(
+                      <option value={item?.username} >
+                        {item?.username}
+                      </option>
+                    )
+                  })
+                }
+                </select>
+                {/* <input
                   type="text"
                   {...register("assignedTo")}
                   className="rounded-md border-2 border-slate-200 px-4 py-2 "
                   placeholder="Eg: roshan dalami"
                   required
-                />
+                /> */}
               </div>
 
               <button
@@ -177,7 +206,7 @@ export default function ColumnContainer(props: Props) {
         <div className="scrollbar-width-thincrollbar-thumb-black scrollbar-track-gray-100 flex flex-grow flex-col gap-2 overflow-y-auto py-3">
           <SortableContext items={tasksIds}>
             {tasks?.map((task: Task) => {
-              console.log(task, "task");
+
               return (
                 <TaskCard
                   task={task}

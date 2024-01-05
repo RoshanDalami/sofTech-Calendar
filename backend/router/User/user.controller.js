@@ -8,7 +8,7 @@ async function httpRegisterUser(req, res) {
   const { username, email, password } = req.body;
   try {
     await RegisterUser(username, email, password);
-    res.status(201).json({ message: "user created successfully" });
+    res.status(201).json({ message: "user created successfully",status:200 });
   } catch (error) {
     res.status(500).json({ message: "Inernal server error" });
   }
@@ -53,12 +53,22 @@ async function httpLoginUser(req, res) {
         token
       });
   } catch (error) {
-    console.error(error);
+
     res.status(500).json({ messages: "Internal server error" });
+  }
+}
+
+async function getAllUser(req,res){
+  try {
+    const response = await User.find({}).select('-password ')
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json({message:"Internal server error"})
   }
 }
 
 module.exports = {
   httpRegisterUser,
   httpLoginUser,
+  getAllUser
 };

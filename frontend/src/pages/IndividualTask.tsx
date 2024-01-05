@@ -47,7 +47,7 @@ export default function IndividualTask() {
       console.log(error)
     }
   }
-  useEffect(()=>{getTaskById()},[])
+  useEffect(()=>{getTaskById()},[todos])
 
 
 

@@ -41,7 +41,6 @@ export default function TaskCard({ task,taskDeleteHandler }: Props) {
       </div>
     );
   }
-
   return (
     <div
       ref={setNodeRef}
@@ -63,7 +62,10 @@ export default function TaskCard({ task,taskDeleteHandler }: Props) {
       {task?.todoTitle}
       </p>
       <p className="text-white/60 text-xs">
-        {task.assignedTo}
+        <p>
+
+        {task.assignedTo.split('')[0].toUpperCase()}
+        </p>
       </p>
       </div>
      { isMouseOver && <button className="bg-red-600 rounded-md text-white px-2 py-1" onClick={()=>taskDeleteHandler(task._id)}  >

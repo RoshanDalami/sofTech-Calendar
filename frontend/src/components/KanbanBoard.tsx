@@ -68,14 +68,14 @@ export default function KanbanBoard(props: Props) {
         const response = await axios.get(`${url.getTaskById}/${taskID}`)
         // console.log(response?.data?.todos,'response')
         setTasks(response.data.todos)
-        toast.success('Todos fetched successfully')
+        // toast.success('Todos fetched successfully')
     } catch (error) {
       toast.error('Fetching Todos failed')
     }
   }
   useEffect(()=>{
     fetchTodos()
-  },[taskID])
+  },[taskID,tasks])
 
   //   function createNewColumn() {
   //     const columnToAdd: Column = {

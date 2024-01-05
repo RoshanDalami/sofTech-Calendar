@@ -61,9 +61,9 @@ const Register = ({}) => {
                 className="rounded-md px-4 py-1"
                 {...register("username", { required: "Username is required" })}
               />
-              <p className=" text-sm text-red-600 ">
-                {errors.username?.message}
-              </p>
+              {/* <p className=" text-sm text-red-600 ">
+                {errors.username?.message }
+              </p> */}
             </div>
             <div className="flex flex-col text-lg">
               <label>Email</label>
@@ -75,7 +75,7 @@ const Register = ({}) => {
                   required: "Email Address is required",
                 })}
               />
-              <p className=" text-sm text-red-600 "> {errors.email?.message}</p>
+              {/* <p className=" text-sm text-red-600 "> {errors.email?.message}</p> */}
             </div>
             <div className="relative flex flex-col text-lg">
               <label>Password</label>
@@ -86,7 +86,7 @@ const Register = ({}) => {
                 {...register("password", { required: "Password is required" })}
               />
               <p className=" text-sm text-red-600 ">
-                {errors.password?.message}
+                {/* {errors.password?.message} */}
               </p>
 
               {showPw ? (
