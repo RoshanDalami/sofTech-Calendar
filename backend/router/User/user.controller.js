@@ -50,6 +50,7 @@ async function httpLoginUser(req, res) {
         messages: "user logged in and cookie is set",
         status: 200,
         data: loggedInUser,
+        token
       });
   } catch (error) {
     console.error(error);

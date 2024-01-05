@@ -1,7 +1,7 @@
 import { CalendarDaysIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { userAtom } from "../recoil/userAtom";
 
@@ -9,7 +9,7 @@ import { userAtom } from "../recoil/userAtom";
 export default function Login() {
 
   const navigate = useNavigate()
-  const [user , setUser] = useRecoilState(userAtom)
+  const [ _,setUser] = useRecoilState(userAtom)
 
 
   const { register, handleSubmit } = useForm();
@@ -33,6 +33,7 @@ export default function Login() {
       
       if(userData.status === 200){
         setUser(userData)
+        localStorage.setItem('user',JSON.stringify(userData))
         setLoading(false)
         navigate('/dashboard')
       }

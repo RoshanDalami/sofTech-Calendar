@@ -9,28 +9,52 @@ const userDetail = {
   role: "Admin",
 };
 import CountUp from "react-countup";
-import { useRecoilValue } from "recoil";
-import { userAtom } from "../recoil/userAtom";
-import { User } from "../types";
+import { useState, useEffect } from "react";
+// import { useRecoilValue } from "recoil";
+// import { userAtom } from "../recoil/userAtom";
+
+
+import {   Todos} from "../types";
+import axios from "axios";
+import { url } from "../service/apiHelper";
 
 export default function MainProfileCard() {
-  const user: User = useRecoilValue(userAtom);
+  // const user: User = useRecoilValue(userAtom);
+  const user = JSON.parse(localStorage.getItem('user')!)
+  const [todos, setTodos] = useState<Todos[]>([]);
+  async function fetchTodo() {
+    try {
+      const response = await axios.get(`${url.getAllTodos}`);
+      setTodos(response?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    fetchTodo();
+  }, [todos]);
+  const todo = todos?.filter((item)=>item?._id === '1') || [{count:0}]
+  const inprogress = todos?.filter((item)=>item?._id === '2') || [{count:0}]
+  const completed = todos?.filter((item)=>item?._id === '3') || [{count:0}]
+  const backlogs = todos?.filter((item)=>item?._id === '4') || [{count:0}]
 
+  // console.log(todo,inprogress,completed,backlogs,'hello')
+
+
+ 
 
   // console.log(user, "hey");
   return (
     <div className="flex justify-between rounded-md border border-gray-400/50 px-5 py-5 shadow-md   ">
-      <div className="flex flex-col items-center gap-10 md:flex-row ">
+      <div className="flex flex-col items-center  gap-10 md:flex-row ">
         <img src={userDetail.image} className=" h-28 w-28 rounded-full " />
 
-        <div className="mt-[-10px] flex flex-col items-center md:gap-3">
+        <div className="mt-[-10px] flex flex-col items-center md:items-start md:gap-3">
           <p className="font-bold dark:text-white md:text-3xl ">
             Welcome ,{user?.data.username}
           </p>
-          <p className="text-md text-gray-500 dark:text-white">
-
+          <p className="text-md  text-gray-500 dark:text-white">
             {user?.data?.role}
-
           </p>
         </div>
       </div>
@@ -41,7 +65,7 @@ export default function MainProfileCard() {
           <p className="text-md text-black dark:text-white">Todo</p>
           <div className="mx-3 flex h-6  w-6 items-center justify-center  rounded-full bg-gray-400/50 text-xs  text-black dark:text-white">
             <span>
-              <CountUp end={10} />
+              <CountUp end={todo[0]?.count || 0} />
             </span>
           </div>
         </span>
@@ -50,7 +74,7 @@ export default function MainProfileCard() {
           <p className="text-md text-black dark:text-white">In progress</p>
           <div className="mx-3 flex h-6  w-6 items-center justify-center rounded-full bg-gray-400/50 text-xs  text-black dark:text-white">
             <span>
-              <CountUp end={13} />
+              <CountUp end={inprogress[0]?.count ||0} />
             </span>
           </div>
         </span>
@@ -59,7 +83,7 @@ export default function MainProfileCard() {
           <p className="text-md text-black dark:text-white">Completed</p>
           <div className="mx-3 flex h-6  w-6 items-center justify-center rounded-full bg-gray-400/50 text-xs  text-black dark:text-white">
             <span>
-              <CountUp end={20} />
+              <CountUp end={completed[0]?.count||0} />
             </span>
           </div>
         </span>
@@ -68,7 +92,7 @@ export default function MainProfileCard() {
           <p className="text-md text-black dark:text-white">Backlogs</p>
           <div className="mx-3 flex h-6  w-6 items-center justify-center rounded-full bg-gray-400/50 text-xs  text-black dark:text-white">
             <span>
-              <CountUp end={2} />
+              <CountUp end={backlogs[0]?.count || 0} />
             </span>
           </div>
         </span>

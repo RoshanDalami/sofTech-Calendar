@@ -14,6 +14,8 @@ export const userAtom = atom({
           updatedAt: '',
           __v: 0,
         },
+        token:''
+
     
     }
 })

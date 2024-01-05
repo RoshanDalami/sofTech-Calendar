@@ -164,7 +164,7 @@ export default function KanbanBoard(props: Props) {
     if (isActiveTask && isOverColumn) {
       setTasks((tasks) => {
         const activeIndex = tasks?.findIndex((t) => t.id === activeId);
-        const overIndex = tasks.findIndex(t=>t.id === overId)
+        // const overIndex = tasks.findIndex(t=>t.id === overId)
 
         tasks[activeIndex].columnId = overId;
 
@@ -173,9 +173,15 @@ export default function KanbanBoard(props: Props) {
     }
   }
 
-  function taskDeleteHandler(id: Id) {
-    const newTasks = tasks?.filter((todo) => todo.id !== id);
-    setTasks(newTasks);
+  async function taskDeleteHandler(id: Id) {
+    try {
+      const response = await axios.delete(`${url.deleteTodo}/${taskID}`,{data:{todoId:id}})
+      if(response.status === 200){
+        toast.success('Todo deleted Successfully')
+      }
+    } catch (error) {
+      toast.error('Deletion Failed')
+    }
   }
 
   return (

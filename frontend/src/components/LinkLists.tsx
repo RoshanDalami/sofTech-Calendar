@@ -41,7 +41,7 @@ export default function LinkLists() {
   const location = useLocation();
 
   return (
-    <div className="w-full py-4 px-5 flex gap-6 flex-col my-5  ">
+    <div className="w-full py-4 px-5 flex gap-6 flex-col my-5 overflow-auto  ">
       {navLinks.map((link) => {
         const isPath =
           location.pathname.split("/")[1] === link.herf.split("/")[1];

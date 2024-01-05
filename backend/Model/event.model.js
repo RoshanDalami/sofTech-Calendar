@@ -10,7 +10,7 @@ async function createEvents(event) {
   const newEvent = Object.assign(event);
   try {
     await saveEvents(newEvent);
-    console.log(newEvent, "from model");
+
   } catch (error) {
     console.log(error);
   }
@@ -25,7 +25,6 @@ async function getAllEvents() {
 }
 
 async function deleteEvent(eventId){
-    console.log(eventId,"from model")
    return await Events.deleteOne({eventId:eventId})
 }
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import  { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { url } from "../service/apiHelper";
 
@@ -17,7 +17,8 @@ export default function TaskEditForm({setIsModelOpen,taskTitle,taskDescription,t
     defaultValues:{
       taskTitle:taskTitle,
       taskDescription:taskDescription,
-      taskId:taskId
+      taskId:taskId,
+      _id:_id
     }
   });
 

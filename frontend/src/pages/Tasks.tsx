@@ -13,7 +13,8 @@ import { TaskType } from "../types";
 import { nanoid } from "nanoid";
 import { userAtom } from "../recoil/userAtom";
 import { useRecoilValue } from "recoil";
-import {Task} from '../types'
+// import {Task} from '../types'
+import toast from "react-hot-toast";
 const schema = z.object({
   taskTitle: z.string().min(1, { message: "Taskname is required" }),
   taskDescription: z
@@ -30,21 +31,20 @@ export default function Tasks() {
   const getAllTask = useCallback(async () => {
     try {
       const response = await axios.get(url.getAllTasks);
-      setTaskList(response.data.filter((item:Task)=>item.userDetails === userDetails?.data?._id ))
+      setTaskList(response.data)
     } catch (error) {
       console.log(error);
     }
   }, []);
   useEffect(() => {
     getAllTask();
-  }, []);
+  }, [taskList]);
 
 
   const {
     register,
     handleSubmit,
     resetField,
-    formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
   });
@@ -58,18 +58,20 @@ export default function Tasks() {
       setIsLoading(true);
       const response = await axios.post(url.createTask, data);
       if (response.status === 200) {
+toast.success('Task fetched successfully')
         setIsLoading(false);
         resetField("taskTitle");
         resetField("taskDescription");
         setIsModelOpen(false);
       }
     } catch (error) {
-      console.log(error);
+      toast.error('Task fetching failed')
     } finally {
       setIsLoading(false);
 
     }
   };
+  
   return (
     <>
       <Transition
@@ -152,7 +154,7 @@ export default function Tasks() {
             </section>
 
             <div className="mb-10 mt-10 flex flex-col flex-wrap items-center  justify-center gap-10  md:flex-row">
-              {taskList.map((task: TaskType) => {
+              {taskList.filter((item)=>item?.userDetails === userDetails?.data?._id).map((task: TaskType) => {
 
                 return (
                   <TaskCard

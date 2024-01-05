@@ -6,6 +6,7 @@ export type Column = {
 }
 
 export type Task = {
+    [x: string]: Id;
     id:Id;
     columnId:Id;
     todoTitle:string;
@@ -38,12 +39,19 @@ export type User = {
         createdAt: string,
         updatedAt: string,
         __v: number
-    }
+    },
+    token:string
 }
 
 export type TaskType = {
+    [x: string]: string;
     taskTitle:string,
     taskDescription:string,
     _id:string,
     taskId:string
+}
+
+export type Todos = {
+    _id:string;
+    count:number;
 }

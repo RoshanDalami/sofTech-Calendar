@@ -10,6 +10,7 @@ import axios from "axios";
 import { url } from "../service/apiHelper";
 import Model from "./Model";
 import TaskEditForm from "./TaskEditForm";
+import toast from "react-hot-toast";
 
 export default function TaskCard({
   taskTitle,
@@ -27,6 +28,9 @@ export default function TaskCard({
   const [isEditMode,setIsEditMode] = useState(false);
   const deleteTask = async(_id:string)=>{
     const response = await axios.delete(`${url.deleteTask}?id=${_id}`)
+    if(response.status === 200){
+      toast.success('Task deleted successfully')
+    }
   }
   const getEditItem = async(_id:string)=>{
     console.log(_id,'id')

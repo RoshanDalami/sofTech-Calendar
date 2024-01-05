@@ -52,14 +52,14 @@ async function getTaskById(req, res) {
 async function addTodo(req, res) {
   try {
     const id = req.params.id;
-    console.log(id, "id");
+
     const todo = req.body;
-    console.log(todo, "from server");
+
     const result = await Task.updateOne(
       { _id: id },
       { $push: { todos: todo } },
     );
-    console.log(result, "result");
+
     res.status(200).json({ message: "Todo created Successfully" });
   } catch (error) {
     res.status(500).json({ message: "Todo creation failed" });
@@ -81,18 +81,57 @@ async function updateStatus(req, res) {
       .status(200)
       .json({ message: "Todo status updated successfully." });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ error: "Internal server error." });
   }
 }
-async function deleteTodo(req,res){
+async function deleteTodo(req, res) {
+  const id = req.params.id;
+  const { todoId } = req.body;
   try {
-    // await Task.findOne({_id:id}).then((doc)=>{
-    //   item = doc.todos.id(todoId);
-      
-    // })
+    await Task.findOne({ _id: id }).then((doc) => {
+      doc.todos.pull({ _id: todoId });
+      doc.save();
+    });
+    res.status(200).json({ message: "Todo deleted successfully" });
   } catch (error) {
-    res.status(500).json({error:'Internal server error'})
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+
+async function getTodos(req,res){
+ try {
+  const result = await Task.aggregate([
+    {
+      $unwind :{
+        path:"$todos"
+      }
+    },{
+      $group:{
+        _id:"$todos.columnId",
+        count:{
+          $sum:1
+        }
+      }
+    }
+  ])
+  res.status(200).json(result)
+ } catch (error) {
+  res.status(500).json({message:'Internal server error'})
+ }
+}
+
+
+
+
+
+async function getTaskByUserId(req, res) {
+  const userId = req.params.id;
+  try {
+    const response = await Task.find({ userDetails: userId });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 
@@ -104,4 +143,7 @@ module.exports = {
   getTaskById,
   addTodo,
   updateStatus,
+  deleteTodo,
+  getTodos,
+  getTaskByUserId,
 };

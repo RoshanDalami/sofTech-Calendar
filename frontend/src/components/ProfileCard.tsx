@@ -1,6 +1,6 @@
 // import React from 'react'
 import { userAtom } from "../recoil/userAtom";
-import { RecoilValue, useRecoilValue } from "recoil";
+import {  useRecoilValue } from "recoil";
 import { User } from "../types";
 
 // import { useUser } from "../Context";
@@ -25,9 +25,9 @@ const user:User = useRecoilValue(userAtom);
       <div className="flex flex-col items-start ">
 
         <p className="text-md font-semibold  text-gray-600 dark:text-white ">
-          {user.data?.username}
+          {user?.data?.username}
         </p>
-        <p className="text-gray-500 dark:text-white">{user.data?.role}</p>
+        <p className="text-gray-500 dark:text-white">{user?.data?.role}</p>
       </div>
     </div>
   );

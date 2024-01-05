@@ -5,15 +5,16 @@ import {
   Bars3Icon,
 } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../Context";
 import LinkLists from "./LinkLists";
+import { useSetRecoilState } from "recoil";
+import { userAtom } from "../recoil/userAtom";
 
 export default function SideBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
   const mobileBreakpoint = 768; // Adjust the breakpoint as needed
 
-  const { removeUser } = useUser();
+const setUser = useSetRecoilState(userAtom)
 
   useEffect(() => {
     const handleResize = () => {
@@ -30,9 +31,26 @@ export default function SideBar() {
     return () => window.removeEventListener("resize", handleResize);
   }, [mobileBreakpoint]);
 
+  const handleLogout = ()=>{
+    localStorage.removeItem('user');
+    setUser({message: '',
+    status: 0,
+    data: {
+      _id: '',
+      username: '',
+      email: '',
+      role: '',
+      createdAt: '',
+      updatedAt: '',
+      __v: 0,
+    },
+    token:''})
+    navigate('/')
+  }
+
   const renderSidebarContent = () => (
     <>
-      <div className="mt-10 px-5 py-2 text-xl font-bold transition duration-200 hover:rounded-lg dark:text-white">
+      <div className="mt-10 px-5 py-2 text-xl font-bold transition duration-200 hover:rounded-lg dark:text-white ">
         Softech
       </div>
       <div className="w-52 border border-gray-300"></div>
@@ -42,10 +60,7 @@ export default function SideBar() {
       <div className="absolute bottom-5">
         <button
           className="flex w-full items-center gap-3 rounded-md bg-red-600 px-4 py-1.5 text-lg text-white"
-          onClick={() => {
-            removeUser();
-            navigate("/");
-          }}
+          onClick={handleLogout}
         >
           Log Out
           <ArrowRightOnRectangleIcon className="h-5 w-5" />

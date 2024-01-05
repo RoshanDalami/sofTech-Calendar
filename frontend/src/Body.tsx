@@ -1,5 +1,5 @@
 import Home from "./pages/Home.tsx";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { Routes, Route } from "react-router-dom";
 // import Navbar from "./components/Navbar.tsx";
@@ -12,22 +12,37 @@ import Dashboard from "./components/Dashboard.tsx";
 import Login from "./components/Login.tsx";
 import Reports from "./pages/Reports.tsx";
 import { userAtom } from "./recoil/userAtom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect } from "react";
 import Register from "./components/Register.tsx";
 
-
-
 const Body = () => {
+  const location = useLocation();
+  const setUser = useSetRecoilState(userAtom);
+  const navigate = useNavigate();
+  const user = useRecoilValue(userAtom);
 
-const location = useLocation();
-const setUser = useSetRecoilState(userAtom);
-  useEffect(()=>{
-    const user = JSON.parse(localStorage.getItem('user')!)
-    setUser(user)
-  },[])
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user")!);
+    setUser(user);
+  }, []);
 
+  if (
+    (user?.token && location.pathname === "/login") ||
+    (user?.token && location.pathname === "/") ||
+    (user?.token && location.pathname === "/register")
+  ) {
+    navigate("/dashboard");
+  }
 
+  if (
+    (!user?.token && location.pathname === "/dashboard") ||
+    (!user?.token && location.pathname === "/events") ||
+    (!user?.token && location.pathname === "/tasks") ||
+    (!user?.token && location.pathname === "/report")
+  ) {
+    navigate("/");
+  }
 
   return (
     <div className={" flex min-h-screen flex-col font-mono dark:bg-gray-800 "}>
