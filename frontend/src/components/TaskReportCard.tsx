@@ -67,6 +67,8 @@ export default function TaskReportCard() {
           <h1 className="ml-5 text-xl font-bold dark:text-gray-300 md:text-2xl  ">
             Task List
           </h1>
+          <div className="h-[40rem] overflow-auto">
+
           {taskList?.length > 0
             ? taskList?.map((item) => {
                 return (
@@ -79,6 +81,7 @@ export default function TaskReportCard() {
                 );
               })
             : ""}
+          </div>
         </div>
       </div>
     </div>
