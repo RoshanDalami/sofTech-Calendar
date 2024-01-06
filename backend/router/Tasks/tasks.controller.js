@@ -132,6 +132,22 @@ async function getTaskByUserId(req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
+async function getAllCompletedTask(req,res){
+  try {
+    const response = await Task.find({isCompleted:true})
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json({message:"Internal server error"})
+  }
+}
+async function getAllInCompletedTask(req,res){
+  try {
+    const response = await Task.find({isCompleted:false})
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json({message:"Internal server error"})
+  }
+}
 
 module.exports = {
   createTask,
@@ -144,4 +160,6 @@ module.exports = {
   deleteTodo,
   getTodos,
   getTaskByUserId,
+  getAllCompletedTask,
+  getAllInCompletedTask
 };

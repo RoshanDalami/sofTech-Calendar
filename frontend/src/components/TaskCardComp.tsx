@@ -24,6 +24,7 @@ export default function TaskCard({
   _id: string;
   taskId:string;
 
+
 }) {
   const [isEditMode,setIsEditMode] = useState(false);
   const deleteTask = async(_id:string)=>{
@@ -53,7 +54,9 @@ export default function TaskCard({
     <div className=" w-80 md:w-96  rounded-md border dark:bg-white dark:hover:shadow-lg dark:hover:shadow-gray-200   border-black/50 px-3 py-4 transition duration-300 hover:-translate-y-3 hover:shadow-lg relative">
       <div className=" flex  items-center pb-4 justify-between  ">
 
-      <h1 className="my-2 border-b  text-xl  font-bold ">{ taskTitle.length <= 15 ? taskTitle : <p>{taskTitle.slice(0,15)}{"..."}</p> }</h1>
+      <h1 className="my-2 border-b  text-xl  font-bold ">
+        { taskTitle.length <= 15 ? taskTitle : <p>{taskTitle.slice(0,15)}{"..."}</p> }
+        </h1>
       <div className="flex items-cetner  gap-3">
         <div className="bg-blue-600 px-2 rounded-md py-1 " >
 

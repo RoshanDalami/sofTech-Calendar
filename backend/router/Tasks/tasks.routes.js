@@ -8,8 +8,9 @@ const {
   updateStatus,
   deleteTodo,
   getTodos,
-  
-  getTaskByUserId
+  getAllCompletedTask,
+  getTaskByUserId,
+  getAllInCompletedTask
 } = require("./tasks.controller");
 const express = require("express");
 
@@ -19,6 +20,8 @@ TaskRouter.post("/createTask", createTask);
 TaskRouter.post("/updateTask", updateTask);
 TaskRouter.delete("/deleteTask", deleteTask);
 TaskRouter.get("/getAllTasks", getAllTask);
+TaskRouter.get("/getAllCompletedTasks", getAllCompletedTask);
+TaskRouter.get("/getAllInCompletedTasks", getAllInCompletedTask);
 TaskRouter.get("/getTaskById/:id", getTaskById);
 TaskRouter.post("/addTodo/:id", addTodo);
 TaskRouter.put("/updateStatus/:id", updateStatus);

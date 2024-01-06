@@ -19,11 +19,13 @@ import { Event } from "../types";
 import EditFrom from "../components/EditFrom";
 import { userAtom } from "../recoil/userAtom";
 import { useRecoilValue } from "recoil";
+
 export default function Events() {
   // const { eventList, removeEvent } = useEvent();
   const [isEdit, setIsEdit] = useState(false);
   const [EventList, setEvents] = useState<Event[]>([]);
   const [currentEventId, setCurrentEventId] = useState("");
+  const [selectMonth,setSelectMonth] = useState('0')
 
   const user = useRecoilValue(userAtom)
   const getAllEvents = async()=>{
@@ -31,14 +33,23 @@ export default function Events() {
     try {
       const response = await axios.get(url.getAllEvents);
 
-      setEvents(response.data);
+      if(selectMonth !== '0'){
+        const filterData = response?.data?.filter((item : Event)=>((item.eventDateNepali.split('-')[1]) === selectMonth)
+        )
+        console.log(typeof(selectMonth))
+        console.log(filterData)
+        setEvents(filterData)
+      }else{
+        setEvents(response.data);
+      }
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     getAllEvents();
-  }, [EventList]);
+  }, [selectMonth]);
+
 
 
   const removeEvent = async(id:any)=>{
@@ -103,6 +114,27 @@ export default function Events() {
       )}
 
       <TableHeader title={"Events List"} />
+      <div className="flex items-end justify-end mr-10 mb-3">
+
+      <div className=" flex items-center">
+        <h1 className="text-xl font-bold text-white">Filter By Month</h1>
+        <select name="" id="" onChange={(e)=>setSelectMonth(e.target.value)} value={selectMonth} className="bg-green-600 rounded-md py-3  font-bold text-white focus:outline-none text-md" >
+          <option value='0' >-- All Events --</option>
+          <option value="1">बैशाख</option>
+          <option value="2">जेठ</option>
+          <option value="3">असार</option>
+          <option value="4">श्रावण</option>
+          <option value="5">भदौ</option>
+          <option value="6">आश्विन</option>
+          <option value="7">कार्तिक</option>
+          <option value="8">मंसिर</option>
+          <option value="9">पुष</option>
+          <option value="10">माघ</option>
+          <option value="11">फाल्गुन</option>
+          <option value="12">चैत्र</option>
+        </select>
+      </div>
+      </div>
 
       <div className="relative mx-4 overflow-x-auto ">
         <table className="w-full text-left text-sm text-gray-500 rtl:text-right ">
@@ -133,8 +165,11 @@ export default function Events() {
             ""
           )}
           <tbody>
+
+
             {EventList?.length > 0 ? (
               sortedEvents?.filter((event)=>event?.userDetails === user?.data?._id).map((event, index) => {
+                
                 const eventDate = new Date(
                   `${event.eventDateNepali}`
                 ).getTime();
