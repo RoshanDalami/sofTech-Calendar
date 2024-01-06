@@ -20,6 +20,7 @@ export default function EventReportCard() {
   const [todayEvents, setTodayEvents] = useState(0);
   const [upcommingEvents, setUpcommingEvents] = useState(0);
   const [eventOnMonthCount, setEventOnMonthCount] = useState(0);
+  const [eventOnNextCount, setEventOnNextCount] = useState(0);
   // const user = useRecoilValue(userAtom)
   const user = JSON.parse(localStorage.getItem("user")!);
   const nepali_date = new NepaliDate();
@@ -65,6 +66,19 @@ export default function EventReportCard() {
   };
   useEffect(() => {
     getEventOnMonthCount();
+  }, [events]);
+  const getEventOnNextCount = async () => {
+    const eventsOnMonth = events?.filter(
+      (item) =>
+        item.eventDateNepali.split("-")[0] ===
+          nepali_date.format("YYYY-M-D").split("-")[0] &&
+        item.eventDateNepali.split("-")[1] ===
+         ( (parseInt(nepali_date.format("YYYY-M-D").split("-")[1]) + 1).toString())
+    );
+    setEventOnNextCount(eventsOnMonth?.length);
+  };
+  useEffect(() => {
+    getEventOnNextCount();
   }, [events]);
 
   //todays events
@@ -125,8 +139,13 @@ export default function EventReportCard() {
           }/${new NepaliDate().getBS().date}`
         ).getTime()
     );
+    const pastEventOfThreeMonth = pastEvent.filter((item)=>((item.eventDateNepali.split('-')[0] === new NepaliDate().getBS().year.toString()) && ((item.eventDateNepali.split('-')[1] === (new NepaliDate().getMonth() + 1 ).toString()) || (item.eventDateNepali.split('-')[1] === (new NepaliDate().getMonth() ).toString()) || (item.eventDateNepali.split('-')[1] === (new NepaliDate().getMonth() - 1 ).toString())) ))
     //   console.log(pastEvent.length,'past')
-    setPastEventsList(pastEvent);
+    setPastEventsList(pastEventOfThreeMonth.sort((a, b) => {
+      const dateA = new Date(`${a.eventDateNepali}`).getTime();
+      const dateB = new Date(`${b.eventDateNepali}`).getTime();
+      return dateA - dateB;
+    }));
   };
   useEffect(() => {
     getPastEventsCount();
@@ -158,7 +177,13 @@ export default function EventReportCard() {
           }/${new NepaliDate().getBS().date}`
         ).getTime()
     );
-    setUpcommingEventsList(upcommingEvent);
+    const upcommingEventOfThreeMonth = upcommingEvent.filter((item)=>((item.eventDateNepali.split('-')[0] === new NepaliDate().getBS().year.toString()) && ((item.eventDateNepali.split('-')[1] === (new NepaliDate().getMonth() + 1 ).toString()) || (item.eventDateNepali.split('-')[1] === (new NepaliDate().getMonth() + 3 ).toString()) || (item.eventDateNepali.split('-')[1] === (new NepaliDate().getMonth() + 2 ).toString())) ))
+    //   console.log(pastEvent.length,'past')
+    setUpcommingEventsList(upcommingEventOfThreeMonth.sort((a, b) => {
+      const dateA = new Date(`${a.eventDateNepali}`).getTime();
+      const dateB = new Date(`${b.eventDateNepali}`).getTime();
+      return dateA - dateB;
+    }));
   };
   useEffect(() => {
     getUpcommingEvents();
@@ -173,16 +198,20 @@ export default function EventReportCard() {
       metric: totalEvent,
     },
     {
+      title: "Today Events",
+      metric: todayEvents,
+    },
+    {
       title: "Events This Month",
       metric: eventOnMonthCount,
     },
     {
-      title: "Passed Events",
-      metric: pastEvents,
+      title: "Events Next Month",
+      metric: eventOnNextCount,
     },
     {
-      title: "Today Events",
-      metric: todayEvents,
+      title: "Passed Events",
+      metric: pastEvents,
     },
     {
       title: "Upcomming Events",
@@ -212,14 +241,17 @@ export default function EventReportCard() {
       <div className="grid grid-cols-2">
         <div className=" mx-2 my-5 h-52 rounded-xl bg-gray-700 shadow-xl ">
           <h1 className="mx-4 pt-3 text-xl font-bold dark:text-white">
-            Passed Events
+            Passed Events of 3 Months 
+             <span className="bg-gray-200 px-2 py-1 mx-3 rounded-full text-gray-900">
+               {pastEventsList.length}
+              </span>
           </h1>
-          <div className="h-48 overflow-auto">
+          <div className="h-[10rem] overflow-auto">
             {pastEventsList?.map((event) => {
               return (
                 <div
                   key={event.eventId}
-                  className="ml-4  flex items-center gap-5"
+                  className="ml-4 my-2 flex items-center gap-5"
                 >
                   <ChevronDoubleRightIcon className="h-5 w-5 text-red-600" />
                   <p className="text-xl font-bold text-red-600">
@@ -235,14 +267,17 @@ export default function EventReportCard() {
         </div>
         <div className=" mx-2 my-5 h-52 rounded-xl bg-gray-700 shadow-xl ">
           <h1 className="mx-4 pt-3 text-xl font-bold dark:text-white">
-            Today's Events
+            Today's Events 
+            <span className="bg-gray-200 px-2 py-1 mx-3 rounded-full text-gray-900">
+               {todayEventsList.length}
+              </span>
           </h1>
-          <div className="h-48 overflow-auto">
+          <div className="h-[10rem] overflow-auto">
             {todayEventsList?.map((event) => {
               return (
                 <div
                   key={event.eventId}
-                  className="ml-4  flex items-center gap-5"
+                  className="ml-4 my-2 flex items-center gap-5"
                 >
                   <ChevronDoubleRightIcon className="h-5 w-5 text-green-600" />
                   <p className="text-xl font-bold text-green-600">
@@ -259,15 +294,18 @@ export default function EventReportCard() {
         </div>
         <div className=" mx-2 my-5 h-52 rounded-xl bg-gray-700 shadow-xl ">
           <h1 className="mx-4 pt-3 text-xl font-bold dark:text-white">
-            Upcomming Events
+            Upcomming Events on 3 Months
+            <span className="bg-gray-200 px-2 py-1 mx-3 rounded-full text-gray-900">
+               {upcommingEventsList.length}
+              </span>
           </h1>
-          <div className="h-48 overflow-auto">
+          <div className="h-[10rem] overflow-auto">
             {upcommingEventsList?.length > 0 ? (
               upcommingEventsList?.map((event) => {
                 return (
                   <div
                     key={event.eventId}
-                    className="ml-4  flex items-center gap-5"
+                    className="ml-4 my-2 flex items-center gap-5"
                   >
                     <ChevronDoubleRightIcon className="h-5 w-5 text-blue-600" />
                     <p className="text-xl font-bold text-blue-600">

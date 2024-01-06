@@ -36,11 +36,39 @@ async function getEventByUserId(req,res){
     }
 }
 
+async function getEventsByTitle(req,res){
+    const title = req.params.title
 
+    try {
+        const response = await Events.find({eventTitle: {$regex:new RegExp(title, 'i') }})
+        res.status(200).json(response)
+    } catch (error) {
+        res.status(500).json({message:'Internal server error'})
+    }
+}
 
+async function getEventsByYear(req,res){
+    const year = req.params.year
+    try {
+        const response = await Events.find({
+            $expr: {
+              $eq: [
+                { $toInt: { $arrayElemAt: [{ $split: ["$eventDateNepali", "-"] }, 0] } },
+                { $toInt: year }
+              ]
+            }
+          });
+        res.status(200).json(response)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message:'Internal server error'})
+    }
+}
 module.exports = {
     httpGetAllEvents,
     httpCreateEvent,
     httpDeleteEvent,
-    getEventByUserId
+    getEventByUserId,
+    getEventsByTitle,
+    getEventsByYear
 }

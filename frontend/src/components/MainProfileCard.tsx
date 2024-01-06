@@ -10,17 +10,15 @@ const userDetail = {
 };
 import CountUp from "react-countup";
 import { useState, useEffect } from "react";
-// import { useRecoilValue } from "recoil";
-// import { userAtom } from "../recoil/userAtom";
-
-
-import {   Todos} from "../types";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../recoil/userAtom";
+import { Todos ,User} from "../types";
 import axios from "axios";
 import { url } from "../service/apiHelper";
 
 export default function MainProfileCard() {
-  // const user: User = useRecoilValue(userAtom);
-  const user = JSON.parse(localStorage.getItem('user')!)
+  const user: User = useRecoilValue(userAtom);
+
   const [todos, setTodos] = useState<Todos[]>([]);
   async function fetchTodo() {
     try {
