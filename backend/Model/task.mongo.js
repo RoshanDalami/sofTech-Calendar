@@ -17,6 +17,10 @@ const taskSchema = new mongoose.Schema({
         type:String,
         require:[true,'Task description is required']
     },
+    isCompleted:{
+        type:Boolean,
+        default:false
+    },
     todos:[
         {   id:String,
             todoTitle:String,

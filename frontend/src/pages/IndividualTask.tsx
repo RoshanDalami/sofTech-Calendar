@@ -161,7 +161,7 @@ export default function IndividualTask() {
       )}
 
       <div>
-        <p className="text-2xl font-bold text-white px-4 py-3">
+        <p className="text-2xl font-bold dark:text-white  px-4 py-3">
               {individualTask.taskTitle}
 
         </p>

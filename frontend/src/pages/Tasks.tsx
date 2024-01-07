@@ -16,7 +16,7 @@ import { TaskType } from "../types";
 import { nanoid } from "nanoid";
 import { userAtom } from "../recoil/userAtom";
 import { useRecoilValue } from "recoil";
-import Link from 'react-router-dom'
+import Link from "react-router-dom";
 // import {Task} from '../types'
 import toast from "react-hot-toast";
 const schema = z.object({
@@ -28,11 +28,15 @@ const schema = z.object({
 
 export default function Tasks() {
   const [isModelOpen, setIsModelOpen] = useState(false);
-  const [isSearching,setIsSearching] = useState(false)
+  const [isSearching, setIsSearching] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [taskList, setTaskList] = useState<TaskType[]>([]);
+  const [activeTaskList, setActiveTaskList] = useState<TaskType[]>([]);
+  const [completedTaskList, setCompletedTaskList] = useState<TaskType[]>([]);
+  const [selectedTask, setSelectedTask] = useState(0);
+
   const userDetails = useRecoilValue(userAtom);
-  const [searchTerm , setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState("");
 
   const getAllTask = useCallback(async () => {
     try {
@@ -45,6 +49,28 @@ export default function Tasks() {
   useEffect(() => {
     getAllTask();
   }, [taskList]);
+  const getAllInCompletedTask = useCallback(async () => {
+    try {
+      const response = await axios.get(url.getAllInCompletedTask);
+      setActiveTaskList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+  useEffect(() => {
+    getAllInCompletedTask();
+  }, [activeTaskList]);
+  const getAllCompletedTask = useCallback(async () => {
+    try {
+      const response = await axios.get(url.getAllCompletedTask);
+      setCompletedTaskList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+  useEffect(() => {
+    getAllCompletedTask();
+  }, [completedTaskList]);
 
   const { register, handleSubmit, resetField } = useForm({
     resolver: zodResolver(schema),
@@ -147,29 +173,40 @@ export default function Tasks() {
                 onClick={() => setIsSearching(false)}
               />
             </div>
-            <div className="flex items-center border rounded-md border-gray-300 w-[90%]">
-              <input type="search" className=" rounded-md focus:outline-none w-full py-2 px-4" placeholder="Search Task by Title  " onChange={(e)=>setSearchTerm(e.target.value)} value={searchTerm}  />
-              <MagnifyingGlassIcon className="h-6 w-6 mr-6" />
+            <div className="flex w-[90%] items-center rounded-md border border-gray-300">
+              <input
+                type="search"
+                className=" w-full rounded-md px-4 py-2 focus:outline-none"
+                placeholder="Search Task by Title  "
+                onChange={(e) => setSearchTerm(e.target.value)}
+                value={searchTerm}
+              />
+              <MagnifyingGlassIcon className="mr-6 h-6 w-6" />
             </div>
-          <div className=" max-h-52 overflow-auto my-3">
-            {
-             taskList.filter((item)=>{
-              if(searchTerm.toLowerCase() !== '')  {
-                return item.taskTitle.toLowerCase().includes(searchTerm.toLowerCase())
-              } 
-             } ).map((item)=>{
-              return(
-                  <a href={`/tasks/${item._id}`} >
-                <div key={item._id} className="bg-gray-400/20 h-10  rounded-md flex items-center my-2 " >
-
-                  <p className="text-lg font-bold mx-2">{item.taskTitle}</p>
-                </div>
-                  </a>
-                  
-              )
-             })
-            }
-          </div>
+            <div className=" my-3 max-h-52 overflow-auto">
+              {taskList
+                .filter((item) => {
+                  if (searchTerm.toLowerCase() !== "") {
+                    return item.taskTitle
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase());
+                  }
+                })
+                .map((item) => {
+                  return (
+                    <a href={`/tasks/${item._id}`}>
+                      <div
+                        key={item._id}
+                        className="my-2 flex  h-10 items-center rounded-md bg-gray-400/20 "
+                      >
+                        <p className="mx-2 text-lg font-bold">
+                          {item.taskTitle}
+                        </p>
+                      </div>
+                    </a>
+                  );
+                })}
+            </div>
           </div>
         </Model>
       </Transition>
@@ -187,28 +224,102 @@ export default function Tasks() {
                   Create Task
                   <PlusCircleIcon className="h-8 w-7" />
                 </button>
-                <button className="my-5 flex items-center gap-3 rounded-md bg-indigo-600 px-1 py-1 text-sm text-white hover:bg-indigo-700 md:gap-5 md:px-10 md:py-2 md:text-lg " onClick={()=> setIsSearching(true)} >
+                <button
+                  className="my-5 flex items-center gap-3 rounded-md bg-indigo-600 px-1 py-1 text-sm text-white hover:bg-indigo-700 md:gap-5 md:px-10 md:py-2 md:text-lg "
+                  onClick={() => setIsSearching(true)}
+                >
                   Search Task
                   <MagnifyingGlassIcon className="h-8 w-7" />
                 </button>
               </div>
             </section>
+            <div className="mt-6 flex gap-5">
+              <button
+                className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${selectedTask === 0 ? 'bg-lime-600 hover:bg-lime-700':''} `}
+                onClick={()=>setSelectedTask(0)}
+              >
+                Active Task
+              </button>
+              <button
+                className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${selectedTask === 1 ? 'bg-lime-600 hover:bg-lime-700':''} `}
+                onClick={()=>setSelectedTask(1)}
+              >
+                Completed Task
+              </button>
+              <button
+                className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${selectedTask === 2 ? 'bg-lime-600 hover:bg-lime-700':''} `}
+                onClick={()=>setSelectedTask(2)}
+              >
+                All Task
+              </button>
+            </div>
 
             <div className="mx-1 mb-10 mt-10 flex grid-cols-3 flex-col  flex-wrap items-center   justify-center gap-3 md:grid 2xl:grid 2xl:grid-cols-8 ">
-              {taskList
-                .filter((item) => item?.userDetails === userDetails?.data?._id)
-                .map((task: TaskType) => {
-                  return (
-                    <TaskCard
-                      key={task._id}
-                      taskTitle={task.taskTitle}
-                      taskDescription={task.taskDescription}
-                      _id={task._id}
-                      taskId={task.taskId}
-
-                    />
-                  );
-                })}
+              {selectedTask === 0 ? (
+                <>
+                  {activeTaskList
+                    .filter(
+                      (item) => ((item?.userDetails === userDetails?.data?._id))
+                    )
+                    .map((task: TaskType) => {
+                     const response =  task.todos?.filter((item)=>{
+                        item.assignedTo === userDetails?.data.username
+                      })
+                      console.log(response,userDetails?.data?.username,'hello')
+                        return (
+                          <TaskCard
+                            key={task._id}
+                            taskTitle={task.taskTitle}
+                            taskDescription={task.taskDescription}
+                            _id={task._id}
+                            taskId={task.taskId}
+                            isCompleted={task.isCompleted}
+                          />
+                        );
+                      
+                    })}
+                </>
+              ) : selectedTask === 1 ? (
+                <>
+                  {completedTaskList
+                    .filter(
+                      (item) => ((item?.userDetails === userDetails?.data?._id) )
+                    )
+                    .map((task: TaskType) => {
+                      return (
+                        <TaskCard
+                          key={task._id}
+                          taskTitle={task.taskTitle}
+                          taskDescription={task.taskDescription}
+                          _id={task._id}
+                          taskId={task.taskId}
+                          isCompleted={task.isCompleted}
+                        />
+                      );
+                    })}
+                </>
+              ) : selectedTask === 2 ? (
+                <>
+                  {taskList
+                     .filter(
+                      (item) => ((item?.userDetails === userDetails?.data?._id))
+                    )
+                    .map((task: TaskType) => {
+                      return (
+                        <TaskCard
+                          key={task._id}
+                          taskTitle={task.taskTitle}
+                          taskDescription={task.taskDescription}
+                          _id={task._id}
+                          taskId={task.taskId}
+                          isCompleted={task.isCompleted}
+                        />
+                      );
+                    })}
+                </>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         ) : (

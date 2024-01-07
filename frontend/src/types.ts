@@ -56,7 +56,14 @@ export type TaskType = {
   taskDescription: string;
   _id: string;
   taskId: string;
-
+  isCompleted : boolean  ;
+  todos:[
+    {   id:String,
+        todoTitle:String,
+        columnId:String ,
+        assignedTo:String
+    }
+  ]
 };
 
 export type Todos = {

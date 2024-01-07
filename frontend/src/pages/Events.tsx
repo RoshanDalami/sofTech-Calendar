@@ -168,7 +168,7 @@ export default function Events() {
 
 
             {EventList?.length > 0 ? (
-              sortedEvents?.filter((event)=>event?.userDetails === user?.data?._id).map((event, index) => {
+              sortedEvents?.filter((event)=>((event?.userDetails === user?.data?._id))).map((event, index) => {
                 
                 const eventDate = new Date(
                   `${event.eventDateNepali}`

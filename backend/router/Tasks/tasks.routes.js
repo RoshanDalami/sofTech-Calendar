@@ -10,7 +10,9 @@ const {
   getTodos,
   getAllCompletedTask,
   getTaskByUserId,
-  getAllInCompletedTask
+  getAllInCompletedTask,
+  setCompleted,
+  getTodosWithUser
 } = require("./tasks.controller");
 const express = require("express");
 
@@ -28,5 +30,7 @@ TaskRouter.put("/updateStatus/:id", updateStatus);
 TaskRouter.delete("/deleteTodo/:id", deleteTodo);
 TaskRouter.get("/getAllTodos", getTodos);
 TaskRouter.get("/getTaskByUser/:id", getTaskByUserId);
+TaskRouter.put("/setTaskCompleted/:id", setCompleted);
+TaskRouter.get("/getTodosByUser",getTodosWithUser)
 
 module.exports = TaskRouter;

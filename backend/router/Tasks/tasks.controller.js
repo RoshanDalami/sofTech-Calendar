@@ -98,29 +98,29 @@ async function deleteTodo(req, res) {
   }
 }
 
-
-async function getTodos(req,res){
-const id = req.params.id
- try {
-  const result = await Task.aggregate([
-    {
-      $unwind :{
-        path:"$todos"
-      }
-    },{
-      $group:{
-        _id:"$todos.columnId",
-        count:{
-          $sum:1
-        }
-      }
-    }
-  ])
-  res.status(200).json(result)
- } catch (error) {
-  console.log(error)
-  res.status(500).json({message:'Internal server error'})
- }
+async function getTodos(req, res) {
+  const id = req.params.id;
+  try {
+    const result = await Task.aggregate([
+      {
+        $unwind: {
+          path: "$todos",
+        },
+      },
+      {
+        $group: {
+          _id: "$todos.columnId",
+          count: {
+            $sum: 1,
+          },
+        },
+      },
+    ]);
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 }
 
 async function getTaskByUserId(req, res) {
@@ -132,20 +132,59 @@ async function getTaskByUserId(req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
-async function getAllCompletedTask(req,res){
+async function getAllCompletedTask(req, res) {
   try {
-    const response = await Task.find({isCompleted:true})
-    res.status(200).json(response)
+    const response = await Task.find({ isCompleted: true });
+    res.status(200).json(response);
   } catch (error) {
-    res.status(500).json({message:"Internal server error"})
+    res.status(500).json({ message: "Internal server error" });
   }
 }
-async function getAllInCompletedTask(req,res){
+async function getAllInCompletedTask(req, res) {
   try {
-    const response = await Task.find({isCompleted:false})
+    const response = await Task.find({ isCompleted: false });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function setCompleted(req, res) {
+  const id = req.params.id;
+  try {
+    const response = await Task.findOne({_id:id}).then((doc)=>{
+      doc.isCompleted = true
+      doc.save()
+    })
+
+    res.status(200).json({ messages: "Task marked completed successfully" });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function getTodosWithUser (req,res){
+  // const name = req.params.name
+  try {
+    const response = await Task.aggregate([
+      {
+        $unwind:{
+          path:"$todos"
+        }
+      },{
+        $group:{
+          _id:"$todos.assignedTo"
+        }
+      },{
+        $match:{
+          _id:'Roshan Dalami'
+        }
+      }
+    ])
     res.status(200).json(response)
   } catch (error) {
-    res.status(500).json({message:"Internal server error"})
+    res.status(500).json({message:"Internal Server Error"})
   }
 }
 
@@ -161,5 +200,7 @@ module.exports = {
   getTodos,
   getTaskByUserId,
   getAllCompletedTask,
-  getAllInCompletedTask
+  getAllInCompletedTask,
+  setCompleted,
+  getTodosWithUser
 };

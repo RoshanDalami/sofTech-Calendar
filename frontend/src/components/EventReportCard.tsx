@@ -239,7 +239,7 @@ export default function EventReportCard() {
         })}
       </div>
       <div className="grid grid-cols-2">
-        <div className=" mx-2 my-5 h-52 rounded-xl bg-gray-700 shadow-xl ">
+        <div className=" mx-2 my-5 h-52 rounded-xl bg-gray-300 dark:bg-gray-700 shadow-xl ">
           <h1 className="mx-4 pt-3 text-xl font-bold dark:text-white">
             Passed Events of 3 Months 
              <span className="bg-gray-200 px-2 py-1 mx-3 rounded-full text-gray-900">
@@ -253,11 +253,11 @@ export default function EventReportCard() {
                   key={event.eventId}
                   className="ml-4 my-2 flex items-center gap-5"
                 >
-                  <ChevronDoubleRightIcon className="h-5 w-5 text-red-600" />
-                  <p className="text-xl font-bold text-red-600">
+                  <ChevronDoubleRightIcon className="h-5 w-5 text-red-400" />
+                  <p className="text-xl font-bold text-red-400">
                     {event.eventTitle}
                   </p>
-                  <p className="bg-red-900 p-1 rounded-md text-white fond-bold">
+                  <p className="bg-red-400 p-1 rounded-md text-white fond-bold">
                     {event.eventDateNepali}
                   </p>
                 </div>
@@ -265,7 +265,7 @@ export default function EventReportCard() {
             })}
           </div>
         </div>
-        <div className=" mx-2 my-5 h-52 rounded-xl bg-gray-700 shadow-xl ">
+        <div className=" mx-2 my-5 h-52 rounded-xl bg-gray-300 dark:bg-gray-700 shadow-xl ">
           <h1 className="mx-4 pt-3 text-xl font-bold dark:text-white">
             Today's Events 
             <span className="bg-gray-200 px-2 py-1 mx-3 rounded-full text-gray-900">
@@ -292,7 +292,7 @@ export default function EventReportCard() {
             })}
           </div>
         </div>
-        <div className=" mx-2 my-5 h-52 rounded-xl bg-gray-700 shadow-xl ">
+        <div className=" mx-2 my-5 h-52 rounded-xl bg-gray-300 dark:bg-gray-700 shadow-xl ">
           <h1 className="mx-4 pt-3 text-xl font-bold dark:text-white">
             Upcomming Events on 3 Months
             <span className="bg-gray-200 px-2 py-1 mx-3 rounded-full text-gray-900">
@@ -307,11 +307,11 @@ export default function EventReportCard() {
                     key={event.eventId}
                     className="ml-4 my-2 flex items-center gap-5"
                   >
-                    <ChevronDoubleRightIcon className="h-5 w-5 text-blue-600" />
-                    <p className="text-xl font-bold text-blue-600">
+                    <ChevronDoubleRightIcon className="h-5 w-5 text-blue-400" />
+                    <p className="text-xl font-bold text-blue-400">
                       {event.eventTitle}
                     </p>
-                    <p className="bg-blue-900 p-1 rounded-md text-white fond-bold">
+                    <p className="bg-blue-600 p-1 rounded-md text-white fond-bold">
                     {event.eventDateNepali}
                   </p>
                   </div>

@@ -1,14 +1,14 @@
-import { Task ,Id} from "../types";
+import { Task, Id } from "../types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { TrashIcon } from '@heroicons/react/24/outline'
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 interface Props {
   task: Task;
-  taskDeleteHandler:(id:Id)=>void;
+  taskDeleteHandler: (id: Id) => void;
 }
 
-export default function TaskCard({ task,taskDeleteHandler }: Props) {
+export default function TaskCard({ task, taskDeleteHandler }: Props) {
   const {
     setNodeRef,
     attributes,
@@ -23,7 +23,7 @@ export default function TaskCard({ task,taskDeleteHandler }: Props) {
       task,
     },
   });
-  const [isMouseOver,setIsMouseOver] = useState(false);
+  const [isMouseOver, setIsMouseOver] = useState(false);
 
   const style = {
     transition,
@@ -35,43 +35,46 @@ export default function TaskCard({ task,taskDeleteHandler }: Props) {
       <div
         ref={setNodeRef}
         style={style}
-        className="bg-gray-600/50 p-2.5 h-[100px] min-h-[100px] items-center flex  text-left rounded-md mx-4 cursor-grab"
-      >
-        
-      </div>
+        className="mx-4 flex h-[100px] min-h-[100px] cursor-grab items-center  rounded-md bg-gray-600/50 p-2.5 text-left"
+      ></div>
     );
   }
+  console.log(task,'task')
   return (
     <div
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
-      className="bg-gray-600/50 p-2.5 h-[100px] min-h-[100px] items-center flex  text-left rounded-md mx-4 cursor-grab justify-between px-4 "
-      onMouseEnter={()=>{
-        setIsMouseOver(true)
+      className="mx-4 flex h-[100px] min-h-[100px] cursor-grab items-center  justify-between rounded-md bg-gray-600/50 p-2.5 px-4 text-left "
+      onMouseEnter={() => {
+        setIsMouseOver(true);
       }}
-      onMouseLeave={()=>{
-        setIsMouseOver(false)
+      onMouseLeave={() => {
+        setIsMouseOver(false);
       }}
     >
       <div>
+        <p className="text-lg font-bold text-white">{task?.todoTitle}</p>
+     
 
-      <p className="text-white text-lg font-bold">
+      </div>
 
-      {task?.todoTitle}
-      </p>
-      <p className=" bg-gray-100 w-6 h-6 rounded-full flex items-center justify-center">
-        <p className="text-black text-md font-bold">
-
-        {task.assignedTo.split('')[0].toUpperCase()}
+      <div className="flex flex-col gap-2 items-center">
+      {isMouseOver && (
+        <button
+          className="rounded-md bg-red-600 px-2 py-1 text-white"
+          onClick={() => taskDeleteHandler(task._id)}
+        >
+          <TrashIcon className="h-5 w-5" />
+        </button>
+      )}
+      <p className=" flex h-6 w-6 items-center justify-center rounded-full bg-gray-100">
+        <p className="text-md font-bold text-black">
+          {task.assignedTo.split("")[0].toUpperCase()}
         </p>
       </p>
       </div>
-     { isMouseOver && <button className="bg-red-600 rounded-md text-white px-2 py-1" onClick={()=>taskDeleteHandler(task._id)}  >
-        <TrashIcon className="h-5 w-5" />
-      </button>}
-
     </div>
   );
 }
