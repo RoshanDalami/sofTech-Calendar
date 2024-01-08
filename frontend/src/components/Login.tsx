@@ -1,4 +1,4 @@
-import { CalendarDaysIcon } from "@heroicons/react/24/outline";
+import { CalendarDaysIcon,EyeIcon,EyeSlashIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
 import { useState } from "react";
@@ -15,6 +15,7 @@ export default function Login() {
 
   const { register, handleSubmit } = useForm();
   const [loading,setLoading] = useState(false);
+  const [showPassword,setShowPassword] = useState(false)
 
   const submitHandler = async (data:FieldValues) =>{
 
@@ -83,17 +84,22 @@ export default function Login() {
               <p className="text-red-600">{errors.email?.message}</p>
             )} */}
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative ">
             <label htmlFor="email" className="text-lg">
               Password
             </label>
             <input
-              type="password"
+              type={showPassword?'text':'password'}
               id="password"
               className="rounded-md px-4 py-2"
               {...register("password")}
               placeholder="********"
             />
+            <div className=" absolute md:bottom-2 md:right-5 cursor-pointer " onClick={()=>setShowPassword((prevState)=> !prevState)}>
+              {
+                showPassword ? <EyeSlashIcon className="h-5 w-5 font-bold"/> : <EyeIcon className="h-5 w-5 font-bold"/>
+              }
+            </div>
             {/* {errors.password?.message && (
               <p className="text-red-600">{errors.password?.message}</p>
             )} */}
