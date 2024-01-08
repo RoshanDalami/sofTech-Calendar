@@ -20,11 +20,11 @@ import { url } from "../service/apiHelper";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
-interface Props {
-  id: string;
-}
+// interface Props {
+//   id: string;
+// }
 
-export default function KanbanBoard(props: Props) {
+export default function KanbanBoard() {
   const { taskID } = useParams();
 
 
@@ -156,7 +156,7 @@ export default function KanbanBoard(props: Props) {
 
     const data = {todoId,columnId }
     try {
-      const response = await axios.put(`${url.updateStatus}/${taskID}`,data);
+       await axios.put(`${url.updateStatus}/${taskID}`,data);
 
     } catch (error) {
       console.log(error)

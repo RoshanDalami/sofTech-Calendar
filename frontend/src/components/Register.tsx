@@ -4,17 +4,18 @@ import { useForm, FieldValues } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import Cookie from "js-cookie";
+import { baseurl } from "../service/apiHelper";
 
 const Register = ({}) => {
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    
   } = useForm();
   const onSubmit = async (data: FieldValues) => {
     try {
-      const response = await fetch("http://localhost:8000/api/user/register", {
+      const response = await fetch(`${baseurl}/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

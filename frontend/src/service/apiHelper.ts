@@ -1,4 +1,4 @@
-const baseurl = "http://localhost:8000/api";
+export const baseurl = "http://localhost:8000/api";
 
 export const url = {
   getAllEvents: `${baseurl}/events/getAllEvents`,

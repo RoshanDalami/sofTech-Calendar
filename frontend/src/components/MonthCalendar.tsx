@@ -26,17 +26,17 @@ const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
 };
 
 // console.log(new NepaliDate(), "nepali Date");
-type Input = {
-  eventTitle: "";
-  eventDescription: "";
-  eventStartTime: "";
-  eventEndTime: "";
-};
+// type Input = {
+//   eventTitle: "";
+//   eventDescription: "";
+//   eventStartTime: "";
+//   eventEndTime: "";
+// };
 export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
   const [modelOpen, setModelOpen] = useState(false);
   const [EventList, setEventList] = useState<Event[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const nepali_date = new NepaliDate();
+  // const nepali_date = new NepaliDate();
   const user = useRecoilValue(userAtom);
   const userDetails = JSON.parse(localStorage.getItem("user")!);
   // const [addFormInput,setAddFormInput] = useState([

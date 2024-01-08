@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom";
 
 import Model from "../components/Model";
-import { FormEvent, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import {
   XCircleIcon,
   PencilSquareIcon,
@@ -54,7 +54,7 @@ export default function Events() {
     getAllEvents();
   }, [selectMonth]);
 
-  const handlePageChange = (e:any,newpage:number)=>{
+  const handlePageChange = (_e:any,newpage:number)=>{
     setPage(newpage)
   }
   function handlePerPage(e:any){

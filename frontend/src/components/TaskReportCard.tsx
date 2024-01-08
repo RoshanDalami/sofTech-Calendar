@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
-import { Todos, TaskType , User } from "../types";
+import { Todos, TaskType  } from "../types";
 import axios from "axios";
 import { url } from "../service/apiHelper";
 import DonutChartComp from "./PieChart";
 import { ChevronDoubleRightIcon } from "@heroicons/react/24/outline";
-import { userAtom } from "../recoil/userAtom";
-import { useRecoilValue } from "recoil";
+// import { userAtom } from "../recoil/userAtom";
+// import { useRecoilValue } from "recoil";
 export default function TaskReportCard() {
   const [todos, setTodos] = useState<Todos[]>([]);
-  const user:User = useRecoilValue(userAtom);
+  // const user:User = useRecoilValue(userAtom);
 
   async function fetchTodo() {
     try {

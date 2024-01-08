@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import  { FormEvent, useState } from "react";
 import { Event } from "../types";
 import { url } from "../service/apiHelper";
 import axios from "axios";
