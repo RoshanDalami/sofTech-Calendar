@@ -4,6 +4,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { userAtom } from "../recoil/userAtom";
+import { baseurl } from "../service/apiHelper";
 
 
 export default function Login() {
@@ -19,7 +20,7 @@ export default function Login() {
 
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:8000/api/user/login", {
+      const response = await fetch(`${baseurl}/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
