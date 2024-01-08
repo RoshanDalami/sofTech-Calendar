@@ -47,7 +47,7 @@ export default function KanbanBoard(props: Props) {
     {
       id: "4",
       title: "Backlogs",
-      color: "bg-indigo-600",
+      color: "bg-yellow-600",
     },
   ]);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
@@ -151,13 +151,13 @@ export default function KanbanBoard(props: Props) {
     //dropping a task over a column
     const isOverColumn = over.data.current?.type === "Column";
     const todoId = active.data.current?.task?._id
-    console.log(over.data.current,'current')
+
     const columnId = over.data.current?.column?.id || active.data.current?.task?.columnId
 
     const data = {todoId,columnId }
     try {
       const response = await axios.put(`${url.updateStatus}/${taskID}`,data);
-      console.log(response)
+
     } catch (error) {
       console.log(error)
     }
@@ -202,6 +202,7 @@ export default function KanbanBoard(props: Props) {
                     index={index}
                     bgColor={col.color}
                     column={col}
+                    id={col.id}
                     // onSubmit={onSubmit}
                     taskDeleteHandler={taskDeleteHandler}
                     tasks={tasks?.filter((task) => task.columnId === col.id)}
@@ -223,6 +224,7 @@ export default function KanbanBoard(props: Props) {
                   column={activeColumn}
                   index={0}
                   bgColor=""
+                  id=''
                   taskDeleteHandler={taskDeleteHandler}
                   tasks={tasks?.filter(
                     (task) => task.columnId === activeColumn.id

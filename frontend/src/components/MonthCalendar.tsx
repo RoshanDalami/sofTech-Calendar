@@ -4,7 +4,7 @@ import nepaliNumber from "../helper/nepaliNumber";
 import { Transition } from "@headlessui/react";
 import useLanguage from "../helper/useLanguage";
 import { DayData } from "../types/calendar.types";
-import React, { FormEvent, useEffect, useMemo, useState } from "react";
+import {  useState ,useMemo,useEffect } from "react";
 import NepaliDate from "nepali-date-converter";
 import { classNames } from "../helper/utils";
 import { url } from "../service/apiHelper";
@@ -27,17 +27,18 @@ const isSameMonth = (date1: NepaliDate, date2: NepaliDate) => {
 
 // console.log(new NepaliDate(), "nepali Date");
 type Input = {
-  eventTitle:'',
-      eventDescription:'',
-      eventStartTime:'',
-      eventEndTime:''
-}
+  eventTitle: "";
+  eventDescription: "";
+  eventStartTime: "";
+  eventEndTime: "";
+};
 export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
   const [modelOpen, setModelOpen] = useState(false);
   const [EventList, setEventList] = useState<Event[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const nepali_date = new NepaliDate();
   const user = useRecoilValue(userAtom);
+  const userDetails = JSON.parse(localStorage.getItem("user")!);
   // const [addFormInput,setAddFormInput] = useState([
   //   {
   //     eventTitle:'',
@@ -190,8 +191,6 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
               className="mx-5 mt-12 flex flex-col gap-4"
               onSubmit={handleSubmit((data) => onSubmitHandler(data))}
             >
-              
-
               <div className="flex flex-col gap-2">
                 <label htmlFor="event" className="text-2xl font-bold">
                   Event
@@ -245,12 +244,12 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                     placeholder=" Event Time "
                     {...register("eventEndTime")}
                     // onChange={(e)=>handleEventEndTimeChange(e,index)}
-                  //  value={data.eventEndTime}
+                    //  value={data.eventEndTime}
                     required
                   />
                 </div>
               </div>
-                
+
               <button
                 type="submit"
                 className="mb-3 mt-2 rounded-md bg-blue-600 py-2 text-white"
@@ -261,7 +260,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
           </div>
         </Model>
       </Transition>
-      <div className=" flex w-[90vw] flex-col gap-3 md:w-[60.6vw] md:flex-row ">
+      <div className={`flex w-[90vw] flex-col gap-3 ${userDetails?.data?.role === 'superadmin' ? ' md:w-[60.6vw] md:flex-row':' md:w-[80vw]'}  `}>
         <div className=" ">
           <div className="mt-3  grid  grid-cols-7 text-xs leading-10 text-gray-900 dark:text-white ">
             <div className="text-center text-xl">{t("homepage.S")}</div>
@@ -274,7 +273,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
               {t("homepage.Sa")}
             </div>
           </div>
-          <div className="isolate  mt-2 grid h-[50vh] w-[90vw] grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200  md:h-[78vh] md:w-[60.6vw] ">
+          <div className={`isolate  mt-2 grid h-[50vh] w-[90vw] grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200  md:h-[78vh] md:w-[60.6vw] ${userDetails?.data?.role === 'superadmin' ? 'md:w-[60.6vw] md:flex-row ':' md:w-[80vw]'} `}>
             {monthData.map((day, dayIdx) => {
               const { bs_year, bs_month, bs_day } = day.AD_date;
               const dayInNepaliDate = new NepaliDate(
@@ -312,8 +311,8 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
                   {EventList.map((event) => {
                     if (
                       event.eventDateNepali ===
-                        `${bs_year}-${bs_month}-${bs_day}` &&
-                      event.userDetails === user.data._id
+                        `${bs_year}-${bs_month}-${bs_day}` 
+                      
                     ) {
                       return (
                         <div key={event.eventId} className="">
@@ -342,85 +341,94 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
           </div>
         </div>
         {/* event  */}
-        <div className=" ">
-          <div className="absolute z-20 flex flex-col items-center md:top-[20px]">
-            <div className="w-[32vh] ">
-              <button
-                type="button"
-                className=" w-full items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white shadow  hover:bg-blue-700 focus:outline-none "
-              >
-                {/* {t("homepage.View_all_events")}  */}
-                {" Events of " + selectedDay.getDate()}
-              </button>
+        <div>
+          {userDetails?.data?.role === "superadmin" ? (
+            <>
+              <div className=" ">
+                <div className="absolute z-20 flex flex-col items-center md:top-[20px]">
+                  <div className="w-[32vh] ">
+                    <button
+                      type="button"
+                      className=" w-full items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white shadow  hover:bg-blue-700 focus:outline-none "
+                    >
+                      {/* {t("homepage.View_all_events")}  */}
+                      {" Events of " + selectedDay.getDate()}
+                    </button>
 
-              {/* events card  */}
-            </div>
-            {EventList.map((event: any) => {
-              if (
-                event.eventDateNepali === selectedDay.format("YYYY-M-D") && event.userDetails === user.data._id
-                // event.year === JSON.stringify(selectedDay.getBS().year) &&
-                // event.month === JSON.stringify(selectedDay.getBS().month + 1) &&
-                // event.date === JSON.stringify(selectedDay.getDate())
-              ) {
-                return (
-                  <div
-                    className="mx-2 mt-1 flex flex-col gap-2 rounded-md border  bg-white p-4 shadow-lg "
-                    key={event.eventId}
-                  >
-                    <div className="flex">
-                      <div className="flex-col">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold ">
-                          <h1 className="text-xl">
-                            {event.eventDateNepali.split("-")[2]}
-                          </h1>
-                        </div>
-                        <p className="mt-2 text-sm text-gray-500 ">
-                          {/* day  */}
-                          {selectedDay
-                            .toJsDate()
-                            .toLocaleDateString(
-                              isNepaliLanguage ? "ne-NP" : "en-US",
-                              {
-                                weekday: "long",
-                              }
-                            )}
-                        </p>
-                      </div>
-
-                      <div className="ml-4 grow text-left">
-                        <p className="mt-2 text-sm font-semibold ">
-                          {event.eventTitle.slice(0, 10)}
-                        </p>
-                      </div>
-                      <div className="ml-5 flex-col text-end">
-                        <h1 className="mt-2 text-sm text-gray-500 ">
-                          {relativeTimeFromDates(
-                            selectedDay.toJsDate(),
-                            isNepaliLanguage
-                          )}
-                        </h1>
-                        <h1 className="mt-2 text-sm text-gray-500 ">
-                          {convertTo12HourFormat(event.eventStartTime)}
-                        </h1>
-                      </div>
-                    </div>
+                    {/* events card  */}
                   </div>
-                );
-              }
-            })}
-          </div>
-        </div>
+                  {EventList.map((event: any) => {
+                    if (
+                      event.eventDateNepali ===
+                        selectedDay.format("YYYY-M-D") &&
+                      event.userDetails === user.data._id
+                      // event.year === JSON.stringify(selectedDay.getBS().year) &&
+                      // event.month === JSON.stringify(selectedDay.getBS().month + 1) &&
+                      // event.date === JSON.stringify(selectedDay.getDate())
+                    ) {
+                      return (
+                        <div
+                          className="mx-2 mt-1 flex flex-col gap-2 rounded-md border  bg-white p-4 shadow-lg "
+                          key={event.eventId}
+                        >
+                          <div className="flex">
+                            <div className="flex-col">
+                              <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold ">
+                                <h1 className="text-xl">
+                                  {event.eventDateNepali.split("-")[2]}
+                                </h1>
+                              </div>
+                              <p className="mt-2 text-sm text-gray-500 ">
+                                {/* day  */}
+                                {selectedDay
+                                  .toJsDate()
+                                  .toLocaleDateString(
+                                    isNepaliLanguage ? "ne-NP" : "en-US",
+                                    {
+                                      weekday: "long",
+                                    }
+                                  )}
+                              </p>
+                            </div>
 
+                            <div className="ml-4 grow text-left">
+                              <p className="mt-2 text-sm font-semibold ">
+                                {event.eventTitle.slice(0, 10)}
+                              </p>
+                            </div>
+                            <div className="ml-5 flex-col text-end">
+                              <h1 className="mt-2 text-sm text-gray-500 ">
+                                {relativeTimeFromDates(
+                                  selectedDay.toJsDate(),
+                                  isNepaliLanguage
+                                )}
+                              </h1>
+                              <h1 className="mt-2 text-sm text-gray-500 ">
+                                {convertTo12HourFormat(event.eventStartTime)}
+                              </h1>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+                  })}
+                </div>
+              </div>
 
-        {/* add event button  */}
+              {/* add event button  */}
 
-        <div className=" fixed bottom-20 right-5 z-50 cursor-pointer rounded-full bg-black p-2 md:absolute md:bottom-5   md:right-10">
-          <PlusIcon
-            className=" h-10 w-10 text-white"
-            onClick={() => {
-              setModelOpen(true);
-            }}
-          />
+              <div className=" fixed bottom-20 right-5 z-50 cursor-pointer rounded-full bg-black p-2 md:absolute md:bottom-5   md:right-10">
+                <PlusIcon
+                  className=" h-10 w-10 text-white"
+                  onClick={() => {
+                    setModelOpen(true);
+                  }}
+                />
+              </div>
+            </>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </>

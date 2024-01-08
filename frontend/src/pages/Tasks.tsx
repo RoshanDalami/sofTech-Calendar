@@ -14,8 +14,6 @@ import * as z from "zod";
 import { url } from "../service/apiHelper";
 import { TaskType } from "../types";
 import { nanoid } from "nanoid";
-import { userAtom } from "../recoil/userAtom";
-import { useRecoilValue } from "recoil";
 // import {Task} from '../types'
 import toast from "react-hot-toast";
 const schema = z.object({
@@ -33,10 +31,17 @@ export default function Tasks() {
   const [activeTaskList, setActiveTaskList] = useState<TaskType[]>([]);
   const [completedTaskList, setCompletedTaskList] = useState<TaskType[]>([]);
   const [assignedTask, setAssignedTask] = useState<TaskType[]>([]);
-  const [selectedTask, setSelectedTask] = useState(2);
+  const [selectedTask, setSelectedTask] = useState(0);
 
-  const userDetails = useRecoilValue(userAtom);
+  // const userDetails = useRecoilValue(userAtom);
+  const userDetails = JSON.parse(localStorage.getItem('user')!)
   const [searchTerm, setSearchTerm] = useState("");
+  
+  useEffect(()=>{
+    if(userDetails?.data?.role !== 'superadmin'){
+      setSelectedTask(3)
+    }
+  },[userDetails?.data?.role])
 
   const getAllTask = useCallback(async () => {
     try {
@@ -92,7 +97,9 @@ export default function Tasks() {
         resetField("taskTitle");
         resetField("taskDescription");
         setIsModelOpen(false);
+        window.location.reload()
       }
+
     } catch (error) {
       toast.error("Task fetching failed");
     } finally {
@@ -232,6 +239,9 @@ export default function Tasks() {
           <div className="mx-1 mt-10 overflow-hidden  ">
             <section className="mx-4 flex  h-full items-center justify-between rounded-md border-b bg-slate-100  px-2 py-2 text-4xl md:mx-0 md:px-10">
               Tasks
+
+              {
+                userDetails?.data?.role === 'superadmin' &&
               <div>
                 <button
                   className="my-5 flex items-center gap-3 rounded-md bg-indigo-600 px-1 py-1 text-sm text-white hover:bg-indigo-700 md:gap-5 md:px-10 md:py-2 md:text-lg "
@@ -248,6 +258,7 @@ export default function Tasks() {
                   <MagnifyingGlassIcon className="h-8 w-7" />
                 </button>
               </div>
+              }
             </section>
             <div className="mt-6 flex gap-5">
               {
@@ -350,7 +361,7 @@ export default function Tasks() {
                 </>
               ) : selectedTask === 3 ? (
                 <>
-                  {assignedTask.map((task: TaskType) => {
+                  {assignedTask?.map((task: TaskType) => {
                     return (
                       <TaskCard
                         key={task._id}

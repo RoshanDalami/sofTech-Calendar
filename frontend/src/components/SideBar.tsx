@@ -8,13 +8,13 @@ import { useNavigate } from "react-router-dom";
 import LinkLists from "./LinkLists";
 import { useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/userAtom";
-
+import Model from "./Model";
 export default function SideBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
   const mobileBreakpoint = 768; // Adjust the breakpoint as needed
-
-const setUser = useSetRecoilState(userAtom)
+const [logoutClicked,setLogoutClicked] = useState(false)
+  const setUser = useSetRecoilState(userAtom);
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,25 +31,34 @@ const setUser = useSetRecoilState(userAtom)
     return () => window.removeEventListener("resize", handleResize);
   }, [mobileBreakpoint]);
 
-  const handleLogout = ()=>{
-    localStorage.removeItem('user');
-    setUser({message: '',
-    status: 0,
-    data: {
-      _id: '',
-      username: '',
-      email: '',
-      role: '',
-      createdAt: '',
-      updatedAt: '',
-      __v: 0,
-    },
-    token:''})
-    navigate('/')
-  }
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser({
+      message: "",
+      status: 0,
+      data: {
+        _id: "",
+        username: "",
+        email: "",
+        role: "",
+        createdAt: "",
+        updatedAt: "",
+        __v: 0,
+      },
+      token: "",
+    });
+    navigate("/");
+  };
 
   const renderSidebarContent = () => (
     <>
+    {
+      logoutClicked && 
+      <Model>
+        <p>Are you sure you want to logout ?</p>
+        <button className="bg-red-600 rounded-md shadow-md px-5 py-2" onClick={()=>setLogoutClicked(false)} >Cancel</button>
+      </Model>
+    }
       <div className="mt-10 px-5 py-2 text-xl font-bold transition duration-200 hover:rounded-lg dark:text-white ">
         Softech
       </div>

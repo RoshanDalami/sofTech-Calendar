@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom";
 
 import Model from "../components/Model";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import {
   XCircleIcon,
   PencilSquareIcon,
@@ -17,8 +17,9 @@ import axios from "axios";
 import { url } from "../service/apiHelper";
 import { Event } from "../types";
 import EditFrom from "../components/EditFrom";
-import { userAtom } from "../recoil/userAtom";
-import { useRecoilValue } from "recoil";
+// import { userAtom } from "../recoil/userAtom";
+// import { useRecoilValue } from "recoil";
+import TablePagination from '@mui/material/TablePagination';
 
 export default function Events() {
   // const { eventList, removeEvent } = useEvent();
@@ -26,8 +27,11 @@ export default function Events() {
   const [EventList, setEvents] = useState<Event[]>([]);
   const [currentEventId, setCurrentEventId] = useState("");
   const [selectMonth,setSelectMonth] = useState('0')
+  const [page,setPage] = useState(0)
+  const [rowPerPage,setRowPerPage] = useState(6)
 
-  const user = useRecoilValue(userAtom)
+  // const user = useRecoilValue(userAtom)
+  const user = JSON.parse(localStorage.getItem('user')!)
   const getAllEvents = async()=>{
 
     try {
@@ -50,6 +54,13 @@ export default function Events() {
     getAllEvents();
   }, [selectMonth]);
 
+  const handlePageChange = (e:any,newpage:number)=>{
+    setPage(newpage)
+  }
+  function handlePerPage(e:any){
+    setRowPerPage(+e.target.value)
+    setPage(0)
+  }
 
 
   const removeEvent = async(id:any)=>{
@@ -156,9 +167,12 @@ export default function Events() {
                 <th scope="col" className="px-6 py-3">
                   Time
                 </th>
+                {
+                  user?.data?.role === 'superadmin' ? 
                 <th scope="col" className="px-6 py-3">
                   Actions
-                </th>
+                </th> : <></>
+                }
               </tr>
             </thead>
           ) : (
@@ -168,7 +182,8 @@ export default function Events() {
 
 
             {EventList?.length > 0 ? (
-              sortedEvents?.filter((event)=>((event?.userDetails === user?.data?._id))).map((event, index) => {
+              // .filter((event)=>((event?.userDetails === user?.data?._id)))
+              sortedEvents?.slice((page * rowPerPage),((page * rowPerPage) + rowPerPage)).map((event, index) => {
                 
                 const eventDate = new Date(
                   `${event.eventDateNepali}`
@@ -219,6 +234,8 @@ export default function Events() {
                       <td className="px-6 py-4">
                         {convertTo12HourFormat(event.eventStartTime)}
                       </td>
+                      {
+                        user?.data?.role === 'superadmin'?
                       <td className="px-6 py-4">
                         <div className="justify-left flex gap-3  ">
                           <button
@@ -244,7 +261,8 @@ export default function Events() {
                             <EnvelopeIcon className="h-5 w-5" />
                           </Link>
                         </div>
-                      </td>
+                      </td> : <></>
+                      }
                       {/* <td className="px-6 py-4">
                       {isToday ? (
                         <p className="bg-gray-300 rounded-lg text-center text-lime-600 py-1 ">Today</p>
@@ -266,6 +284,20 @@ export default function Events() {
             )}
           </tbody>
         </table>
+        <div className="bg-white rounded-b-md mb-5 text-xl">
+
+        <TablePagination
+        rowsPerPageOptions={[7]}
+        rowsPerPage={rowPerPage}
+        page={page}
+        count={sortedEvents.length}
+        component={'div'}
+        onPageChange={handlePageChange}
+        onRowsPerPageChange={handlePerPage}
+        >
+
+        </TablePagination>
+        </div>
       </div>
     </div>
   );

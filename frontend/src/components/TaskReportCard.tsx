@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Todos, TaskType } from "../types";
+import { useState, useEffect, useCallback } from "react";
+import { Todos, TaskType , User } from "../types";
 import axios from "axios";
 import { url } from "../service/apiHelper";
 import DonutChartComp from "./PieChart";
 import { ChevronDoubleRightIcon } from "@heroicons/react/24/outline";
-
+import { userAtom } from "../recoil/userAtom";
+import { useRecoilValue } from "recoil";
 export default function TaskReportCard() {
   const [todos, setTodos] = useState<Todos[]>([]);
+  const user:User = useRecoilValue(userAtom);
+
   async function fetchTodo() {
     try {
       const response = await axios.get(`${url.getAllTodos}`);
@@ -45,7 +48,7 @@ export default function TaskReportCard() {
         <div className="flex flex-col gap-4 rounded-lg bg-gray-300 py-5 shadow-lg dark:bg-gray-900 md:gap-0">
           <p className="text-md flex items-center font-bold dark:text-gray-200 md:text-2xl">
             <div className="mx-3 h-2 w-2 rounded-full bg-lime-600 md:h-6 md:w-6"></div>
-            Task on todo: {todo[0]?.count || 0 }  
+            Task on todo: {todo[0]?.count || 0}
           </p>
           <p className="flex items-center font-bold dark:text-gray-200 md:text-2xl">
             <div className="mx-3 h-2 w-2 rounded-full bg-orange-600 md:h-6 md:w-6"></div>
@@ -68,19 +71,25 @@ export default function TaskReportCard() {
             Task List
           </h1>
           <div className="h-[40rem] overflow-auto">
+            {
 
-          {taskList?.length > 0
-            ? taskList?.map((item) => {
-                return (
-                  <div className="ml-5 flex  items-center gap-3">
-                    <ChevronDoubleRightIcon className="h-5 w-5 dark:text-gray-300" />
-                    <p className="text-xl dark:text-gray-300 md:text-2xl ">
-                      {item.taskTitle}
-                    </p>
-                  </div>
-                );
-              })
-            : ""}
+
+            }
+
+            <>
+              {taskList?.length > 0
+                ? taskList?.map((item) => {
+                    return (
+                      <div className="ml-5 flex  items-center gap-3">
+                        <ChevronDoubleRightIcon className="h-5 w-5 dark:text-gray-300" />
+                        <p className="text-xl dark:text-gray-300 md:text-2xl ">
+                          {item.taskTitle}
+                        </p>
+                      </div>
+                    );
+                  })
+                : ""}
+            </>
           </div>
         </div>
       </div>

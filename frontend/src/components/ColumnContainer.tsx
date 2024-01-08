@@ -1,5 +1,5 @@
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import { Column, IUser, Id, Task, User } from "../types";
+import { Column, IUser, Id, Task } from "../types";
 import { CSS } from "@dnd-kit/utilities";
 import TaskCard from "./TaskCard";
 import { useEffect, useMemo } from "react";
@@ -17,6 +17,7 @@ import { useRecoilValue } from "recoil";
 interface Props {
   column: Column;
   // onSubmit: (data:FieldValues)=>void;
+  id: Id;
   tasks: Task[];
   index: number;
   bgColor: string;
@@ -24,13 +25,13 @@ interface Props {
 }
 
 export default function ColumnContainer(props: Props) {
-  const { column, taskDeleteHandler, tasks, index, bgColor } = props;
+  const { column, taskDeleteHandler, tasks, index, bgColor, id } = props;
   const { taskID } = useParams();
   const userDetails = useRecoilValue(userAtom);
 
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [userList,setUserList] = useState([])
+  const [userList, setUserList] = useState([]);
   const tasksIds = useMemo(() => {
     return tasks?.map((task) => task.id);
   }, [tasks]);
@@ -98,17 +99,17 @@ export default function ColumnContainer(props: Props) {
     }
   };
 
-  const getAllUser = async()=>{
+  const getAllUser = async () => {
     try {
-      const response = await axios.get(`${url.getAllUser}`)
-      setUserList(response.data)
+      const response = await axios.get(`${url.getAllUser}`);
+      setUserList(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-  useEffect(()=>{
-getAllUser();
-  },[userList])
+  };
+  useEffect(() => {
+    getAllUser();
+  }, [userList]);
 
   return (
     <>
@@ -139,25 +140,26 @@ getAllUser();
 
               <div className="flex flex-col gap-2">
                 <label htmlFor="title">Assigned To</label>
-                <select  id="" 
-                {...register('assignedTo')}
-                className="py-2 border-2 border-slate-200 rounded-md"
+                <select
+                  id=""
+                  {...register("assignedTo")}
+                  className="rounded-md border-2 border-slate-200 py-2"
                 >
-                  <option value="" disabled selected>--select person to assign--</option>
-                {
-                  userList?.map((item:IUser)=>{
-                      const data = {
-                        firstname:item.firstname,
-                        lastname:item.lastname,
-                        username:item.username
-                      }
-                    return(
-                      <option value={JSON.stringify(data)} >
+                  <option value="" disabled selected>
+                    --select person to assign--
+                  </option>
+                  {userList?.map((item: IUser) => {
+                    const data = {
+                      firstname: item.firstname,
+                      lastname: item.lastname,
+                      username: item.username,
+                    };
+                    return (
+                      <option value={JSON.stringify(data)}>
                         {item?.username}
                       </option>
-                    )
-                  })
-                }
+                    );
+                  })}
                 </select>
                 {/* <input
                   type="text"
@@ -172,7 +174,7 @@ getAllUser();
                 type="submit"
                 className="mt-3 rounded-md bg-indigo-600 py-2 font-bold text-white hover:bg-indigo-700"
               >
-               { isSubmitting?"Submitting ...":"Add Task"}
+                {isSubmitting ? "Submitting ..." : "Add Task"}
               </button>
             </form>
           </div>
@@ -182,7 +184,7 @@ getAllUser();
       <div
         ref={setNodeRef}
         style={style}
-        className="
+        className={`
     flex
     h-[85vh]
     w-[400px]
@@ -190,13 +192,24 @@ getAllUser();
     overflow-hidden
     rounded-md
     bg-gray-200/50
-    "
+    ${
+      (id === "1")
+        ? "bg-red-300/40"
+        : (id === "2")
+        ? "bg-green-300/40"
+        : (id === "3")
+        ? "bg-blue-300/40"
+        : (id === "4")
+        ? "bg-yellow-300/40"
+        : ""
+    }
+    `}
       >
         {/* column title  */}
         <div
           {...attributes}
           {...listeners}
-          className="flex items-center bg-gray-600/50 px-4 py-5"
+          className={`flex items-center bg-gray-600/50  px-4 py-5 `}
         >
           <div
             className={`text-bold text-md ${bgColor} h-5 w-5 rounded-full  `}
@@ -210,7 +223,6 @@ getAllUser();
         <div className="scrollbar-width-thincrollbar-thumb-black scrollbar-track-gray-100 flex flex-grow flex-col gap-2 overflow-y-auto py-3">
           <SortableContext items={tasksIds}>
             {tasks?.map((task: Task) => {
-
               return (
                 <TaskCard
                   task={task}
@@ -225,7 +237,7 @@ getAllUser();
         {/* column footer  */}
         {index === 0 && (
           <button
-            className="rounded-b-md bg-indigo-600 py-2 font-bold text-white text-lg"
+            className="rounded-b-md bg-indigo-600 py-2 text-lg font-bold text-white"
             onClick={() => {
               // createTask(column.id)
 

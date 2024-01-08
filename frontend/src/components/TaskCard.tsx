@@ -1,9 +1,8 @@
-import { Task, Id } from "../types";
+import { Task, Id, User } from "../types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { json } from "react-router-dom";
 interface Props {
   task: Task;
   taskDeleteHandler: (id: Id) => void;
@@ -25,6 +24,7 @@ export default function TaskCard({ task, taskDeleteHandler }: Props) {
     },
   });
   const [isMouseOver, setIsMouseOver] = useState(false);
+  const user:User = JSON.parse(localStorage.getItem('user')!)
 
   const style = {
     transition,
@@ -41,8 +41,8 @@ export default function TaskCard({ task, taskDeleteHandler }: Props) {
     );
   }
   const nameObj = JSON.parse(task.assignedTo);
-  const firstNameLetter = nameObj?.firstname?.charAt(0);
-  const lastNameLetter = nameObj?.lastname?.charAt(0);
+  const firstNameLetter = nameObj?.firstname?.charAt(0).toUpperCase();
+  const lastNameLetter = nameObj?.lastname?.charAt(0).toUpperCase();
 
   return (
     <div
@@ -50,7 +50,7 @@ export default function TaskCard({ task, taskDeleteHandler }: Props) {
       style={style}
       {...attributes}
       {...listeners}
-      className={`mx-4 flex h-[100px] min-h-[100px] cursor-grab items-center  justify-between rounded-md bg-gray-600/50 p-2.5 px-4 text-left ${
+      className={`mx-4 flex h-[100px] min-h-[100px] cursor-grab items-center  justify-between rounded-md bg-gray-600/50 p-2.5 px-4 text-left shadow-2xl ${
         task?.columnId === "1"
           ? "bg-red-600/70"
           : task?.columnId === "2"
@@ -71,6 +71,10 @@ export default function TaskCard({ task, taskDeleteHandler }: Props) {
       </div>
 
       <div className="flex flex-col items-center gap-2">
+        {
+          user?.data?.role === 'superadmin' ?
+
+        <>
         {isMouseOver && (
           <button
             className="rounded-md bg-red-600 px-2 py-1 text-white"
@@ -79,6 +83,8 @@ export default function TaskCard({ task, taskDeleteHandler }: Props) {
             <TrashIcon className="h-5 w-5" />
           </button>
         )}
+        </> :''
+        }
         <p className=" flex h-6 w-6 items-center justify-center rounded-full bg-gray-100">
           <p className="text-md font-bold text-black">
             {firstNameLetter}{lastNameLetter}

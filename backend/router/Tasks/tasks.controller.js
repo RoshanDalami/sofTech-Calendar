@@ -118,7 +118,6 @@ async function getTodos(req, res) {
     ]);
     res.status(200).json(result);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -164,21 +163,37 @@ async function setCompleted(req, res) {
   }
 }
 
+// async function getTodosWithUser(req, res) {
+//   const name = req.params.name;
+//   try {
+//     const response = await Task.find({
+//       todos: {
+//         $elemMatch: {
+//           assignedTo: name,
+//         },
+//       },
+//     });
+//     res.status(200).json(response);
+//   } catch (error) {
+//     res.status(500).json({ message: "Internal Server Error" });
+//   }
+// }
 async function getTodosWithUser(req, res) {
   const name = req.params.name;
+  
   try {
     const response = await Task.find({
-      todos: {
-        $elemMatch: {
-          assignedTo: name,
-        },
+      "todos.assignedTo": {
+        $regex: new RegExp(name, 'i'), // Case-insensitive match
       },
     });
+    
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
+
 
 module.exports = {
   createTask,
@@ -195,4 +210,5 @@ module.exports = {
   getAllInCompletedTask,
   setCompleted,
   getTodosWithUser,
+
 };

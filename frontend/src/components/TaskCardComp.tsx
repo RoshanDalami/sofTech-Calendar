@@ -12,6 +12,7 @@ import { url } from "../service/apiHelper";
 import Model from "./Model";
 import TaskEditForm from "./TaskEditForm";
 import toast from "react-hot-toast";
+import { User } from "../types";
 
 export default function TaskCard({
   taskTitle,
@@ -27,10 +28,12 @@ export default function TaskCard({
   isCompleted:boolean;
 }) {
   const [isEditMode, setIsEditMode] = useState(false);
+  const user:User = JSON.parse(localStorage.getItem('user')!)
   const deleteTask = async (_id: string) => {
     const response = await axios.delete(`${url.deleteTask}?id=${_id}`);
     if (response.status === 200) {
       toast.success("Task deleted successfully");
+      window.location.reload()
     }
   };
   const setCompleted = async (_id: string) => {
@@ -73,6 +76,8 @@ export default function TaskCard({
               </p>
             )}
           </h1>
+          {
+            user?.data?.role === 'superadmin' ?
           <div className="items-cetner flex  gap-3">
             {
               isCompleted === false ? 
@@ -95,7 +100,8 @@ export default function TaskCard({
                 onClick={() => deleteTask(_id)}
               />
             </div>
-          </div>
+          </div> : ''
+          }
         </div>
 
         <p className=" h-24 overflow-y-auto border-b py-5   ">

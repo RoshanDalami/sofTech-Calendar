@@ -20,4 +20,5 @@ export const url = {
   getAllCompletedTask: `${baseurl}/tasks/getAllCompletedTasks`,
   setCompletedTask: `${baseurl}/tasks/setTaskCompleted`,
   getTaskByAssignee: `${baseurl}/tasks/getTodosByUser`,
+  getTodoCountAssignee:`${baseurl}/tasks/getTodoCountForAssignee`
 };

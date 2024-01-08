@@ -48,24 +48,25 @@ export type IUser = {
   createdAt: string;
   updatedAt: string;
   __v: number;
-  firstname:string;
-  lastname:string;
+  firstname: string;
+  lastname: string;
+};
+export type TodoType = {
+  id: string;
+  todoTitle: string;
+  columnId: string;
+  assignedTo: string;
 };
 
 export type TaskType = {
-  [x: string]: string;
+  userDetails: string;
+
   taskTitle: string;
   taskDescription: string;
   _id: string;
   taskId: string;
-  isCompleted : boolean  ;
-  todos:[
-    {   id:String,
-        todoTitle:String,
-        columnId:String ,
-        assignedTo:String
-    }
-  ]
+  isCompleted: boolean;
+  todos: TodoType[];
 };
 
 export type Todos = {
