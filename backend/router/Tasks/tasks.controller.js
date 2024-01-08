@@ -152,39 +152,31 @@ async function getAllInCompletedTask(req, res) {
 async function setCompleted(req, res) {
   const id = req.params.id;
   try {
-    const response = await Task.findOne({_id:id}).then((doc)=>{
-      doc.isCompleted = true
-      doc.save()
-    })
+    const response = await Task.findOne({ _id: id }).then((doc) => {
+      doc.isCompleted = true;
+      doc.save();
+    });
 
     res.status(200).json({ messages: "Task marked completed successfully" });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ message: "Internal server error" });
   }
 }
 
-async function getTodosWithUser (req,res){
-  // const name = req.params.name
+async function getTodosWithUser(req, res) {
+  const name = req.params.name;
   try {
-    const response = await Task.aggregate([
-      {
-        $unwind:{
-          path:"$todos"
-        }
-      },{
-        $group:{
-          _id:"$todos.assignedTo"
-        }
-      },{
-        $match:{
-          _id:'Roshan Dalami'
-        }
-      }
-    ])
-    res.status(200).json(response)
+    const response = await Task.find({
+      todos: {
+        $elemMatch: {
+          assignedTo: name,
+        },
+      },
+    });
+    res.status(200).json(response);
   } catch (error) {
-    res.status(500).json({message:"Internal Server Error"})
+    res.status(500).json({ message: "Internal Server Error" });
   }
 }
 
@@ -202,5 +194,5 @@ module.exports = {
   getAllCompletedTask,
   getAllInCompletedTask,
   setCompleted,
-  getTodosWithUser
+  getTodosWithUser,
 };

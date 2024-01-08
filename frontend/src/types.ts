@@ -48,6 +48,8 @@ export type IUser = {
   createdAt: string;
   updatedAt: string;
   __v: number;
+  firstname:string;
+  lastname:string;
 };
 
 export type TaskType = {

@@ -5,9 +5,9 @@ const bcrypt = require("bcrypt");
 
 //register Handler
 async function httpRegisterUser(req, res) {
-  const { username, email, password } = req.body;
+  const { username, email, password,firstname,lastname } = req.body;
   try {
-    await RegisterUser(username, email, password);
+    await RegisterUser(username, email, password,firstname,lastname);
     res.status(201).json({ message: "user created successfully",status:200 });
   } catch (error) {
     res.status(500).json({ message: "Inernal server error" });

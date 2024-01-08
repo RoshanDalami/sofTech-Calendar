@@ -16,7 +16,15 @@ const userSchema = mongoose.Schema({
     role:{
         type:String,
         require:[true,'role is mandatory'],
-        default:'superadmin'
+        default:'user'
+    },
+    firstname:{
+        type:String,
+        require:true
+    },
+    lastname:{
+        type:String,
+        require:true
     }
 },{timestamps:true})
 

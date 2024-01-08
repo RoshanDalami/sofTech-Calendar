@@ -2,8 +2,7 @@ const User = require("./User.mongo");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-async function RegisterUser(username, email, password) {
-  console.log(username, email, password, "from model");
+async function RegisterUser(username, email, password,firstname,lastname) {
   const user = await User.findOne({ email });
   if (user) {
     console.log("User already exist");
@@ -15,6 +14,8 @@ async function RegisterUser(username, email, password) {
   const newUser = new User({
     username,
     email,
+    firstname,
+    lastname,
     password: hashedPassword,
   });
   const savedUser = await newUser.save();

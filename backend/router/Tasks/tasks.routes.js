@@ -31,6 +31,6 @@ TaskRouter.delete("/deleteTodo/:id", deleteTodo);
 TaskRouter.get("/getAllTodos", getTodos);
 TaskRouter.get("/getTaskByUser/:id", getTaskByUserId);
 TaskRouter.put("/setTaskCompleted/:id", setCompleted);
-TaskRouter.get("/getTodosByUser",getTodosWithUser)
+TaskRouter.get("/getTodosByUser/:name",getTodosWithUser)
 
 module.exports = TaskRouter;

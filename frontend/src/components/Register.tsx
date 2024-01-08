@@ -2,7 +2,7 @@ import { CalendarDaysIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useForm, FieldValues } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookie from "js-cookie";
 
 const Register = ({}) => {
@@ -26,7 +26,6 @@ const Register = ({}) => {
       console.log(userData.data);
 
       if (userData.status === 200) {
-        
         // addUser(userData)
         Cookie.set("token", userData.token, { expires: 1 });
         navigate("/login");
@@ -51,13 +50,43 @@ const Register = ({}) => {
           </div>
           <form
             onSubmit={handleSubmit((data) => onSubmit(data))}
-            className="flex w-[38vh] flex-col gap-8 md:w-[60vh]  "
+            className="flex w-[38vh] flex-col gap-3 md:w-[60vh]  "
           >
+            <div className="flex justify-between gap-3">
+              <div className="flex flex-col text-lg">
+                <label>First Name</label>
+                <input
+                  type="text"
+                  placeholder="first name"
+                  className="rounded-md px-4 py-1"
+                  {...register("firstname", {
+                    required: "lastname is required",
+                  })}
+                />
+                {/* <p className=" text-sm text-red-600 ">
+                {errors.username?.message }
+              </p> */}
+              </div>
+              <div className="flex flex-col text-lg">
+                <label>Last Name</label>
+                <input
+                  type="text"
+                  placeholder="second name"
+                  className="rounded-md px-4 py-1"
+                  {...register("lastname", {
+                    required: "lastname is required",
+                  })}
+                />
+                {/* <p className=" text-sm text-red-600 ">
+                {errors.username?.message }
+              </p> */}
+              </div>
+            </div>
             <div className="flex flex-col text-lg">
               <label>Username</label>
               <input
                 type="text"
-                placeholder="Name"
+                placeholder="user name"
                 className="rounded-md px-4 py-1"
                 {...register("username", { required: "Username is required" })}
               />
@@ -65,10 +94,11 @@ const Register = ({}) => {
                 {errors.username?.message }
               </p> */}
             </div>
+
             <div className="flex flex-col text-lg">
               <label>Email</label>
               <input
-                type="text"
+                type="email"
                 placeholder="Email"
                 className="rounded-md px-4 py-1"
                 {...register("email", {
@@ -106,6 +136,15 @@ const Register = ({}) => {
               className="my-2 rounded-md bg-indigo-600  py-2 text-lg text-white"
             />
           </form>
+          <div className="flex gap-2">
+            <p className="text-gray-700 text-lg">
+
+            already have an account ?
+            </p>
+            <Link to={"/login"}>
+              <span className="text-blue-600 font-bold text-xl">login</span>
+            </Link>
+          </div>
         </div>
       </div>
     </>

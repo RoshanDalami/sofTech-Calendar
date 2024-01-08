@@ -76,7 +76,7 @@ export default function TaskCard({
           <div className="items-cetner flex  gap-3">
             {
               isCompleted === false ? 
-            <div className="rounded-md bg-blue-600 px-2 py-1 ">
+            <div className="rounded-md bg-green-600 px-2 py-1 ">
               <CheckCircleIcon
                 className="h-6 w-6 cursor-pointer font-bold text-white"
                 onClick={() => setCompleted(_id)}

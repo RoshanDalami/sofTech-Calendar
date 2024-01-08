@@ -146,9 +146,13 @@ getAllUser();
                   <option value="" disabled selected>--select person to assign--</option>
                 {
                   userList?.map((item:IUser)=>{
-                    console.log(item,'item')
+                      const data = {
+                        firstname:item.firstname,
+                        lastname:item.lastname,
+                        username:item.username
+                      }
                     return(
-                      <option value={item?.username} >
+                      <option value={JSON.stringify(data)} >
                         {item?.username}
                       </option>
                     )
@@ -192,7 +196,7 @@ getAllUser();
         <div
           {...attributes}
           {...listeners}
-          className="flex items-center bg-slate-700 px-4 py-3"
+          className="flex items-center bg-gray-600/50 px-4 py-5"
         >
           <div
             className={`text-bold text-md ${bgColor} h-5 w-5 rounded-full  `}
@@ -221,7 +225,7 @@ getAllUser();
         {/* column footer  */}
         {index === 0 && (
           <button
-            className="rounded-b-md bg-indigo-600 py-2 text-white"
+            className="rounded-b-md bg-indigo-600 py-2 font-bold text-white text-lg"
             onClick={() => {
               // createTask(column.id)
 

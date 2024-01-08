@@ -16,7 +16,6 @@ import { TaskType } from "../types";
 import { nanoid } from "nanoid";
 import { userAtom } from "../recoil/userAtom";
 import { useRecoilValue } from "recoil";
-import Link from "react-router-dom";
 // import {Task} from '../types'
 import toast from "react-hot-toast";
 const schema = z.object({
@@ -33,7 +32,8 @@ export default function Tasks() {
   const [taskList, setTaskList] = useState<TaskType[]>([]);
   const [activeTaskList, setActiveTaskList] = useState<TaskType[]>([]);
   const [completedTaskList, setCompletedTaskList] = useState<TaskType[]>([]);
-  const [selectedTask, setSelectedTask] = useState(0);
+  const [assignedTask, setAssignedTask] = useState<TaskType[]>([]);
+  const [selectedTask, setSelectedTask] = useState(2);
 
   const userDetails = useRecoilValue(userAtom);
   const [searchTerm, setSearchTerm] = useState("");
@@ -46,9 +46,11 @@ export default function Tasks() {
       console.log(error);
     }
   }, []);
+
   useEffect(() => {
     getAllTask();
-  }, [taskList]);
+  }, []);
+
   const getAllInCompletedTask = useCallback(async () => {
     try {
       const response = await axios.get(url.getAllInCompletedTask);
@@ -59,7 +61,7 @@ export default function Tasks() {
   }, []);
   useEffect(() => {
     getAllInCompletedTask();
-  }, [activeTaskList]);
+  }, []);
   const getAllCompletedTask = useCallback(async () => {
     try {
       const response = await axios.get(url.getAllCompletedTask);
@@ -70,7 +72,7 @@ export default function Tasks() {
   }, []);
   useEffect(() => {
     getAllCompletedTask();
-  }, [completedTaskList]);
+  }, []);
 
   const { register, handleSubmit, resetField } = useForm({
     resolver: zodResolver(schema),
@@ -97,6 +99,20 @@ export default function Tasks() {
       setIsLoading(false);
     }
   };
+  const getTodoByAssignee = async () => {
+    try {
+      const response = await axios.get(
+        `${url.getTaskByAssignee}/${userDetails?.data?.username}`
+      );
+      // console.log(response.data, "response");
+      setAssignedTask(response.data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getTodoByAssignee();
+  }, []);
 
   return (
     <>
@@ -234,23 +250,43 @@ export default function Tasks() {
               </div>
             </section>
             <div className="mt-6 flex gap-5">
+              {
+                userDetails?.data?.role === 'superadmin' ?
+
+              <>
               <button
-                className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${selectedTask === 0 ? 'bg-lime-600 hover:bg-lime-700':''} `}
-                onClick={()=>setSelectedTask(0)}
+                className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${
+                  selectedTask === 0 ? "bg-lime-600 hover:bg-lime-700" : ""
+                } `}
+                onClick={() => setSelectedTask(0)}
               >
                 Active Task
               </button>
               <button
-                className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${selectedTask === 1 ? 'bg-lime-600 hover:bg-lime-700':''} `}
-                onClick={()=>setSelectedTask(1)}
+                className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${
+                  selectedTask === 1 ? "bg-lime-600 hover:bg-lime-700" : ""
+                } `}
+                onClick={() => setSelectedTask(1)}
               >
                 Completed Task
               </button>
               <button
-                className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${selectedTask === 2 ? 'bg-lime-600 hover:bg-lime-700':''} `}
-                onClick={()=>setSelectedTask(2)}
+                className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${
+                  selectedTask === 2 ? "bg-lime-600 hover:bg-lime-700" : ""
+                } `}
+                onClick={() => setSelectedTask(2)}
               >
                 All Task
+              </button>
+              </> :<></>
+              }
+              <button
+                className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${
+                  selectedTask === 3 ? "bg-lime-600 hover:bg-lime-700" : ""
+                } `}
+                onClick={() => setSelectedTask(3)}
+              >
+                Assigned Task
               </button>
             </div>
 
@@ -259,31 +295,26 @@ export default function Tasks() {
                 <>
                   {activeTaskList
                     .filter(
-                      (item) => ((item?.userDetails === userDetails?.data?._id))
+                      (item) => item?.userDetails === userDetails?.data?._id
                     )
                     .map((task: TaskType) => {
-                     const response =  task.todos?.filter((item)=>{
-                        item.assignedTo === userDetails?.data.username
-                      })
-                      console.log(response,userDetails?.data?.username,'hello')
-                        return (
-                          <TaskCard
-                            key={task._id}
-                            taskTitle={task.taskTitle}
-                            taskDescription={task.taskDescription}
-                            _id={task._id}
-                            taskId={task.taskId}
-                            isCompleted={task.isCompleted}
-                          />
-                        );
-                      
+                      return (
+                        <TaskCard
+                          key={task._id}
+                          taskTitle={task.taskTitle}
+                          taskDescription={task.taskDescription}
+                          _id={task._id}
+                          taskId={task.taskId}
+                          isCompleted={task.isCompleted}
+                        />
+                      );
                     })}
                 </>
               ) : selectedTask === 1 ? (
                 <>
                   {completedTaskList
                     .filter(
-                      (item) => ((item?.userDetails === userDetails?.data?._id) )
+                      (item) => item?.userDetails === userDetails?.data?._id
                     )
                     .map((task: TaskType) => {
                       return (
@@ -301,8 +332,8 @@ export default function Tasks() {
               ) : selectedTask === 2 ? (
                 <>
                   {taskList
-                     .filter(
-                      (item) => ((item?.userDetails === userDetails?.data?._id))
+                    .filter(
+                      (item) => item?.userDetails === userDetails?.data?._id
                     )
                     .map((task: TaskType) => {
                       return (
@@ -316,6 +347,21 @@ export default function Tasks() {
                         />
                       );
                     })}
+                </>
+              ) : selectedTask === 3 ? (
+                <>
+                  {assignedTask.map((task: TaskType) => {
+                    return (
+                      <TaskCard
+                        key={task._id}
+                        taskTitle={task.taskTitle}
+                        taskDescription={task.taskDescription}
+                        _id={task._id}
+                        taskId={task.taskId}
+                        isCompleted={task.isCompleted}
+                      />
+                    );
+                  })}
                 </>
               ) : (
                 ""
