@@ -95,7 +95,7 @@ export default function Login() {
               {...register("password")}
               placeholder="********"
             />
-            <div className=" absolute md:bottom-2 md:right-5 cursor-pointer " onClick={()=>setShowPassword((prevState)=> !prevState)}>
+            <div className=" absolute bottom-1.5 right-3 md:bottom-2 md:right-5 cursor-pointer " onClick={()=>setShowPassword((prevState)=> !prevState)}>
               {
                 showPassword ? <EyeSlashIcon className="h-5 w-5 font-bold"/> : <EyeIcon className="h-5 w-5 font-bold"/>
               }
