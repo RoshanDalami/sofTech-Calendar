@@ -56,7 +56,7 @@ export default function TaskCard({ task, taskDeleteHandler }: Props) {
           : task?.columnId === "2"
           ? "bg-green-600/70"
           : task?.columnId === "3"
-          ? "bg-blue-600/70"
+          ? "bg-blue-700/70"
           : "bg-yellow-600/70"
       } `}
       onMouseEnter={() => {

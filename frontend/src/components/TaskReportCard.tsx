@@ -4,6 +4,7 @@ import axios from "axios";
 import { url } from "../service/apiHelper";
 import DonutChartComp from "./PieChart";
 import { ChevronDoubleRightIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 // import { userAtom } from "../recoil/userAtom";
 // import { useRecoilValue } from "recoil";
 export default function TaskReportCard() {
@@ -82,9 +83,11 @@ export default function TaskReportCard() {
                     return (
                       <div className="ml-5 flex  items-center gap-3">
                         <ChevronDoubleRightIcon className="h-5 w-5 dark:text-gray-300" />
+                        <Link to={`/tasks/${item._id}`}>
                         <p className="text-xl dark:text-gray-300 md:text-2xl ">
                           {item.taskTitle}
                         </p>
+                        </Link>
                       </div>
                     );
                   })

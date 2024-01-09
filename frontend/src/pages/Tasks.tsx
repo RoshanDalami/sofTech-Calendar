@@ -16,6 +16,7 @@ import { TaskType } from "../types";
 import { nanoid } from "nanoid";
 // import {Task} from '../types'
 import toast from "react-hot-toast";
+import { TablePagination } from "@mui/material";
 const schema = z.object({
   taskTitle: z.string().min(1, { message: "Taskname is required" }),
   taskDescription: z
@@ -32,16 +33,26 @@ export default function Tasks() {
   const [completedTaskList, setCompletedTaskList] = useState<TaskType[]>([]);
   const [assignedTask, setAssignedTask] = useState<TaskType[]>([]);
   const [selectedTask, setSelectedTask] = useState(0);
+  const [page, setPage] = useState(0);
+  const [rowPerPage, setRowPerPage] = useState(6);
+
+  const handlePageChange = (_e: any, newpage: number) => {
+    setPage(newpage);
+  };
+  function handlePerPage(e: any) {
+    setRowPerPage(+e.target.value);
+    setPage(0);
+  }
 
   // const userDetails = useRecoilValue(userAtom);
-  const userDetails = JSON.parse(localStorage.getItem('user')!)
+  const userDetails = JSON.parse(localStorage.getItem("user")!);
   const [searchTerm, setSearchTerm] = useState("");
-  
-  useEffect(()=>{
-    if(userDetails?.data?.role !== 'superadmin'){
-      setSelectedTask(3)
+
+  useEffect(() => {
+    if (userDetails?.data?.role !== "superadmin") {
+      setSelectedTask(3);
     }
-  },[userDetails?.data?.role])
+  }, [userDetails?.data?.role]);
 
   const getAllTask = useCallback(async () => {
     try {
@@ -97,9 +108,8 @@ export default function Tasks() {
         resetField("taskTitle");
         resetField("taskDescription");
         setIsModelOpen(false);
-        window.location.reload()
+        window.location.reload();
       }
-
     } catch (error) {
       toast.error("Task fetching failed");
     } finally {
@@ -112,7 +122,7 @@ export default function Tasks() {
         `${url.getTaskByAssignee}/${userDetails?.data?.username}`
       );
       // console.log(response.data, "response");
-      setAssignedTask(response.data)
+      setAssignedTask(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -239,58 +249,56 @@ export default function Tasks() {
           <div className="mx-1 mt-10 overflow-hidden  ">
             <section className="mx-4 flex  h-full items-center justify-between rounded-md border-b bg-slate-100  px-2 py-2 text-4xl md:mx-0 md:px-10">
               Tasks
-
-              {
-                userDetails?.data?.role === 'superadmin' &&
-              <div>
-                <button
-                  className="my-5 flex items-center gap-3 rounded-md bg-indigo-600 px-1 py-1 text-sm text-white hover:bg-indigo-700 md:gap-5 md:px-10 md:py-2 md:text-lg "
-                  onClick={() => setIsModelOpen(true)}
-                >
-                  Create Task
-                  <PlusCircleIcon className="h-8 w-7" />
-                </button>
-                <button
-                  className="my-5 flex items-center gap-3 rounded-md bg-indigo-600 px-1 py-1 text-sm text-white hover:bg-indigo-700 md:gap-5 md:px-10 md:py-2 md:text-lg "
-                  onClick={() => setIsSearching(true)}
-                >
-                  Search Task
-                  <MagnifyingGlassIcon className="h-8 w-7" />
-                </button>
-              </div>
-              }
+              {userDetails?.data?.role === "superadmin" && (
+                <div>
+                  <button
+                    className="my-5 flex items-center gap-3 rounded-md bg-indigo-600 px-1 py-1 text-sm text-white hover:bg-indigo-700 md:gap-5 md:px-10 md:py-2 md:text-lg "
+                    onClick={() => setIsModelOpen(true)}
+                  >
+                    Create Task
+                    <PlusCircleIcon className="h-8 w-7" />
+                  </button>
+                  <button
+                    className="my-5 flex items-center gap-3 rounded-md bg-indigo-600 px-1 py-1 text-sm text-white hover:bg-indigo-700 md:gap-5 md:px-10 md:py-2 md:text-lg "
+                    onClick={() => setIsSearching(true)}
+                  >
+                    Search Task
+                    <MagnifyingGlassIcon className="h-8 w-7" />
+                  </button>
+                </div>
+              )}
             </section>
             <div className="mt-6 flex gap-5">
-              {
-                userDetails?.data?.role === 'superadmin' ?
-
-              <>
-              <button
-                className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${
-                  selectedTask === 0 ? "bg-lime-600 hover:bg-lime-700" : ""
-                } `}
-                onClick={() => setSelectedTask(0)}
-              >
-                Active Task
-              </button>
-              <button
-                className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${
-                  selectedTask === 1 ? "bg-lime-600 hover:bg-lime-700" : ""
-                } `}
-                onClick={() => setSelectedTask(1)}
-              >
-                Completed Task
-              </button>
-              <button
-                className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${
-                  selectedTask === 2 ? "bg-lime-600 hover:bg-lime-700" : ""
-                } `}
-                onClick={() => setSelectedTask(2)}
-              >
-                All Task
-              </button>
-              </> :<></>
-              }
+              {userDetails?.data?.role === "superadmin" ? (
+                <>
+                  <button
+                    className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${
+                      selectedTask === 0 ? "bg-lime-600 hover:bg-lime-700" : ""
+                    } `}
+                    onClick={() => setSelectedTask(0)}
+                  >
+                    Active Task
+                  </button>
+                  <button
+                    className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${
+                      selectedTask === 1 ? "bg-lime-600 hover:bg-lime-700" : ""
+                    } `}
+                    onClick={() => setSelectedTask(1)}
+                  >
+                    Completed Task
+                  </button>
+                  <button
+                    className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${
+                      selectedTask === 2 ? "bg-lime-600 hover:bg-lime-700" : ""
+                    } `}
+                    onClick={() => setSelectedTask(2)}
+                  >
+                    All Task
+                  </button>
+                </>
+              ) : (
+                <></>
+              )}
               <button
                 className={`rounded-md bg-indigo-600 px-5 py-2 font-bold text-white shadow-md hover:bg-indigo-700 ${
                   selectedTask === 3 ? "bg-lime-600 hover:bg-lime-700" : ""
@@ -308,6 +316,7 @@ export default function Tasks() {
                     .filter(
                       (item) => item?.userDetails === userDetails?.data?._id
                     )
+                    .slice(page * rowPerPage, page * rowPerPage + rowPerPage)
                     .map((task: TaskType) => {
                       return (
                         <TaskCard
@@ -327,6 +336,7 @@ export default function Tasks() {
                     .filter(
                       (item) => item?.userDetails === userDetails?.data?._id
                     )
+                    .slice(page * rowPerPage, page * rowPerPage + rowPerPage)
                     .map((task: TaskType) => {
                       return (
                         <TaskCard
@@ -346,6 +356,7 @@ export default function Tasks() {
                     .filter(
                       (item) => item?.userDetails === userDetails?.data?._id
                     )
+                    .slice(page * rowPerPage, page * rowPerPage + rowPerPage)
                     .map((task: TaskType) => {
                       return (
                         <TaskCard
@@ -361,7 +372,7 @@ export default function Tasks() {
                 </>
               ) : selectedTask === 3 ? (
                 <>
-                  {assignedTask?.map((task: TaskType) => {
+                  {assignedTask?.slice(page * rowPerPage, page * rowPerPage + rowPerPage).map((task: TaskType) => {
                     return (
                       <TaskCard
                         key={task._id}
@@ -374,6 +385,51 @@ export default function Tasks() {
                     );
                   })}
                 </>
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="bg-white rounded-full">
+              {selectedTask === 0 ? (
+                <TablePagination
+                  rowsPerPageOptions={[7]}
+                  rowsPerPage={rowPerPage}
+                  page={page}
+                  count={activeTaskList.length}
+                  component={"div"}
+                  onPageChange={handlePageChange}
+                  onRowsPerPageChange={handlePerPage}
+                ></TablePagination>
+              ) : selectedTask === 1 ? (
+                <TablePagination
+                  rowsPerPageOptions={[7]}
+                  rowsPerPage={rowPerPage}
+                  page={page}
+                  count={completedTaskList.length}
+                  component={"div"}
+                  onPageChange={handlePageChange}
+                  onRowsPerPageChange={handlePerPage}
+                ></TablePagination>
+              ) : selectedTask === 2 ? (
+                <TablePagination
+                  rowsPerPageOptions={[7]}
+                  rowsPerPage={rowPerPage}
+                  page={page}
+                  count={taskList.length}
+                  component={"div"}
+                  onPageChange={handlePageChange}
+                  onRowsPerPageChange={handlePerPage}
+                ></TablePagination>
+              ) : selectedTask === 3 ? (
+                <TablePagination
+                  rowsPerPageOptions={[7]}
+                  rowsPerPage={rowPerPage}
+                  page={page}
+                  count={assignedTask.length}
+                  component={"div"}
+                  onPageChange={handlePageChange}
+                  onRowsPerPageChange={handlePerPage}
+                ></TablePagination>
               ) : (
                 ""
               )}

@@ -198,7 +198,7 @@ export default function ColumnContainer(props: Props) {
         : (id === "2")
         ? "bg-green-300/40"
         : (id === "3")
-        ? "bg-blue-300/40"
+        ? "bg-blue-400/40"
         : (id === "4")
         ? "bg-yellow-300/40"
         : ""
