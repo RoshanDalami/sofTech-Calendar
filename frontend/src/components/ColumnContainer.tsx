@@ -228,7 +228,6 @@ export default function ColumnContainer(props: Props) {
                 <TaskCard
                   task={task}
                   key={task.id}
-                  _id={task._id}
                   taskDeleteHandler={taskDeleteHandler}
                 />
               );

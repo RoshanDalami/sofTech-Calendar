@@ -9,10 +9,10 @@ import { Transition } from "@headlessui/react";
 interface Props {
   task: Task;
   taskDeleteHandler: (id: Id) => void;
-  _id:Id
+  
 }
 
-export default function TaskCard({ task, taskDeleteHandler ,_id}: Props) {
+export default function TaskCard({ task, taskDeleteHandler }: Props) {
   const {
     setNodeRef,
     attributes,
@@ -100,6 +100,13 @@ export default function TaskCard({ task, taskDeleteHandler ,_id}: Props) {
       </div>
       <Transition
       show={comment}
+      enter="transition ease-in-out duration-400 transform"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition ease-in-out duration-400 transform"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+        className="fixed inset-0 z-40 w-full  md:min-h-screen  "
       >
 
  <IndividualTodo setComment={setComment} task={task} />

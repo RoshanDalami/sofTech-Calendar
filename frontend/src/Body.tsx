@@ -15,7 +15,7 @@ import { userAtom } from "./recoil/userAtom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect } from "react";
 import Register from "./components/Register.tsx";
-import IndividualTodo from "./components/IndividualTodo.tsx";
+
 
 const Body = () => {
   const location = useLocation();
