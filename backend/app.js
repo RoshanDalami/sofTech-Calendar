@@ -9,7 +9,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://softech-calendar.netlify.app"],
+    origin: ["http://localhost:3000","https://softech-calendar.netlify.app"],
   }),
 );
 app.use(express.urlencoded({ extended: true }));

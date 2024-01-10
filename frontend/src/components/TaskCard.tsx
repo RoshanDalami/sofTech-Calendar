@@ -3,12 +3,16 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import IndividualTodo from "./IndividualTodo";
+import { Transition } from "@headlessui/react";
+
 interface Props {
   task: Task;
   taskDeleteHandler: (id: Id) => void;
+  _id:Id
 }
 
-export default function TaskCard({ task, taskDeleteHandler }: Props) {
+export default function TaskCard({ task, taskDeleteHandler ,_id}: Props) {
   const {
     setNodeRef,
     attributes,
@@ -25,6 +29,7 @@ export default function TaskCard({ task, taskDeleteHandler }: Props) {
   });
   const [isMouseOver, setIsMouseOver] = useState(false);
   const user:User = JSON.parse(localStorage.getItem('user')!)
+  const [comment,setComment] = useState(false)
 
   const style = {
     transition,
@@ -67,7 +72,9 @@ export default function TaskCard({ task, taskDeleteHandler }: Props) {
       }}
     >
       <div>
-        <p className="text-lg font-bold text-white">{task?.todoTitle}</p>
+
+        <p className="text-lg font-bold text-white" onClick={()=>setComment(true)} >{task?.todoTitle}</p>
+
       </div>
 
       <div className="flex flex-col items-center gap-2">
@@ -91,6 +98,12 @@ export default function TaskCard({ task, taskDeleteHandler }: Props) {
           </p>
         </p>
       </div>
+      <Transition
+      show={comment}
+      >
+
+ <IndividualTodo setComment={setComment} task={task} />
+      </Transition>
     </div>
   );
 }

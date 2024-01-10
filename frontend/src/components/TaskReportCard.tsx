@@ -68,10 +68,18 @@ export default function TaskReportCard() {
       </div>
       <div className="my-6 grid grid-cols-2">
         <div className="flex flex-col  rounded-lg bg-gray-300 py-2 shadow-lg  dark:bg-gray-900">
-          <h1 className="ml-5 text-xl font-bold dark:text-gray-300 md:text-2xl  ">
-            Task List
+          <div className="flex items-center gap-5">
+
+          <h1 className="ml-5 text-xl font-bold dark:text-gray-300 md:text-2xl flex  ">
+            Task List 
           </h1>
-          <div className="h-[40rem] overflow-auto">
+            <span className="bg-gray-300 rounded-full p-2">
+              <p className="text-black ">
+                {taskList.length}
+                </p>
+            </span>
+          </div>
+          <div className="h-[32rem] overflow-auto">
             {
 
 
@@ -81,7 +89,7 @@ export default function TaskReportCard() {
               {taskList?.length > 0
                 ? taskList?.map((item) => {
                     return (
-                      <div className="ml-5 flex  items-center gap-3">
+                      <div className="ml-5 flex  items-center gap-3 border-b border-gray-300/50 py-3">
                         <ChevronDoubleRightIcon className="h-5 w-5 dark:text-gray-300" />
                         <Link to={`/tasks/${item._id}`}>
                         <p className="text-xl dark:text-gray-300 md:text-2xl ">

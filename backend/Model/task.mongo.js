@@ -25,7 +25,11 @@ const taskSchema = new mongoose.Schema({
         {   id:String,
             todoTitle:String,
             columnId:String ,
-            assignedTo:String
+            assignedTo:String,
+            comment:{
+                type:mongoose.Schema.Types.ObjectId,
+                ref:'Comment'
+            }
         }
     ]
 
