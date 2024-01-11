@@ -15,6 +15,7 @@ import { userAtom } from "./recoil/userAtom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect } from "react";
 import Register from "./components/Register.tsx";
+import Users from "./pages/Users.tsx";
 
 
 const Body = () => {
@@ -80,6 +81,7 @@ const Body = () => {
           <Route path="/reports" element={<Reports />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/users" element={<Users />} />
         </Routes>
       </div>
 

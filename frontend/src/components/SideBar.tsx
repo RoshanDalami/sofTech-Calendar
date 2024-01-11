@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import LinkLists from "./LinkLists";
 import { useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/userAtom";
+import { Transition } from "@headlessui/react";
 
 export default function SideBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -75,7 +76,17 @@ const [logoutClicked,setLogoutClicked] = useState(false)
   return (
     <>
     {
-      logoutClicked && 
+      <Transition
+      show={logoutClicked}
+      enter="transition ease-in-out duration-400 transform"
+      enterFrom="opacity-0"
+      enterTo="opacity-100"
+      leave="transition ease-in-out duration-400 transform"
+      leaveFrom="opacity-100"
+      leaveTo="opacity-0"
+      className="fixed inset-0 z-40 w-full  md:min-h-screen  "
+    >
+
       <div className="bg-black/40 absolute z-50 w-[100vw] min-h-screen flex items-center justify-center" >
         <div className="bg-white  rounded-lg shadow-lg px-5 py-4 flex flex-col gap-8 justify-center items-center">
 
@@ -89,6 +100,8 @@ const [logoutClicked,setLogoutClicked] = useState(false)
         </div>
         </div>
       </div>
+    </Transition>
+
     }
     <div className="relative">
       {/* Render the Bars icon and mobile-specific styles only on screens smaller than the breakpoint */}

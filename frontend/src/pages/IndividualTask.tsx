@@ -1,4 +1,3 @@
-
 import { nanoid } from "nanoid";
 import Model from "../components/Model";
 
@@ -19,9 +18,6 @@ export interface TodoType {
 export default function IndividualTask() {
   const { taskID } = useParams();
 
-  
-
-
   const [todos, setTodos] = useState<TodoType[]>([
     {
       title: "Drag and Drop",
@@ -30,26 +26,25 @@ export default function IndividualTask() {
       createdAt: new Date().toDateString(),
     },
   ]);
-  const [individualTask,setIndividualTask]=useState({
-    createdAt:'',
-    taskDescription:'',
-    taskTitle:'',
-    todos:[],
-    updatedAt:'',
-    _id:'',
-  })
-  const getTaskById = async()=>{
-
+  const [individualTask, setIndividualTask] = useState({
+    createdAt: "",
+    taskDescription: "",
+    taskTitle: "",
+    todos: [],
+    updatedAt: "",
+    _id: "",
+  });
+  const getTaskById = async () => {
     try {
-      const response = await axios.get(`${url.getTaskById}/${taskID}`)
-    setIndividualTask(response.data)
+      const response = await axios.get(`${url.getTaskById}/${taskID}`);
+      setIndividualTask(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-  useEffect(()=>{getTaskById()},[todos])
-
-
+  };
+  useEffect(() => {
+    getTaskById();
+  }, [todos]);
 
   const [formData, setFormData] = useState<TodoType>({
     title: "",
@@ -69,7 +64,7 @@ export default function IndividualTask() {
         createdAt: formData.createdAt,
       },
     ]);
-    setIsModelOpen(false)
+    setIsModelOpen(false);
 
     setFormData({
       title: "",
@@ -78,7 +73,7 @@ export default function IndividualTask() {
       createdAt: new Date().toDateString(),
     });
   };
-  
+
   return (
     <>
       {isModelOpen && (
@@ -162,14 +157,11 @@ export default function IndividualTask() {
 
       <div>
         <p className="text-2xl font-bold dark:text-white  px-4 py-3">
-              {individualTask.taskTitle}
-
+          {individualTask.taskTitle}
         </p>
       </div>
 
-      <KanbanBoard  />
-
-      
+      <KanbanBoard />
     </>
   );
 }
