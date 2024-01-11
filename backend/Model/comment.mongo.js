@@ -7,6 +7,9 @@ const commentSchema = new mongoose.Schema({
     },
     comment:{
         type:String,
+    },
+    todoId:{
+        type:String
     }
 },{timestamps:true})
 

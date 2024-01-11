@@ -191,14 +191,13 @@ export default function ColumnContainer(props: Props) {
     flex-col
     overflow-hidden
     rounded-md
-    bg-gray-200/50
     ${
       (id === "1")
         ? "bg-red-300/40"
         : (id === "2")
         ? "bg-green-300/40"
         : (id === "3")
-        ? "bg-blue-400/40"
+        ? "bg-blue-500/40"
         : (id === "4")
         ? "bg-yellow-300/40"
         : ""

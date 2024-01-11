@@ -52,13 +52,7 @@ const [logoutClicked,setLogoutClicked] = useState(false)
 
   const renderSidebarContent = () => (
     <>
-    {
-      logoutClicked && 
-      <Model>
-        <p>Are you sure you want to logout ?</p>
-        <button className="bg-red-600 rounded-md shadow-md px-5 py-2" onClick={()=>setLogoutClicked(false)} >Cancel</button>
-      </Model>
-    }
+    
       <div className="mt-10 px-5 py-2 text-xl font-bold transition duration-200 hover:rounded-lg dark:text-white ">
         Softech
       </div>
@@ -69,7 +63,7 @@ const [logoutClicked,setLogoutClicked] = useState(false)
       <div className="absolute bottom-5">
         <button
           className="flex w-full items-center gap-3 rounded-md bg-red-600 px-4 py-1.5 text-lg text-white"
-          onClick={handleLogout}
+          onClick={()=>setLogoutClicked(true)}
         >
           Log Out
           <ArrowRightOnRectangleIcon className="h-5 w-5" />
@@ -79,6 +73,23 @@ const [logoutClicked,setLogoutClicked] = useState(false)
   );
 
   return (
+    <>
+    {
+      logoutClicked && 
+      <div className="bg-black/40 absolute z-50 w-[100vw] min-h-screen flex items-center justify-center" >
+        <div className="bg-white  rounded-lg shadow-lg px-5 py-4 flex flex-col gap-8 justify-center items-center">
+
+        <p className="text-xl font-bold ">Are you sure you want to logout ?</p>
+        <div className="flex  gap-6">
+
+        <button className="bg-red-600 hover:bg-red-700 font-bold text-white rounded-md shadow-md px-5 py-2" onClick={()=>handleLogout()} >
+          Log Out
+        </button>
+        <button className="bg-gray-600/60 hover:bg-gray-600 text-white font-bold rounded-md shadow-md px-5 py-2" onClick={()=>setLogoutClicked(false)} >Cancel</button>
+        </div>
+        </div>
+      </div>
+    }
     <div className="relative">
       {/* Render the Bars icon and mobile-specific styles only on screens smaller than the breakpoint */}
       {window.innerWidth < mobileBreakpoint && (
@@ -97,5 +108,6 @@ const [logoutClicked,setLogoutClicked] = useState(false)
         {renderSidebarContent()}
       </div>
     </div>
+    </>
   );
 }

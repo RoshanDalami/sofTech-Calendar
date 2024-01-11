@@ -4,7 +4,8 @@ import {
   CalendarDaysIcon,
   UserGroupIcon,
   BriefcaseIcon,
-  PresentationChartBarIcon
+  PresentationChartBarIcon,
+  UserPlusIcon
 } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import { Link, useLocation } from "react-router-dom";
@@ -17,6 +18,11 @@ const navLinksSuperAdmin = [
     icon: <HomeIcon className="w-8 h-8" />,
     title: "Dashboard",
     herf: "/dashboard",
+  },
+  {
+    icon: <UserPlusIcon className="w-8 h-8" />,
+    title: "Users",
+    herf: "/users",
   },
   {
     icon: <CalendarDaysIcon className="w-8 h-8" />,
@@ -33,6 +39,7 @@ const navLinksSuperAdmin = [
     title: "Tasks",
     herf: "/tasks",
   },
+  
   {
     icon: <PresentationChartBarIcon className="w-8 h-8" />,
     title: "Reports",
