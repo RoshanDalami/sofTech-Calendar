@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import LinkLists from "./LinkLists";
 import { useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/userAtom";
-import Model from "./Model";
+
 export default function SideBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
