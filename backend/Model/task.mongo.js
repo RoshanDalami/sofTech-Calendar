@@ -26,10 +26,10 @@ const taskSchema = new mongoose.Schema({
             todoTitle:String,
             columnId:String ,
             assignedTo:String,
-            comment:{
-                type:mongoose.Schema.Types.ObjectId,
-                ref:'Comment'
-            }
+            // comment:{
+            //     type:mongoose.Schema.Types.ObjectId,
+            //     ref:'Comment'
+            // }
             
         }
     ]

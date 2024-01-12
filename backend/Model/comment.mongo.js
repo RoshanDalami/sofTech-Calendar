@@ -2,11 +2,14 @@ const mongoose = require('mongoose')
 
 const commentSchema = new mongoose.Schema({
     userDetails:{
-        type:mongoose.Schema.Types.ObjectId,
+        type:Object,
         ref:'User'
     },
-    comment:{
+    content:{
         type:String,
+    },
+    image:{
+        type:String
     },
     todoId:{
         type:String

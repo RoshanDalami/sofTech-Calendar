@@ -73,7 +73,24 @@ export default function Users() {
   useEffect(() => {
     getUser();
   }, []);
+  async function deleteUser (_id:string){
+    try {
+       const response =  await axios.delete(`${url.deleteUser}/${_id}`)
+       console.log(`${url.deleteUser}/${_id}`)
+       console.log(response)
+       if(response.status === 200){
+        try {
+            const response = await axios.get(url.getAllUser);
+            setUserList(response.data);
 
+          } catch (error) {
+            console.log(error);
+          }
+       }
+    } catch (error) {
+        console.log(error)
+    }
+  }
   return (
     <React.Fragment>
       {
@@ -220,7 +237,7 @@ export default function Users() {
               ?.slice(page * rowPerPage, page * rowPerPage + rowPerPage)
               .map((item) => {
                 return (
-                  <tr className=" border-b bg-white ">
+                  <tr className=" border-b bg-white " key={item._id}>
                     <td className="py-3 flex items-center justify-center ">
                       <div className="bg-gray-300 h-10 w-10 flex items-center justify-center rounded-full ">
                         <p className="text-black text-lg">
@@ -259,11 +276,9 @@ export default function Users() {
                       </div>
                     </td>
                     <td className=" flex justify-center mt-2  ">
-                      <div className=" ">
-                        <p className="rounded-md p-2 bg-red-600">
+                        <p className="rounded-md p-2 bg-red-600 cursor-pointer" onClick={()=>deleteUser(item._id)} >
                           <TrashIcon className="h-6 w-6 text-white" />
                         </p>
-                      </div>
                     </td>
                   </tr>
                 );

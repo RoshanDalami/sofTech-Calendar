@@ -20,5 +20,8 @@ export const url = {
   getAllCompletedTask: `${baseurl}/tasks/getAllCompletedTasks`,
   setCompletedTask: `${baseurl}/tasks/setTaskCompleted`,
   getTaskByAssignee: `${baseurl}/tasks/getTodosByUser`,
-  getTodoCountAssignee:`${baseurl}/tasks/getTodoCountForAssignee`
+  getTodoCountAssignee:`${baseurl}/tasks/getTodoCountForAssignee`,
+  deleteUser:`${baseurl}/user/deleteUser`,
+  createComment:`${baseurl}/comments/createComment`,
+  getCommentByTodoId:`${baseurl}/comments/getCommentByTodoId`
 };

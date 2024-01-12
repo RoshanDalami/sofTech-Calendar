@@ -66,9 +66,21 @@ async function getAllUser(req,res){
     res.status(500).json({message:"Internal server error"})
   }
 }
+async function deleteUser(req,res){
+  const _id = req.params.id;
+
+  try {
+    const response = await User.deleteOne({_id:_id})
+    res.status(200).json({response,status:200})
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({message:'Internal Server Error'})
+  }
+}
 
 module.exports = {
   httpRegisterUser,
   httpLoginUser,
-  getAllUser
+  getAllUser,
+  deleteUser
 };

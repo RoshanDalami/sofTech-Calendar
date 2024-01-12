@@ -222,7 +222,6 @@ export default function ColumnContainer(props: Props) {
         <div className="scrollbar-width-thincrollbar-thumb-black scrollbar-track-gray-100 flex flex-grow flex-col gap-2 overflow-y-auto py-3">
           <SortableContext items={tasksIds}>
             {tasks?.map((task: Task) => {
-              console.log(task)
               return (
                 <TaskCard
                   task={task}
