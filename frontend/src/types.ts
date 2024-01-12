@@ -37,6 +37,22 @@ export type User = {
     createdAt: string;
     updatedAt: string;
     __v: number;
+    // firstname:string;
+    // lastname:string;
+  };
+  token: string;
+};
+export type UserNew = {
+  message: string;
+  status: number;
+  data: {
+    _id: string;
+    username: string;
+    email: string;
+    role: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
     firstname:string;
     lastname:string;
   };
@@ -77,7 +93,7 @@ export type Todos = {
 };
 
 export type Comment = {
-  userDetails:User,
+  userDetails:UserNew,
   content:string,
   todoId:string,
   createdAt:Date,
