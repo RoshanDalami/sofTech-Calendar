@@ -188,6 +188,7 @@ export default function ColumnContainer(props: Props) {
     flex
     h-[85vh]
     w-[400px]
+    
     flex-col
     overflow-hidden
     rounded-md
@@ -208,7 +209,7 @@ export default function ColumnContainer(props: Props) {
         <div
           {...attributes}
           {...listeners}
-          className={`flex items-center bg-gray-600/50  px-4 py-5 `}
+          className={`flex items-center bg-gray-600/50   px-4 py-5 `}
         >
           <div
             className={`text-bold text-md ${bgColor} h-5 w-5 rounded-full  `}

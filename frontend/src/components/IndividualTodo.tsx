@@ -60,7 +60,7 @@ export default function IndividualTodo({ setComment, task }: Props) {
         className="absolute inset-0 z-40 min-h-screen w-[100vw] bg-black/30"
         onClick={() => setComment(false)}
       ></div>
-      <div className="absolute bottom-0 right-0 top-0 z-50  h-[100vh]   w-[50%] rounded-bl-lg rounded-tl-lg bg-slate-700 ">
+      <div className="absolute bottom-0 right-0 top-0 z-50  h-[100vh]   md:w-[50%] rounded-bl-lg rounded-tl-lg bg-slate-700 ">
         <div className="mx-6 my-4 text-xl font-bold capitalize text-white">
           {task.todoTitle}
         </div>
@@ -111,6 +111,7 @@ export default function IndividualTodo({ setComment, task }: Props) {
               className="w-full rounded-md px-4 py-3 text-lg focus:outline-none"
               cols={100}
               {...register("content")}
+              required
               placeholder="Comment about todo..."
             />
           </div>

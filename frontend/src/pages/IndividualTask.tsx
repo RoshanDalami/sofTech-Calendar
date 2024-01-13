@@ -160,8 +160,11 @@ export default function IndividualTask() {
           {individualTask.taskTitle}
         </p>
       </div>
+      <div className="">
 
       <KanbanBoard />
+      </div>
+
     </>
   );
 }

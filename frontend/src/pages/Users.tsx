@@ -119,7 +119,7 @@ export default function Users() {
                 onSubmit={handleSubmit((data) => onSubmit(data))}
                 className="flex  flex-col gap-3 mx-8  "
               >
-                <div className="flex justify-between gap-2 ">
+                <div className="flex flex-col md:flex-row justify-between gap-2  ">
                   <div className="flex flex-col text-lg w-full">
                     <label>First Name</label>
                     <input
@@ -222,7 +222,7 @@ export default function Users() {
             Add User
           </button>
         </div>
-        <div className="bg-white rounded-md">
+        <div className="bg-white rounded-md overflow-auto">
           <table className="w-full border-2 text-center">
             <tr className="bg-gray-200">
               <th className="py-4  dark:text-black">Image</th>

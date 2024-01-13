@@ -21,7 +21,7 @@ export default function Dashboard() {
         </p>
         <EventCard />
       </div>
-      <div className="mx-5 my-7 flex items-center justify-center gap-10">
+      <div className="mx-5 my-7 flex flex-wrap md:flex-nowrap items-center justify-center gap-10">
         <DonutChartComp title="Task" />
         <AreaChartComp />
       </div>

@@ -66,7 +66,7 @@ export default function TaskReportCard() {
         </div>
         <DonutChartComp title="Task" />
       </div>
-      <div className="my-6 grid grid-cols-2">
+      <div className="my-6 grid md:grid-cols-2">
         <div className="flex flex-col  rounded-lg bg-gray-300 py-2 shadow-lg  dark:bg-gray-900">
           <div className="flex items-center gap-5">
 

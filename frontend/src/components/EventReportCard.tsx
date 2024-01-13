@@ -238,9 +238,9 @@ export default function EventReportCard() {
           );
         })}
       </div>
-      <div className="grid grid-cols-2">
-        <div className=" mx-2 my-5 h-52 rounded-xl bg-gray-300 dark:bg-gray-700 shadow-xl ">
-          <h1 className="mx-4 pt-3 text-xl font-bold dark:text-white">
+      <div className="grid md:grid-cols-2 mx-2">
+        <div className=" mx-2 my-5 h-56 md:h-52 rounded-xl bg-gray-300 dark:bg-gray-700 shadow-xl ">
+          <h1 className="mx-4 pt-3 text-md md:text-xl font-bold dark:text-white">
             Passed Events of 3 Months 
              <span className="bg-gray-200 px-2 py-1 mx-3 rounded-full text-gray-900">
                {pastEventsList.length}
@@ -265,8 +265,8 @@ export default function EventReportCard() {
             })}
           </div>
         </div>
-        <div className=" mx-2 my-5 h-52 rounded-xl bg-gray-300 dark:bg-gray-700 shadow-xl ">
-          <h1 className="mx-4 pt-3 text-xl font-bold dark:text-white">
+        <div className=" mx-2 my-5 h-56 md:h-52 rounded-xl bg-gray-300 dark:bg-gray-700 shadow-xl ">
+          <h1 className="mx-4 pt-3 text-md md:text-xl font-bold dark:text-white">
             Today's Events 
             <span className="bg-gray-200 px-2 py-1 mx-3 rounded-full text-gray-900">
                {todayEventsList.length}
@@ -292,26 +292,26 @@ export default function EventReportCard() {
             })}
           </div>
         </div>
-        <div className=" mx-2 my-5 h-52 rounded-xl bg-gray-300 dark:bg-gray-700 shadow-xl ">
-          <h1 className="mx-4 pt-3 text-xl font-bold dark:text-white">
+        <div className=" mx-2 my-5 h-56 md:h-52 rounded-xl bg-gray-300 dark:bg-gray-700 shadow-xl ">
+          <h1 className="mx-4 pt-3 text-md md:text-xl font-bold dark:text-white">
             Upcomming Events on 3 Months
             <span className="bg-gray-200 px-2 py-1 mx-3 rounded-full text-gray-900">
                {upcommingEventsList.length}
               </span>
           </h1>
-          <div className="h-[10rem] overflow-auto">
+          <div className="md:h-[10rem] h-[10rem] overflow-auto">
             {upcommingEventsList?.length > 0 ? (
               upcommingEventsList?.map((event) => {
                 return (
                   <div
                     key={event.eventId}
-                    className="ml-4 my-2 flex items-center gap-5"
+                    className="ml-4 my-2 flex text-sm md:text-lg items-center gap-5"
                   >
                     <ChevronDoubleRightIcon className="h-5 w-5 text-blue-400" />
                     <p className="text-xl font-bold text-blue-400">
                       {event.eventTitle}
                     </p>
-                    <p className="bg-blue-600 p-1 rounded-md text-white fond-bold">
+                    <p className="bg-blue-600 p-1  rounded-md text-white fond-bold">
                     {event.eventDateNepali}
                   </p>
                   </div>

@@ -268,7 +268,7 @@ export default function Tasks() {
                 </div>
               )}
             </section>
-            <div className="mt-6 flex gap-5">
+            <div className="mt-6 grid grid-cols-3 md:grid-cols-5 gap-5">
               {userDetails?.data?.role === "superadmin" ? (
                 <>
                   <button

@@ -186,14 +186,14 @@ export default function KanbanBoard() {
 
   return (
     <>
-      <div>
+      <div className="overflow-auto ">
         <DndContext
           sensors={sensor}
           onDragStart={onDragStartHandler}
           onDragEnd={onDragEndHandler}
           onDragOver={onDragOverHandler}
         >
-          <div className="mx-4  my-6 flex items-center gap-4 overflow-auto">
+          <div className="mx-4  my-6  flex items-center gap-4 overflow-auto">
             <SortableContext items={columnsId}>
               {columns?.map((col, index) => {
                 return (
