@@ -80,7 +80,7 @@ export default function ColumnContainer(props: Props) {
       userDetails: userDetails,
       id: nanoid(),
     };
-
+    console.log(data,'Create Todo')
     try {
       setIsSubmitting(true);
       const response = await axios.post(`${url.createTodo}/${taskID}`, data);
@@ -153,6 +153,7 @@ export default function ColumnContainer(props: Props) {
                       firstname: item.firstname,
                       lastname: item.lastname,
                       username: item.username,
+                      email:item.email
                     };
                     return (
                       <option value={JSON.stringify(data)}>

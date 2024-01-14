@@ -1,4 +1,5 @@
 const Task = require("../../Model/task.mongo");
+const sendEmail = require('../../utils/mailer')
 
 async function saveTask(task) {
   await Task.findOneAndUpdate({ _id: task._id }, task, { upsert: true });
@@ -54,14 +55,22 @@ async function addTodo(req, res) {
     const id = req.params.id;
 
     const todo = req.body;
+    
 
     const result = await Task.updateOne(
       { _id: id },
       { $push: { todos: todo } },
     );
+    if(result){
+      const email = JSON.parse(todo.assignedTo).email
+      const username = JSON.parse(todo.assignedTo).username
+      const title = todo.todoTitle
+      await sendEmail(email,username,title)
+    }
 
     res.status(200).json({ message: "Todo created Successfully" });
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: "Todo creation failed" });
   }
 }

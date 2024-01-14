@@ -78,7 +78,6 @@ export type TodoType = {
 
 export type TaskType = {
   userDetails: string;
-
   taskTitle: string;
   taskDescription: string;
   _id: string;
