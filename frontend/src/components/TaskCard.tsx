@@ -54,7 +54,7 @@ export default function TaskCard({ task, taskDeleteHandler }: Props) {
       style={style}
       {...attributes}
       {...listeners}
-      className={`mx-4 flex h-[100px] min-h-[100px] cursor-grab items-center  justify-between rounded-md  p-2.5 px-4 text-left shadow-2xl ${
+      className={`mx-4 flex h-[100px] min-h-[100px] cursor-grab items-center  justify-between rounded-md  p-2.5 px-4 text-left shadow-2xl  ${
         task?.columnId === "1"
           ? "bg-red-600/70"
           : task?.columnId === "2"

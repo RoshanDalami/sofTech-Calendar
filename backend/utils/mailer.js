@@ -21,7 +21,6 @@ async function sendEmail(email,username,title){
             </p>`
           }
           const mailresponse = await transport.sendMail(mailOptions)
-
           return mailresponse
     } catch (error) {
         throw new Error(error.message)

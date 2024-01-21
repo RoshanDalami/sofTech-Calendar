@@ -62,11 +62,13 @@ async function addTodo(req, res) {
       { $push: { todos: todo } },
     );
     if(result){
-      const email = JSON.parse(todo.assignedTo).email
-      const username = JSON.parse(todo.assignedTo).username
+      const emailObj = JSON.parse(todo.assignedTo);
+      const email = emailObj.email;
+      const username = emailObj.username;
+      console.log(email)
       const title = todo.todoTitle
       await sendEmail(email,username,title)
-    }
+    } 
 
     res.status(200).json({ message: "Todo created Successfully" });
   } catch (error) {

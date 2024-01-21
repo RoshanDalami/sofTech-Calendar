@@ -64,8 +64,8 @@ export default function IndividualTodo({ setComment, task }: Props) {
         <div className="mx-6 my-4 text-xl font-bold capitalize text-white">
           {task.todoTitle}
         </div>
-        <div className=" mx-6 my-4 flex  items-center gap-6 text-xl capitalize text-white">
-          <p className=" flex h-8 w-8  items-center justify-center rounded-full bg-gray-100">
+        <div className=" mx-6 my-4 flex  items-center gap-3 text-xl  text-white">
+          <p className=" flex h-8 w-8  items-center capitalize justify-center rounded-full bg-gray-100">
             <p className="text-md font-bold text-black">
               {firstNameLetter}
               {lastNameLetter}
@@ -73,7 +73,11 @@ export default function IndividualTodo({ setComment, task }: Props) {
           </p>
           {/* Assigned to {" "} */}
           {/* {JSON.parse(task.assignedTo)?.firstname + ' ' +  JSON.parse(task.assignedTo)?.lastname } */}
-          {JSON.parse(task.assignedTo)?.username}
+          <span className="capitalize">
+
+          {JSON.parse(task.assignedTo)?.username} 
+          </span>
+          <span className="text-sm font-extralight">is assigned to this task</span>
         </div>
         <div className="absolute right-10 top-3 rounded-md shadow-md">
           <XMarkIcon

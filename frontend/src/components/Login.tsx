@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { userAtom } from "../recoil/userAtom";
 import { baseurl } from "../service/apiHelper";
+import toast from "react-hot-toast";
+
 
 
 export default function Login() {
@@ -38,10 +40,14 @@ export default function Login() {
         localStorage.setItem('user',JSON.stringify(userData))
         setLoading(false)
         navigate('/dashboard')
+        toast.success("Login Successful")
+      }else{
+
+        toast.error("Invalid Credentials ")
       }
     } catch (error) {
       setLoading(false);
-      console.log(error);
+
     } finally {
       setLoading(false);
     }

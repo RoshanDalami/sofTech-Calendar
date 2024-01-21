@@ -9,6 +9,8 @@ import LinkLists from "./LinkLists";
 import { useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/userAtom";
 import { Transition } from "@headlessui/react";
+import toast from "react-hot-toast";
+
 
 export default function SideBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -49,6 +51,7 @@ const [logoutClicked,setLogoutClicked] = useState(false)
       token: "",
     });
     navigate("/");
+    toast.success("Logout Sucessfull")
   };
 
   const renderSidebarContent = () => (
