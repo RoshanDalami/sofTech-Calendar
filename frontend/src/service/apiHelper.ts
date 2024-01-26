@@ -1,4 +1,4 @@
-export const baseurl = "https://calender-managemnet.onrender.com/";
+export const baseurl = "https://calender-managemnet.onrender.com/api";
 // export const baseurl = "http://localhost:8000/api";
 
 export const url = {
