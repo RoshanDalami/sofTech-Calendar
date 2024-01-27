@@ -3,7 +3,8 @@ const cors = require("cors");
 const EventRouter = require("./router/Events/events.routes");
 const UserRouter = require("./router/User/user.routes");
 const TaskRouter = require("./router/Tasks/tasks.routes");
-const CommentRouter = require("./router/Comment/comment.routes")
+const CommentRouter = require("./router/Comment/comment.routes");
+const ImageRouter = require("./router/Image/image.routes")
 
 const cookieParser = require("cookie-parser");
 const app = express();
@@ -23,6 +24,7 @@ app.use("/api/events", EventRouter);
 app.use("/api/user", UserRouter);
 app.use("/api/tasks", TaskRouter);
 app.use("/api/comments",CommentRouter)
+app.use("/api/images",ImageRouter)
 
 app.get("/*", (req, res) => {
   res.status(200).json({ message: "Server is setup" });

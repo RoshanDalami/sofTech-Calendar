@@ -109,6 +109,9 @@ export default function IndividualTodo({ setComment, task }: Props) {
             );
           })}
         </div>
+        <div className="flex justify-end my-2 mx-10">
+          <button className="bg-indigo-600 hover:bg-indigo-700 rounded-md shadow-md px-8 py-2 font-bold text-white">Upload Image</button>
+        </div>
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
           <div className="mx-10">
             <textarea
