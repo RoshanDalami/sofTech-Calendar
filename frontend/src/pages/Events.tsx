@@ -26,7 +26,7 @@ import TablePagination from '@mui/material/TablePagination';
 
 export default function Events() {
   // const { eventList, removeEvent } = useEvent();
-  const naviagate = useNavigate()
+  // const naviagate = useNavigate()
   const [isEdit, setIsEdit] = useState(false);
   const [EventList, setEvents] = useState<Event[]>([]);
   const [currentEventId, setCurrentEventId] = useState("");
