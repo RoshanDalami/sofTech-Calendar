@@ -64,11 +64,22 @@ async function getEventsByYear(req,res){
         res.status(500).json({message:'Internal server error'})
     }
 }
+async function getEventById(req,res){
+    const eventId = req.params.eventId;
+    try {
+        const eventById = await Events.findOne({eventId:eventId}).select("-createdAt -updatedAt -__v")
+        res.status(200).json(eventById)
+    } catch (error) {
+        console.log(error)
+            res.status(500).json({message:'Internal Server Error'})
+    }
+}
 module.exports = {
     httpGetAllEvents,
     httpCreateEvent,
     httpDeleteEvent,
     getEventByUserId,
     getEventsByTitle,
-    getEventsByYear
+    getEventsByYear,
+    getEventById
 }

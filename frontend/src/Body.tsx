@@ -16,6 +16,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect } from "react";
 import Register from "./components/Register.tsx";
 import Users from "./pages/Users.tsx";
+import IndividualEvent from "./components/IndividualEvent.tsx";
 
 
 const Body = () => {
@@ -75,6 +76,7 @@ const Body = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/calendar/:BSYear?/:BSMonth?" element={<Home />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/events/:eventId" element={<IndividualEvent />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/tasks/:taskID" element={<IndividualTask />} />
           <Route path="/dashboard" element={<Dashboard />} />

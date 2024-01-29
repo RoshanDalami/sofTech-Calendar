@@ -1,5 +1,5 @@
-// export const baseurl = "https://calender-managemnet.onrender.com/api";
-export const baseurl = 'http://localhost:8000/api'
+export const baseurl = "https://calender-managemnet.onrender.com/api";
+// export const baseurl = 'http://localhost:8000/api'
 export const url = {
   getAllEvents: `${baseurl}/events/getAllEvents`,
   postEvent: `${baseurl}/events/createEvent`,
@@ -23,5 +23,6 @@ export const url = {
   getTodoCountAssignee:`${baseurl}/tasks/getTodoCountForAssignee`,
   deleteUser:`${baseurl}/user/deleteUser`,
   createComment:`${baseurl}/comments/createComment`,
-  getCommentByTodoId:`${baseurl}/comments/getCommentByTodoId`
+  getCommentByTodoId:`${baseurl}/comments/getCommentByTodoId`,
+  getEventByEventId:`${baseurl}/events/getEventByEventId`
 };

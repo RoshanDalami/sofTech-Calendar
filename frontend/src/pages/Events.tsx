@@ -1,6 +1,7 @@
 // import React from "react";
 
-import { Link } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
+
 
 import Model from "../components/Model";
 import {  useEffect, useState } from "react";
@@ -9,6 +10,7 @@ import {
   PencilSquareIcon,
   TrashIcon,
   EnvelopeIcon,
+EyeIcon
 } from "@heroicons/react/24/outline";
 import TableHeader from "../components/TableHeader";
 import NepaliDate from "nepali-date-converter";
@@ -17,12 +19,14 @@ import axios from "axios";
 import { url } from "../service/apiHelper";
 import { Event } from "../types";
 import EditFrom from "../components/EditFrom";
+
 // import { userAtom } from "../recoil/userAtom";
 // import { useRecoilValue } from "recoil";
 import TablePagination from '@mui/material/TablePagination';
 
 export default function Events() {
   // const { eventList, removeEvent } = useEvent();
+  const naviagate = useNavigate()
   const [isEdit, setIsEdit] = useState(false);
   const [EventList, setEvents] = useState<Event[]>([]);
   const [currentEventId, setCurrentEventId] = useState("");
@@ -193,11 +197,14 @@ export default function Events() {
                 const isToday = eventDate === currentDateTime;
 
                 return (
+
                   <tr
-                    className={clsx("border-b bg-white  ", {
+                    className={clsx("border-b bg-white cursor-pointer ", {
                       "bg-red-200/50 text-red-600" : isEventPassed ,
                     })}
                     key={event.eventId}
+                    
+
                   >
                    
                       <th
@@ -225,7 +232,7 @@ export default function Events() {
                         </p>
                       </td>
 
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4" >
                         {event.eventTitle.slice(0, 15)}
                       </td>
                       <td className="px-6 py-4">
@@ -259,6 +266,13 @@ export default function Events() {
                             className="rounded-md bg-lime-600 px-4 py-1.5 uppercase text-white hover:bg-lime-700"
                           >
                             <EnvelopeIcon className="h-5 w-5" />
+                          </Link>
+                          <Link
+                            to={`/events/${event.eventId}`}
+                            
+                            className="rounded-md bg-orange-600 px-4 py-1.5 uppercase  text-white hover:bg-orange-700"
+                          >
+                            <EyeIcon className="h-5 w-5 " />
                           </Link>
                         </div>
                       </td> : <></>
