@@ -49,10 +49,10 @@ export default function EventReportCard() {
 
   useEffect(() => {
     getEventsByUser();
-  }, [totalEvent]);
+  }, []);
   useEffect(() => {
     getEvents();
-  }, [events]);
+  }, []);
 
   const getEventOnMonthCount = async () => {
     const eventsOnMonth = events?.filter(

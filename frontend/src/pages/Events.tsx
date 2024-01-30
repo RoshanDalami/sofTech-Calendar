@@ -44,8 +44,7 @@ export default function Events() {
       if(selectMonth !== '0'){
         const filterData = response?.data?.filter((item : Event)=>((item.eventDateNepali.split('-')[1]) === selectMonth)
         )
-        console.log(typeof(selectMonth))
-        console.log(filterData)
+        
         setEvents(filterData)
       }else{
         setEvents(response.data);
@@ -111,7 +110,7 @@ export default function Events() {
   return (
     <div className="  min-h-screen   ">
       {isEdit && (
-        <Model>
+        <Model  >
           <div className="relative rounded-md bg-white p-3">
             <XCircleIcon
               className="absolute right-5 h-10 w-10 cursor-pointer text-black"
@@ -121,7 +120,7 @@ export default function Events() {
             />
             {EventList?.map((event) => {
               if (event.eventId === currentEventId) {
-                return <EditFrom event={event} setIsEdit={setIsEdit} />;
+                return <EditFrom event={event} setIsEdit={setIsEdit} key={event.eventId} />;
               }
             })}
           </div>

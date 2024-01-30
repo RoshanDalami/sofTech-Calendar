@@ -61,7 +61,7 @@ export default function IndividualTodo({ setComment, task }: Props) {
         onClick={() => setComment(false)}
       ></div>
       <div className="absolute bottom-0 right-0 top-0 z-50  h-[100vh]   md:w-[50%] rounded-bl-lg rounded-tl-lg bg-slate-700 ">
-        <div className="mx-6 my-4 text-xl font-bold capitalize text-white">
+        <div className="mx-6 my-4 text-xl font-bold  text-white overflow-auto w-3/4 h-8 ">
           {task.todoTitle}
         </div>
         <div className=" mx-6 my-4 flex  items-center gap-3 text-xl  text-white">

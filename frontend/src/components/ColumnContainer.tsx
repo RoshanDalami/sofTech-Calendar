@@ -2,7 +2,7 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { Column, IUser, Id, Task } from "../types";
 import { CSS } from "@dnd-kit/utilities";
 import TaskCard from "./TaskCard";
-import { useEffect, useMemo } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 import Model from "./Model";
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -21,11 +21,12 @@ interface Props {
   tasks: Task[];
   index: number;
   bgColor: string;
+  setTasks:Dispatch<SetStateAction<Task[]>>
   taskDeleteHandler: (id: Id) => void;
 }
 
 export default function ColumnContainer(props: Props) {
-  const { column, taskDeleteHandler, tasks, index, bgColor, id } = props;
+  const { column, taskDeleteHandler, tasks, index, bgColor, id,setTasks } = props;
   const { taskID } = useParams();
   const userDetails = useRecoilValue(userAtom);
 
@@ -80,7 +81,7 @@ export default function ColumnContainer(props: Props) {
       userDetails: userDetails,
       id: nanoid(),
     };
-    console.log(data,'Create Todo')
+    
     try {
       setIsSubmitting(true);
       const response = await axios.post(`${url.createTodo}/${taskID}`, data);
@@ -91,6 +92,16 @@ export default function ColumnContainer(props: Props) {
         resetField("assignedTo");
         setIsSubmitting(false);
         setIsModelOpen(false);
+        try {
+          const response = await axios.get(`${url.getTaskById}/${taskID}`)
+          // console.log(response?.data?.todos,'response')
+          setTasks(response.data.todos)
+          // toast.success('Todos fetched successfully')
+      } catch (error) {
+        toast.error('Fetching Todos failed')
+      }
+        
+
       }
     } catch (error) {
       console.log(error);
@@ -109,7 +120,7 @@ export default function ColumnContainer(props: Props) {
   };
   useEffect(() => {
     getAllUser();
-  }, [userList]);
+  }, []);
 
   return (
     <>

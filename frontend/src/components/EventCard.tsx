@@ -43,7 +43,7 @@ export default function EventCard() {
   }, [totalEvent]);
   useEffect(() => {
     getEvents();
-  }, [events]);
+  }, []);
 
   const getEventOnMonthCount = async () => {
     const eventsOnMonth = events?.filter(

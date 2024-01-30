@@ -75,7 +75,7 @@ export default function KanbanBoard() {
   }
   useEffect(()=>{
     fetchTodos()
-  },[taskID,tasks])
+  },[taskID])
 
   //   function createNewColumn() {
   //     const columnToAdd: Column = {
@@ -178,6 +178,14 @@ export default function KanbanBoard() {
       const response = await axios.delete(`${url.deleteTodo}/${taskID}`,{data:{todoId:id}})
       if(response.status === 200){
         toast.success('Todo deleted Successfully')
+        try {
+          const response = await axios.get(`${url.getTaskById}/${taskID}`)
+          // console.log(response?.data?.todos,'response')
+          setTasks(response.data.todos)
+          // toast.success('Todos fetched successfully')
+      } catch (error) {
+        toast.error('Fetching Todos failed')
+      }
       }
     } catch (error) {
       toast.error('Deletion Failed')
@@ -203,6 +211,7 @@ export default function KanbanBoard() {
                     bgColor={col.color}
                     column={col}
                     id={col.id}
+                    setTasks={setTasks}
                     // onSubmit={onSubmit}
                     taskDeleteHandler={taskDeleteHandler}
                     tasks={tasks?.filter((task) => task.columnId === col.id)}
@@ -226,6 +235,7 @@ export default function KanbanBoard() {
                   bgColor=""
                   id=''
                   taskDeleteHandler={taskDeleteHandler}
+                  setTasks={setTasks}
                   tasks={tasks?.filter(
                     (task) => task.columnId === activeColumn.id
                   )}

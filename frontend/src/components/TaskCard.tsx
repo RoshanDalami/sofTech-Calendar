@@ -6,6 +6,7 @@ import { useState } from "react";
 import IndividualTodo from "./IndividualTodo";
 import { Transition } from "@headlessui/react";
 
+
 interface Props {
   task: Task;
   taskDeleteHandler: (id: Id) => void;
@@ -26,6 +27,7 @@ export default function TaskCard({ task, taskDeleteHandler }: Props) {
       task,
     },
   });
+ 
   const [isMouseOver, setIsMouseOver] = useState(false);
   const user: User = JSON.parse(localStorage.getItem("user")!);
   const [comment, setComment] = useState(false);
@@ -54,7 +56,7 @@ export default function TaskCard({ task, taskDeleteHandler }: Props) {
       style={style}
       {...attributes}
       {...listeners}
-      className={`mx-4 flex h-[100px] min-h-[100px] cursor-grab items-center  justify-between rounded-md  p-2.5 px-4 text-left shadow-2xl  ${
+      className={`mx-4 flex h-[100px] min-h-[100px] cursor-grab items-center  justify-between rounded-md  p-2.5 px-4 text-left shadow-2xl overflow-hidden  ${
         task?.columnId === "1"
           ? "bg-red-600/70"
           : task?.columnId === "2"
@@ -70,12 +72,12 @@ export default function TaskCard({ task, taskDeleteHandler }: Props) {
         setIsMouseOver(false);
       }}
     >
-      <div>
+      <div className="w-[9rem] " >
         <p
-          className="text-lg font-bold text-white capitalize"
+          className="text-lg font-bold text-white capitalize "
           onClick={() => setComment(true)}
         >
-          {task?.todoTitle}
+          {task?.todoTitle.slice(0,20)}
         </p>
       </div>
 

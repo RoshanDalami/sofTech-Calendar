@@ -77,7 +77,7 @@ export default function DonutChartComp({ title }: { title: string }) {
   }
   useEffect(() => {
     fetchTodo();
-  }, [todos]);
+  }, []);
   
   const todo = todos?.filter((item) => item?._id === "1") || [{ count: 0 }];
   const inprogress = todos?.filter((item) => item?._id === "2") || [

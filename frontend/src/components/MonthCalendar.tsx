@@ -126,6 +126,13 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
       resetField("eventDescription");
       resetField("eventEndTime");
       resetField("eventStartTime");
+      try {
+        const response = await axios.get(url.getAllEvents);
+        setEventList(response.data);
+        // toast.success('Event Fetching Success')
+      } catch (error) {
+        toast.error("Event Fetching failed");
+      }
     } catch (error) {
       toast.error("Event Creation Failed");
     } finally {
@@ -143,7 +150,7 @@ export default function MonthCalendar({ monthData }: { monthData: DayData[] }) {
   };
   useEffect(() => {
     getEvents();
-  }, [EventList]);
+  }, []);
 
   function convertTo12HourFormat(time24: string) {
     // Split the time string into hours and minutes

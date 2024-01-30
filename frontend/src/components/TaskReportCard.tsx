@@ -21,7 +21,7 @@ export default function TaskReportCard() {
   }
   useEffect(() => {
     fetchTodo();
-  }, [todos]);
+  }, []);
   const [taskList, setTaskList] = useState<TaskType[]>([]);
 
   const getAllTask = useCallback(async () => {
@@ -34,7 +34,7 @@ export default function TaskReportCard() {
   }, []);
   useEffect(() => {
     getAllTask();
-  }, [taskList]);
+  }, []);
   const todo = todos?.filter((item) => item?._id === "1") || [{ count: 0 }];
   const inprogress = todos?.filter((item) => item?._id === "2") || [
     { count: 0 },

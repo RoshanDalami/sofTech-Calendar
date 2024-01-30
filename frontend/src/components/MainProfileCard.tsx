@@ -34,7 +34,7 @@ export default function MainProfileCard() {
   }
   useEffect(() => {
     fetchTodo();
-  }, [assignedTask]);
+  }, []);
 
   const getTodoCount = ()=>{
     let count = 0
