@@ -153,6 +153,7 @@ export default function ColumnContainer(props: Props) {
                 <label htmlFor="title">Assigned To</label>
                 <select
                   id=""
+                  required
                   {...register("assignedTo")}
                   className="rounded-md border-2 border-slate-200 py-2"
                 >
