@@ -325,6 +325,10 @@ export default function Tasks() {
                           taskDescription={task.taskDescription}
                           _id={task._id}
                           taskId={task.taskId}
+                          setTaskList={setTaskList}
+                          setCompletedTaskList={setCompletedTaskList}
+                          setActiveTaskList={setActiveTaskList}
+                          setAssignedTask={setAssignedTask}
                           isCompleted={task.isCompleted}
                         />
                       );
@@ -345,6 +349,10 @@ export default function Tasks() {
                           taskDescription={task.taskDescription}
                           _id={task._id}
                           taskId={task.taskId}
+                          setTaskList={setTaskList}
+                          setCompletedTaskList={setCompletedTaskList}
+                          setActiveTaskList={setActiveTaskList}
+                          setAssignedTask={setAssignedTask}
                           isCompleted={task.isCompleted}
                         />
                       );
@@ -365,6 +373,10 @@ export default function Tasks() {
                           taskDescription={task.taskDescription}
                           _id={task._id}
                           taskId={task.taskId}
+                          setTaskList={setTaskList}
+                          setCompletedTaskList={setCompletedTaskList}
+                          setActiveTaskList={setActiveTaskList}
+                          setAssignedTask={setAssignedTask}
                           isCompleted={task.isCompleted}
                         />
                       );
@@ -380,6 +392,10 @@ export default function Tasks() {
                         taskDescription={task.taskDescription}
                         _id={task._id}
                         taskId={task.taskId}
+                        setTaskList={setTaskList}
+                        setCompletedTaskList={setCompletedTaskList}
+                        setActiveTaskList={setActiveTaskList}
+                        setAssignedTask={setAssignedTask}
                         isCompleted={task.isCompleted}
                       />
                     );

@@ -77,7 +77,7 @@ export default function Users() {
     try {
        const response =  await axios.delete(`${url.deleteUser}/${_id}`)
        console.log(`${url.deleteUser}/${_id}`)
-       console.log(response)
+       console.log(response,'response')
        if(response.status === 200){
         try {
             const response = await axios.get(url.getAllUser);

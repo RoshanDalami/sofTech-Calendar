@@ -68,8 +68,23 @@ export default function Events() {
 
   const removeEvent = async(id:any)=>{
     try { 
-        await axios.delete(url.deleteEvent,{data:{id:id}})
-        
+      const response =  await axios.delete(url.deleteEvent,{data:{id:id}})
+        if(response?.status === 200){
+          try {
+            const response = await axios.get(url.getAllEvents);
+      
+            if(selectMonth !== '0'){
+              const filterData = response?.data?.filter((item : Event)=>((item.eventDateNepali.split('-')[1]) === selectMonth)
+              )
+              
+              setEvents(filterData)
+            }else{
+              setEvents(response.data);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
 
     } catch (error) {
       console.log(error);
@@ -120,7 +135,7 @@ export default function Events() {
             />
             {EventList?.map((event) => {
               if (event.eventId === currentEventId) {
-                return <EditFrom event={event} setIsEdit={setIsEdit} key={event.eventId} />;
+                return <EditFrom event={event} setEvents={setEvents}  setIsEdit={setIsEdit} key={event.eventId} />;
               }
             })}
           </div>
@@ -266,13 +281,13 @@ export default function Events() {
                           >
                             <EnvelopeIcon className="h-5 w-5" />
                           </Link>
-                          <Link
+                          {/* <Link
                             to={`/events/${event.eventId}`}
                             
                             className="rounded-md bg-orange-600 px-4 py-1.5 uppercase  text-white hover:bg-orange-700"
                           >
                             <EyeIcon className="h-5 w-5 " />
-                          </Link>
+                          </Link> */}
                         </div>
                       </td> : <></>
                       }

@@ -19,13 +19,21 @@ export default function TaskCard({
   taskDescription,
   _id,
   taskId,
-  isCompleted
+  isCompleted,
+  setTaskList,
+  setActiveTaskList,
+  setCompletedTaskList,
+  setAssignedTask
 }: {
   taskTitle: string;
   taskDescription: string;
   _id: string;
   taskId: string;
   isCompleted:boolean;
+  setTaskList:any;
+  setActiveTaskList:any;
+  setCompletedTaskList:any;
+  setAssignedTask:any;
 }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const user:User = JSON.parse(localStorage.getItem('user')!)
@@ -58,6 +66,10 @@ export default function TaskCard({
               taskTitle={taskTitle}
               taskDescription={taskDescription}
               _id={_id}
+              setTaskList={setTaskList}
+              setActiveTaskList={setActiveTaskList}
+              setCompletedTaskList={setCompletedTaskList}
+              setAssignedTask={setAssignedTask}
               setIsModelOpen={setIsEditMode}
               taskId={taskId}
             />

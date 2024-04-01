@@ -4,14 +4,18 @@ import { FieldValues, useForm } from "react-hook-form";
 import { url } from "../service/apiHelper";
 
 
-export default function TaskEditForm({setIsModelOpen,taskTitle,taskDescription,taskId,_id}:{
+export default function TaskEditForm({setIsModelOpen,taskTitle,taskDescription,taskId,_id,setTaskList,setActiveTaskList,setCompletedTaskList,setAssignedTask}:{
   setIsModelOpen:any;
   taskTitle:string;
   taskDescription:string;
   _id:string;
   taskId:string;
+  setTaskList:any;
+  setActiveTaskList:any;
+  setCompletedTaskList:any;
+  setAssignedTask:any;
 }) {
- 
+  const userDetails = JSON.parse(localStorage.getItem("user")!);
   const [isLoading, setIsLoading] = useState(false);
   const { register, resetField, handleSubmit } = useForm({
     defaultValues:{
@@ -29,6 +33,22 @@ export default function TaskEditForm({setIsModelOpen,taskTitle,taskDescription,t
 
       console.log(response);
       if (response.status === 200) {
+        try {
+          const response = await axios.get(url.getAllTasks);
+          const activeList = await axios.get(url.getAllInCompletedTask);
+          const completedList = await axios.get(url.getAllCompletedTask);
+          const assignedTask = await axios.get(
+            `${url.getTaskByAssignee}/${userDetails?.data?.username}`
+          );
+
+          setActiveTaskList(activeList?.data)
+          setCompletedTaskList(completedList?.data)
+          setAssignedTask(assignedTask?.data)
+          setTaskList(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+
         setIsLoading(false);
         resetField("taskTitle");
         resetField("taskDescription");

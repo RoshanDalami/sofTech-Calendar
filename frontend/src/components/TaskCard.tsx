@@ -10,9 +10,10 @@ import { Transition } from "@headlessui/react";
 interface Props {
   task: Task;
   taskDeleteHandler: (id: Id) => void;
+  setTasks:any;
 }
 
-export default function TaskCard({ task, taskDeleteHandler }: Props) {
+export default function TaskCard({ task, taskDeleteHandler,setTasks }: Props) {
   const {
     setNodeRef,
     attributes,

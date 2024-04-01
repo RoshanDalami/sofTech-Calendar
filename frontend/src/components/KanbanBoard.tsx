@@ -245,6 +245,7 @@ export default function KanbanBoard() {
               {activeTask && (
                 <TaskCard
                   task={activeTask}
+                  setTasks={setTasks}
                   taskDeleteHandler={taskDeleteHandler}
                 />
               )}

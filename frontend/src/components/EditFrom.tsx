@@ -3,7 +3,7 @@ import { Event } from "../types";
 import { url } from "../service/apiHelper";
 import axios from "axios";
 
-export default function EditFrom({ event , setIsEdit}: { event: Event,setIsEdit:any }) {
+export default function EditFrom({ event , setIsEdit,setEvents}: { event: Event,setIsEdit:any,setEvents:any }) {
   const [formData, setFormData] = useState({
     event: event.eventTitle,
     description: event.eventDescription,
@@ -14,7 +14,16 @@ export default function EditFrom({ event , setIsEdit}: { event: Event,setIsEdit:
     try {
         const body = {...event,eventTitle:formData.event,eventDescription:formData.description}
         const response = await axios.post(url.postEvent, body);
-        console.log(response)
+        if(response?.status === 200){
+          try {
+            const response = await axios.get(url.getAllEvents);
+             
+              setEvents(response.data);
+            
+          } catch (error) {
+            console.log(error);
+          }
+        }
         setIsEdit(false)
         
     } catch (error) {

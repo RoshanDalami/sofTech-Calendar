@@ -1,5 +1,5 @@
-export const baseurl = "https://calender-managemnet.onrender.com/api";
-// export const baseurl = 'http://localhost:8000/api'
+// export const baseurl = "https://calender-managemnet.onrender.com/api";
+export const baseurl = 'http://localhost:8000/api'
 export const url = {
   getAllEvents: `${baseurl}/events/getAllEvents`,
   postEvent: `${baseurl}/events/createEvent`,

@@ -240,6 +240,7 @@ export default function ColumnContainer(props: Props) {
                 <TaskCard
                   task={task}
                   key={task.id}
+                  setTasks={setTasks}
                   taskDeleteHandler={taskDeleteHandler}
                 />
               );
