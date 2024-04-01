@@ -10,7 +10,6 @@ import {
   PencilSquareIcon,
   TrashIcon,
   EnvelopeIcon,
-EyeIcon
 } from "@heroicons/react/24/outline";
 import TableHeader from "../components/TableHeader";
 import NepaliDate from "nepali-date-converter";

@@ -13,7 +13,7 @@ interface Props {
   setTasks:any;
 }
 
-export default function TaskCard({ task, taskDeleteHandler,setTasks }: Props) {
+export default function TaskCard({ task, taskDeleteHandler }: Props) {
   const {
     setNodeRef,
     attributes,
